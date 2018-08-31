@@ -1,3 +1,4 @@
+# coding: utf-8
 module RocketRubyBot
   class RocketRubyBot::Commands
 
@@ -14,7 +15,6 @@ module RocketRubyBot
       end
 
       def add_hook(type, &block)
-        p hooks
         hooks[type.to_s] << block
       end
 
