@@ -1,0 +1,5 @@
+.env
+pkg
+Gemfile.lock
+.bundle
+
