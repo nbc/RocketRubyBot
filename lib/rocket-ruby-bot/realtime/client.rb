@@ -25,7 +25,6 @@ module RocketRubyBot
       end
 
       def dispatch_messages(data)
-        p ["<- ", data]
         return unless data._type
         type = data._type
         return unless @hooks[type]
@@ -52,6 +51,8 @@ module RocketRubyBot
           end
 
           @web_socket.on :message do |event|
+            p ["<- ", JSON.parse(event.data)]
+        
             data = RocketRubyBot::Message.new JSON.parse(event.data)
             dispatch_messages(data)
           end
