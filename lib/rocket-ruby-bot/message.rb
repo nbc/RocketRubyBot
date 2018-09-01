@@ -1,15 +1,13 @@
+# coding: utf-8
 module RocketRubyBot
   class Message < Hashie::Mash
+
     def _type
 
-      if %w[ping connected ready result added].include? msg
+      if %w[ping connected ready added].include? msg
         return msg.to_sym
       end
 
-      def _id
-        self["id"]
-      end
-      
       if msg == 'changed'
         if collection == 'stream-room-messages'
           return :message if fields.args.first.t.nil?
@@ -49,9 +47,22 @@ module RocketRubyBot
           end
 
         end # collection
+      elsif msg == 'result'
+
+        if result.is_a?(Hash) and !result.token.nil?
+          return :authenticated
+        else
+          return :result
+        end
+        
       end
       :unknown
     end
+
+    def uid
+      self["id"]
+    end
+
 
     private
     # see https://github.com/intridea/hashie/issues/394
