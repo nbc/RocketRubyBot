@@ -26,8 +26,8 @@ module RocketRubyBot
 
       def dispatch_messages(data)
         p ["<- ", data]
-        return unless data.key?("msg")
-        type = data["msg"]
+        return unless data._type
+        type = data._type
         return unless @hooks[type]
         hooks[type].each do |hook|
           hook.call(self, data)
@@ -52,7 +52,7 @@ module RocketRubyBot
           end
 
           @web_socket.on :message do |event|
-            data = JSON.parse(event.data)
+            data = RocketRubyBot::Message.new JSON.parse(event.data)
             dispatch_messages(data)
           end
 

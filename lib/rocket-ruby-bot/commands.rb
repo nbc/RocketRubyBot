@@ -11,14 +11,12 @@ module RocketRubyBot
       end
 
       def command(type, &block)
-        hooks[type.to_s] << block
+        hooks[type] << block
       end
 
       def message(regexp, &block)
-        command :changed do |client, data|
-          next unless is_a_message?(data)
-
-          message = data['fields']['args'].first
+        command :message do |client, data|
+          message = data.fields.args.first
 
           # on ne se répond pas à soi-même !
           next if config.user_id == message['u']['_id']
