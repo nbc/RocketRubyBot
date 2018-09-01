@@ -11,7 +11,7 @@ module RocketRubyBot
 
 
     def self.instance
-      RocketRubyBot::Client.instance
+      RocketRubyBot::Realtime::Client.instance
     end
 
     def self.config
@@ -19,7 +19,7 @@ module RocketRubyBot
     end
 
     def self.web_client
-      RocketRubyBot::WebClient.new
+      RocketRubyBot::Rest::Client.new
     end
     
     def self.store
