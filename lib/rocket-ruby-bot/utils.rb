@@ -37,7 +37,7 @@ module RocketRubyBot
         # https://github.com/mathieui/unha2/blob/master/docs/message.rst
         return false if message.key?('t')
         
-        message
+        true
       end
     end
 
