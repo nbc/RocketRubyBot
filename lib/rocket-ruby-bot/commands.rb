@@ -14,6 +14,22 @@ module RocketRubyBot
         hooks[type.to_s] << block
       end
 
+      def message(regexp, &block)
+        command :changed do |client, data|
+          next unless is_a_message?(data)
+
+          message = data['fields']['args'].first
+
+          # on ne se répond pas à soi-même !
+          next if config.user_id == message['u']['_id']
+
+          match = regexp.match(message['msg'])
+          if match
+            block.call(client, message, match)
+          end
+        end
+      end
+      
       def add_hook(type, &block)
         hooks[type.to_s] << block
       end
