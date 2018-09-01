@@ -19,9 +19,9 @@ module RocketRubyBot
           message = data.fields.args.first
 
           # on ne se répond pas à soi-même !
-          next if config.user_id == message['u']['_id']
+          next if config.user_id == message.u['_id']
 
-          match = regexp.match(message['msg'])
+          match = regexp.match message.msg
           if match
             block.call(client, message, match)
           end
@@ -30,24 +30,6 @@ module RocketRubyBot
       
       def add_hook(type, &block)
         hooks[type.to_s] << block
-      end
-
-      def ping
-        command :ping do |client, data|
-          client.say({msg: 'pong'})
-        end
-      end
-      
-      def login(args)
-        if args.key?(:user) && args.key?(:digest)
-          command :connected do |client, data|
-            client.say({msg: 'method',
-                        method: 'login',
-                        params: [{ user: { username: config.user },
-                                   password: { digest: config.digest, algorithm: "sha-256" }}]
-                       })
-          end
-        end
       end
 
     end
