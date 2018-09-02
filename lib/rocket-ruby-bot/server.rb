@@ -9,7 +9,7 @@ module RocketRubyBot
 
     def initialize(options = {})
       RocketRubyBot.configure do |config|
-        config.token = ENV['SLACK_API_TOKEN'] || raise("Missing ENV['SLACK_API_TOKEN'].")
+        config.token = ENV['ROCKET_API_TOKEN'] || raise("Missing ENV['ROCKET_API_TOKEN'].")
       end
     end
 
