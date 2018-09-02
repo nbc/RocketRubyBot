@@ -23,7 +23,7 @@ module RocketRubyBot
           when 'ru'
             return :removed_user
           when /user-(un)?muted/
-            return tag.to_sym
+            return tag.gsub(/-/, '_').to_sym
           when /subscription-role-(added|removed)/
             return tag.to_sym
           when /room_changed_topic/
