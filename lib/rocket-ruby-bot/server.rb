@@ -7,6 +7,12 @@ module RocketRubyBot
     
     TRAPPED_SIGNALS = %w[INT TERM].freeze
 
+    def initialize(options = {})
+      RocketRubyBot.configure do |config|
+        config.token = ENV['SLACK_API_TOKEN'] || raise("Missing ENV['SLACK_API_TOKEN'].")
+      end
+    end
+
     def run(hooks, url)
       @hooks = hooks
       @url = url
