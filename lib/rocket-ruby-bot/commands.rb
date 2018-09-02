@@ -1,7 +1,8 @@
 # coding: utf-8
 module RocketRubyBot
   class RocketRubyBot::Commands
-
+    include RocketRubyBot::Loggable
+    
     class << self
 
       attr_accessor :instance

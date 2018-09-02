@@ -1,6 +1,8 @@
 module RocketRubyBot
   module Realtime
     class Client
+      include RocketRubyBot::Loggable
+    
       class NoValidURL < StandardError; end
       
       include RocketRubyBot::MessageId
@@ -20,9 +22,8 @@ module RocketRubyBot
         @url = url.gsub 'https://', 'wss://'
         @url.gsub! %r{/$}, ''
         @url.concat '/websocket'
+
         raise NoValidURL unless %r{wss?://}.match(@url)
-
-
       end
 
       def on_close(&block)
@@ -35,8 +36,8 @@ module RocketRubyBot
           id = next_id
           args = {id: id}.merge(args)
         end
+        logger.debug("-> #{args}")
 
-        p [ "-> ", args]
         if !block_given?
           @web_socket.send(args.to_json)
         else
@@ -65,14 +66,18 @@ module RocketRubyBot
         end
       end
 
+      # FIXME
       def stop
+        hooks[:closing].each do |hook|
+          hook.call(self, '')
+        end
+        
         @web_socket.close
         EM.stop
       end
       
       def start
         @hooks = hooks
-        # FIXME no httpS
         
         EM.run do
           @web_socket = Faye::WebSocket::Client.new(@url)
@@ -83,7 +88,7 @@ module RocketRubyBot
           end
 
           @web_socket.on :message do |event|
-            p ["<- ", JSON.parse(event.data)]
+            logger.debug("<- #{JSON.parse(event.data)}")
 
             data = RocketRubyBot::Message.new JSON.parse(event.data)
             dispatch_messages(data)
