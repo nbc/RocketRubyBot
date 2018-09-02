@@ -6,12 +6,7 @@ module RocketRubyBot
     include RocketRubyBot::Realtime::API
     
     def self.run(url)
-      instance.run(hooks, url)
-    end
-
-
-    def self.instance
-      RocketRubyBot::Realtime::Client.instance
+      RocketRubyBot::Server.instance.run(hooks, url)
     end
 
     def self.config

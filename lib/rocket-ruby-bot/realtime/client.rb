@@ -14,11 +14,21 @@ module RocketRubyBot
         @instance ||= new
       end
       
-      def initialize
-        @url = nil
-        @web_socket = nil
+      def initialize(hooks, url)
+        @hooks = hooks
+
+        @url = url.gsub 'https://', 'wss://'
+        @url.gsub! %r{/$}, ''
+        @url.concat '/websocket'
+        raise NoValidURL unless %r{wss?://}.match(@url)
+
+
       end
 
+      def on_close(&block)
+        @on_close = block
+      end
+      
       def say(args = {}, id = true, &block)
 
         if id
@@ -55,18 +65,18 @@ module RocketRubyBot
         end
       end
 
-      def run(hooks, url)
+      def stop
+        @web_socket.close
+        EM.stop
+      end
+      
+      def start
         @hooks = hooks
         # FIXME no httpS
-        @url = url.gsub 'https://', 'wss://'
-        @url.gsub! %r{/$}, ''
-        @url.concat '/websocket'
-
-        raise NoValidURL unless %r{wss?://}.match(@url)
         
         EM.run do
           @web_socket = Faye::WebSocket::Client.new(@url)
-
+          
           @web_socket.on :open do |event|
             p [:open]
             @web_socket.send({"msg" => "connect", "version" => "1", "support" =>  ["1"]}.to_json)
@@ -74,17 +84,15 @@ module RocketRubyBot
 
           @web_socket.on :message do |event|
             p ["<- ", JSON.parse(event.data)]
-        
+
             data = RocketRubyBot::Message.new JSON.parse(event.data)
             dispatch_messages(data)
           end
 
           @web_socket.on :close do |event|
-            p [:close, event.code, event.reason]
-            @web_socket = nil
-            EM.stop
+            p [:close]
+            @on_close.call(event)
           end
-
         end
       end
     end

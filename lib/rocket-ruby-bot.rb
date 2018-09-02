@@ -10,6 +10,7 @@ require 'rocket-ruby-bot/realtime/api'
 require 'rocket-ruby-bot/config'
 require 'rocket-ruby-bot/rest/client'
 require 'rocket-ruby-bot/realtime/client'    
+require 'rocket-ruby-bot/server'
 require 'rocket-ruby-bot/commands'
 require 'rocket-ruby-bot/bot'
 
