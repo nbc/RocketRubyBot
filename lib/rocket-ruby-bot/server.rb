@@ -39,14 +39,14 @@ module RocketRubyBot
 
     def client
       @client ||= begin
-                    client = RocketRubyBot::Realtime::Client.new(@hooks, @url)
-                    client.on_close do |_data|
-                      @client = nil
-                      # restart! unless @stopping
-                    end
-                    
-                    client
-                  end
+        client = RocketRubyBot::Realtime::Client.new(@hooks, @url)
+        client.on_close do |_data|
+          @client = nil
+          # restart! unless @stopping
+        end
+        
+        client
+      end
       
     end
   end
