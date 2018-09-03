@@ -4,6 +4,8 @@ require 'singleton'
 module RocketRubyBot
   class Server
     include Singleton
+
+    attr_accessor :hooks
     
     TRAPPED_SIGNALS = %w[INT TERM].freeze
 
@@ -11,6 +13,9 @@ module RocketRubyBot
       RocketRubyBot.configure do |config|
         config.token = ENV['ROCKET_API_TOKEN'] || raise("Missing ENV['ROCKET_API_TOKEN'].")
       end
+
+      @hooks = Hash.new { |h,k| h[k] = [] }
+
     end
 
     def run(hooks, url)

@@ -2,19 +2,22 @@
 module RocketRubyBot
   class RocketRubyBot::Commands
     include RocketRubyBot::Loggable
+    extend RocketRubyBot::Realtime::API
     
     class << self
 
-      attr_accessor :instance
-
       def hooks
-        @instance ||= Hash.new { |h,k| h[k] = [] }
+        RocketRubyBot::Server.instance.hooks
       end
 
       def command(type, &block)
         hooks[type] << block
       end
 
+      def config
+        RocketRubyBot.config
+      end
+      
       def message(regexp, &block)
         command :message do |client, data|
           message = data.fields.args.first
@@ -29,10 +32,6 @@ module RocketRubyBot
         end
       end
       
-      def add_hook(type, &block)
-        hooks[type.to_s] << block
-      end
-
     end
   end
 end

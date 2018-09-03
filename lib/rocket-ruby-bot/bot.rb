@@ -3,14 +3,9 @@ module RocketRubyBot
 
     include RocketRubyBot::UUID
     include RocketRubyBot::Utils
-    include RocketRubyBot::Realtime::API
     
     def self.run(url)
       RocketRubyBot::Server.instance.run(hooks, url)
-    end
-
-    def self.config
-      RocketRubyBot::Config
     end
 
     def self.web_client
