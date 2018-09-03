@@ -5,7 +5,7 @@ module RocketRubyBot
   class Server
     include Singleton
 
-    attr_accessor :hooks
+    attr_accessor :hooks, :url
     
     TRAPPED_SIGNALS = %w[INT TERM].freeze
 
@@ -18,8 +18,7 @@ module RocketRubyBot
 
     end
 
-    def run(hooks, url)
-      @hooks = hooks
+    def run(url)
       @url = url
 
       loop do
@@ -36,7 +35,7 @@ module RocketRubyBot
 
     def stop!
       @stopping = true
-      client.stop if @client
+      client.stop if client
     end
 
     def handle_signals
@@ -50,7 +49,7 @@ module RocketRubyBot
 
     def client
       @client ||= begin
-        client = RocketRubyBot::Realtime::Client.new(@hooks, @url)
+        client = RocketRubyBot::Realtime::Client.new(hooks, url)
         client.on_close do |_data|
           @client = nil
           # restart! unless @stopping

@@ -5,7 +5,7 @@ module RocketRubyBot
     include RocketRubyBot::Utils
     
     def self.run(url)
-      RocketRubyBot::Server.instance.run(hooks, url)
+      RocketRubyBot::Server.instance.run(url)
     end
 
     def self.web_client
