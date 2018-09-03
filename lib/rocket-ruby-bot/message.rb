@@ -4,12 +4,12 @@ module RocketRubyBot
 
     def _type
 
-      if %w[ping connected ready added].include? msg
+      if %w[ping connected ready].include? msg
         return msg.to_sym
       end
 
-      if msg == 'changed'
-        if collection == 'stream-room-messages'
+      if msg.eql? 'changed'
+        if collection.eql? 'stream-room-messages'
           return :message if fields.args.first.t.nil?
           
           tag = fields.args.first.t
@@ -29,7 +29,7 @@ module RocketRubyBot
           when /room_changed_topic/
             return :room_changed_topic
           end
-        else collection == 'stream-notify-user'
+        else collection.eql? 'stream-notify-user'
           
           case fields.eventName
           when /notification$/
@@ -37,9 +37,9 @@ module RocketRubyBot
           when /rooms-changed$/
             return :rooms_changed
           when /subscriptions-changed$/
-            if fields.args.first == 'inserted'
+            if fields.args.first.eql? 'inserted'
               return :added_to_room
-            elsif fields.args.first == 'updated'
+            elsif fields.args.first.eql? 'updated'
               return :room_changed
             end
           when /otr$/
@@ -47,14 +47,21 @@ module RocketRubyBot
           end
 
         end # collection
-      elsif msg == 'result'
+      elsif msg.eql? 'result'
 
         if result.is_a?(Hash) and !result.token.nil?
           return :authenticated
         else
           return :result
         end
-        
+
+      elsif msg.eql? 'added'
+
+        if collection.eql? 'users'
+          return :added_user
+        else
+          return :added
+        end
       end
       :unknown
     end
