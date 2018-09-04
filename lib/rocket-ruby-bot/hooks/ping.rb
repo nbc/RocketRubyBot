@@ -1,8 +1,7 @@
 module RocketRubyBot
   module Hooks
-    class Ping < RocketRubyBot::Commands
-      
-      command :ping do |client, data|
+    class Ping < Base
+      def call(client, data)
         client.say send_pong
       end
 

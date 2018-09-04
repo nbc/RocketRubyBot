@@ -15,7 +15,9 @@ module RocketRubyBot
       end
 
       @hooks = Hash.new { |h,k| h[k] = [] }
-
+      @hooks[:connected].push RocketRubyBot::Hooks::Connected.new(config: RocketRubyBot.config)
+      @hooks[:ping].push RocketRubyBot::Hooks::Ping.new
+      
     end
 
     def run(url)

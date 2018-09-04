@@ -1,7 +1,8 @@
 module RocketRubyBot
   module Realtime
     module API
-
+      extend self
+      
       class ArgumentError < StandardError; end
       class UnknownArgumentValue < StandardError; end
 
