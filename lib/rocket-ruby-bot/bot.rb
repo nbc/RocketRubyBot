@@ -2,7 +2,6 @@ module RocketRubyBot
   class Bot < RocketRubyBot::Commands
 
     include RocketRubyBot::UUID
-    include RocketRubyBot::Utils
     
     def self.run
       RocketRubyBot::App.instance.run(RocketRubyBot.config.url)
