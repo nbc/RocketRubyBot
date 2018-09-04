@@ -4,12 +4,14 @@ module RocketRubyBot
     include RocketRubyBot::UUID
     include RocketRubyBot::Utils
     
-    def self.run(url)
-      RocketRubyBot::Server.instance.run(url)
+    def self.run
+      RocketRubyBot::App.instance.run(RocketRubyBot.config.url)
     end
 
     def self.web_client
-      RocketRubyBot::Rest::Client.new
+      @session ||= RocketRubyBot::Rest::Client.new(url: RocketRubyBot.config.url,
+                                                   token: RocketRubyBot.config.token,
+                                                   user_id: RocketRubyBot.config.user_id)
     end
     
     def self.store

@@ -2,7 +2,7 @@ module RocketRubyBot
   module Hooks
     class Connected < Base
 
-      def initialize(config: config)
+      def initialize(config:)
         @config = config
       end
       

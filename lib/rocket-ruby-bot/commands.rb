@@ -7,7 +7,7 @@ module RocketRubyBot
     class << self
 
       def hooks
-        RocketRubyBot::Server.instance.hooks
+        RocketRubyBot::App.instance.hooks
       end
 
       def command(type, &block)
