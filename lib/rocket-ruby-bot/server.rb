@@ -3,13 +3,16 @@ require 'singleton'
 
 module RocketRubyBot
   class Server
+    include Loggable
+    
     attr_accessor :hooks, :url
     
     TRAPPED_SIGNALS = %w[INT TERM].freeze
 
     def initialize(options = {})
       @hooks = Hash.new { |h,k| h[k] = [] }
-      @hooks[:connected].push RocketRubyBot::Hooks::Connected.new(config: RocketRubyBot.config)
+      @hooks[:connected].push RocketRubyBot::Hooks::Connected.new(config: RocketRubyBot.config,
+                                                                  logger: logger)
       @hooks[:ping].push RocketRubyBot::Hooks::Ping.new
     end
 
