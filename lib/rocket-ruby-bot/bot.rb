@@ -2,6 +2,7 @@ module RocketRubyBot
   class Bot < RocketRubyBot::Commands
 
     include RocketRubyBot::UUID
+    include RocketRubyBot::UserStore
     
     def self.run
       RocketRubyBot::App.instance.run(RocketRubyBot.config.url)
@@ -13,9 +14,17 @@ module RocketRubyBot
                                                    user_id: RocketRubyBot.config.user_id)
     end
     
-    def self.store
-      RocketRubyBot::Store
+    def self.user_store
+      RocketRubyBot::UserStore.user_store
     end
-    
+
+
+    def web_client
+      self.class.web_client
+    end
+
+    def user_store
+      self.class.user_store
+    end
   end
 end
