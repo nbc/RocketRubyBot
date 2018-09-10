@@ -22,11 +22,10 @@ module RocketRubyBot
         command :message do |client, data|
           message = data.fields.args.first
 
-          # on ne se répond pas à soi-même !
+          # on ne se répond pas à soi-même. Jamais.
           next if config.user_id == message.u['_id']
 
-          match = regexp.match message.msg
-          if match
+          if match = message.msg.match(regexp)
             block.call(client, message, match)
           end
         end
