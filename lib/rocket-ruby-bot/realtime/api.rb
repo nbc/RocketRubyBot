@@ -20,8 +20,9 @@ module RocketRubyBot
           return {msg: "method",
                   method: "login",
                   params: [ { resume: options[:token] }]}
+        else
+          raise ArgumentError, "should have (digest and username) or token"
         end
-        raise ArgumentError, "should have (digest and username) or token"
       end
       
       def send_text_message(message_id:, room_id:, msg:)
