@@ -11,9 +11,14 @@ module RocketRubyBot
 
     def initialize(options = {})
       @hooks = Hash.new { |h,k| h[k] = [] }
-      @hooks[:connected].push RocketRubyBot::Hooks::Connected.new(config: RocketRubyBot.config,
-                                                                  logger: logger)
-      @hooks[:ping].push RocketRubyBot::Hooks::Ping.new
+
+      if options.empty?
+        @hooks.merge!(connected: [RocketRubyBot::Hooks::Connected.new(config: RocketRubyBot.config,
+                                                                      logger: logger)],
+                      ping: [RocketRubyBot::Hooks::Ping.new])
+      else
+        @hooks.merge! options
+      end
     end
 
     def run(url)
@@ -36,6 +41,22 @@ module RocketRubyBot
       client.stop if client
     end
 
+    def restart!(wait = 1)
+      start!
+    rescue StandardError => e
+      case e.message
+      # FIXME quels erreurs
+      when /.*/  #/logged out by the server/
+        logger.error "#{RocketRubyBot.config.token}: #{e.message}"
+        @stopping = true
+      else
+        sleep wait
+        logger.error "#{e.message}, reconnecting in #{wait} second(s)."
+        logger.debug e
+        restart! [wait * 2, 60].min
+      end    
+    end
+    
     def handle_signals
       TRAPPED_SIGNALS.each do |signal|
         Signal.trap(signal) do
@@ -50,7 +71,7 @@ module RocketRubyBot
         client = RocketRubyBot::Realtime::Client.new(hooks, url)
         client.on_close do |_data|
           @client = nil
-          # restart! unless @stopping
+          restart! unless @stopping
         end
         
         client
