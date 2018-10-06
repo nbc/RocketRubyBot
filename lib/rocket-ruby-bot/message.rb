@@ -2,6 +2,10 @@
 module RocketRubyBot
   class Message < Hashie::Mash
 
+    def is_ping?
+      return true if _type.eql? "ping"
+    end
+    
     def _type
 
       if %w[ping connected ready].include? msg

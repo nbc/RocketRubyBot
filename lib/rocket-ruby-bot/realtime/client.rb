@@ -35,8 +35,9 @@ module RocketRubyBot
         if id
           id = next_id
           args = {id: id}.merge(args)
+          # no log for ping
+          logger.debug("-> #{args}")
         end
-        logger.debug("-> #{args}")
 
         if !block_given?
           @web_socket.send(args.to_json)
@@ -53,6 +54,10 @@ module RocketRubyBot
 
       def dispatch_messages(data)
         return unless data._type
+
+        # no log for ping
+        logger.debug("<- #{data.to_json}") unless data.is_ping?
+
         type = data._type
 
         if @@fiber_store.has_key? data.uid
@@ -61,6 +66,7 @@ module RocketRubyBot
         end
 
         return unless @hooks[type]
+
         hooks[type].each do |hook|
           hook.call(self, data)
         end
@@ -88,8 +94,6 @@ module RocketRubyBot
           end
 
           @web_socket.on :message do |event|
-            logger.debug("<- #{JSON.parse(event.data)}")
-
             data = RocketRubyBot::Message.new JSON.parse(event.data)
             dispatch_messages(data)
           end
