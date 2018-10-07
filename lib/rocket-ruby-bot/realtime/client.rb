@@ -58,13 +58,12 @@ module RocketRubyBot
         # no log for ping
         logger.debug("<- #{data.to_json}") unless data.is_ping?
 
-        type = data._type
-
         if @@fiber_store.has_key? data.uid
           @@fiber_store[data.uid].resume data
           @@fiber_store.delete data.uid
         end
 
+        type = data._type
         return unless @hooks[type]
 
         hooks[type].each do |hook|

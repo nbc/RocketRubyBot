@@ -4,7 +4,7 @@ module RocketRubyBot
     class Event < Hashie::Mash
 
       def is_ping?
-        return true if _type.eql? "ping"
+        return true if _type.eql? :ping
       end
       
       def _type
