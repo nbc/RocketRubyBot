@@ -52,7 +52,7 @@ module RocketRubyBot
         end
       end
 
-      def dispatch_messages(data)
+      def dispatch_event(data)
         return unless data._type
 
         # no log for ping
@@ -94,8 +94,8 @@ module RocketRubyBot
           end
 
           @web_socket.on :message do |event|
-            data = RocketRubyBot::Message.new JSON.parse(event.data)
-            dispatch_messages(data)
+            data = RocketRubyBot::Realtime::Event.new JSON.parse(event.data)
+            dispatch_event(data)
           end
 
           @web_socket.on :close do |event|

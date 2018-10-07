@@ -10,19 +10,19 @@ module RocketRubyBot
         RocketRubyBot::App.instance.hooks
       end
 
-      def command(type, &block)
-        hooks[type] << block
-      end
-
       def config
         RocketRubyBot.config
       end
       
-      def message(regexp, &block)
-        command :message do |client, data|
+      def on_event(type, &block)
+        hooks[type] << block
+      end
+
+      def on_message(regexp, &block)
+        on_event :message do |client, data|
           message = data.fields.args.first
 
-          # on ne se répond pas à soi-même. Jamais.
+          # never answer to ourself
           next if config.user_id == message.u['_id']
 
           if match = message.msg.match(regexp)
