@@ -3,3 +3,7 @@ pkg
 Gemfile.lock
 .bundle
 
+# emacs files
+*~
+\#*\#
+.\#*
