@@ -1,15 +1,12 @@
 module RocketRubyBot
   module Rest
-    class Client < RocketChat::Session
-      def initialize(url:, token:, user_id:)
-        @url     = url
-        @token   = token
-        @user_id = user_id
-        
-        rs    = RocketChat::Server.new(url)
-        token = RocketChat::Token.new(authToken: token,
-                                      userId: user_id)
-        super(rs, token)
+    module Client
+
+      def self.session(url:, token:, user_id:)
+        server = RocketChat::Server.new(url)
+        token  = RocketChat::Token.new(authToken: token,
+                                       userId: user_id)
+        RocketChat::Session.new(server, token)
       end
     end
   end
