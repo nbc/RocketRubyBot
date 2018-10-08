@@ -110,7 +110,6 @@ module RocketRubyBot
           # :rooms_changed
           :rooms_changed
         when /subscriptions-changed$/
-
           case fields.args.first
           when 'inserted'
             # :added_to_room
@@ -121,7 +120,6 @@ module RocketRubyBot
           else
             :unknown
           end
-          
         when /otr$/
           # :otr
           :otr
@@ -131,7 +129,14 @@ module RocketRubyBot
       end
 
       def on_stream_notify_room
-        
+        return case fields.eventName
+        when /typing/
+          :typing
+        when /deleteMessage/
+          :delete_message
+        else
+          :unknown
+        end
       end
       
       private

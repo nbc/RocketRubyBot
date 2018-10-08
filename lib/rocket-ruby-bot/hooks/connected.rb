@@ -8,7 +8,7 @@ module RocketRubyBot
       end
       
       def call(client, data)
-        client.say send_login(token: @config.token) do |message|
+        client.say login(token: @config.token) do |message|
           if message.error
             @logger.fatal message.error.message
             raise message.error.message
