@@ -132,9 +132,9 @@ module RocketRubyBot
 
       def on_stream_notify_room
         return case fields.eventName
-        when /typing/
+        when 'typing'
           :typing
-        when /deleteMessage/
+        when 'deleteMessage'
           :delete_message
         else
           :unknown
