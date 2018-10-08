@@ -37,22 +37,22 @@ module RocketRubyBot
       def say(args = {}, id = true, &block)
 
         if id
-          id = next_id
-          args = {id: id}.merge(args)
+          uid = next_id
+          args = {id: uid}.merge(args)
           # no log for ping
           logger.debug("-> #{args}")
         end
 
-        if !block_given?
-          @web_socket.send(args.to_json)
-        else
+        if block_given?
           f = Fiber.new do
             @web_socket.send(args.to_json)
             message = Fiber.yield
             block.call message
           end
-          @@fiber_store[id] = f
+          @@fiber_store[uid] = f
           f.resume
+        else
+          @web_socket.send(args.to_json)
         end
       end
 
