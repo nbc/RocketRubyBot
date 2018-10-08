@@ -1,11 +1,12 @@
+require_relative '../utils'
+
 module RocketRubyBot
   module Realtime
     module API
       extend self
-      
-      class ArgumentError < StandardError; end
-      class UnknownArgumentValue < StandardError; end
 
+      class ArgumentNotAllowed < StandardError; end
+      
       def login(options)
         if options.has_key? :digest and options.has_key? :username
           return {msg: 'method',
@@ -21,7 +22,7 @@ module RocketRubyBot
         end
       end
 
-      def get_users(room_id: , offline_users: False)
+      def get_users(room_id: , offline_users: false)
         {msg: 'method',
          method: 'getUsersOfRoom',
          params: [ room_id, offline_users]
@@ -73,13 +74,15 @@ module RocketRubyBot
       end
 
       def create_channel(channel_name:, users: [], read_only:)
+        raise ArgumentNotAllowed, "users: must be an array" unless users.is_a? Array
         {msg: "method",
          method: "createChannel",
-         params: [ channel_name, [users], read_only ]
+         params: [ channel_name, users, read_only ]
         }
       end
 
       def create_private_group(channel_name:, users: [])
+        raise ArgumentNotAllowed, "users: must be an array" unless users.is_a? Array
         {msg: "method",
          method: "createPrivateGroup",
          params: [channel_name, users]
@@ -107,7 +110,7 @@ module RocketRubyBot
         }
       end
 
-      def join_channel(room_id:, join_code: False)
+      def join_channel(room_id:, join_code: false)
         params = join_code ? [room_id, join_code] : [room_id]
 
         {msg: "method",
@@ -138,20 +141,19 @@ module RocketRubyBot
       end
       
       
-      def send_message(message_id:, room_id:, msg:)
+      def send_message(room_id:, msg:, message_id: uuid)
+        message_id ||= uuid
         {msg: 'method',
          method: 'sendMessage',
-         'params': [{message_id: uuid, rid: room_id, msg: msg}]}
+         'params': [{message_id: message_id, rid: room_id, msg: msg}]}
       end
 
-      def load_history(room_id:, limit: 50, msg_before: "null", last_received:)
+      def load_history(room_id:, limit: 50, msg_before: "null", last_received: 0)
         {msg: "method",
          method: "loadHistory",
          params: [ room_id, msg_before, 50, { '$date': last_received } ]
         }
       end
-
-
 
       def send_pong
         {msg: 'pong'}
@@ -173,8 +175,8 @@ module RocketRubyBot
 
 
       ALLOWED_NOTIFY_LOGGED = %w[Users:NameChanged Users:Deleted updateAvatar updateEmojiCustom deleteEmojiCustom roles-change].freeze
-      def sub_stream_notify_logged
-        verify_argument( ALLOWED_NOTIFY_LOGGED, sub)
+      def sub_stream_notify_logged(sub:)
+        verify_argument(ALLOWED_NOTIFY_LOGGED, sub)
         {msg: "sub",
          name: "stream-notify-logged",
          params:[sub, false]}
@@ -224,7 +226,7 @@ module RocketRubyBot
       private
       
       def verify_argument(allowed, arg)
-        raise UnknownArgumentValue, "should be in [#{allowed.join(" ")}]" unless allowed.include? arg
+        raise ArgumentNotAllowed, "should be in [#{allowed.join(" ")}]" unless allowed.include? arg
       end
 
     end
