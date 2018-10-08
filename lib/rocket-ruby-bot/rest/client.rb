@@ -1,3 +1,5 @@
+require 'rocketchat'
+
 module RocketRubyBot
   module Rest
     module Client

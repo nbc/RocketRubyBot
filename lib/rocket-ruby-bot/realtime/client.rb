@@ -1,3 +1,7 @@
+require 'faye/websocket'
+require 'eventmachine'
+require 'json'
+
 module RocketRubyBot
   module Realtime
     class Client

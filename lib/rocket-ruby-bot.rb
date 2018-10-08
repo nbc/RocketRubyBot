@@ -1,9 +1,3 @@
-require 'faye/websocket'
-require 'eventmachine'
-require 'json'
-require 'rocketchat'
-require 'hashie'
-
 require 'rocket-ruby-bot/version'
 require 'rocket-ruby-bot/utils'
 require 'rocket-ruby-bot/realtime/event'

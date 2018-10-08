@@ -1,3 +1,5 @@
+require 'hashie'
+
 # coding: utf-8
 module RocketRubyBot
   module Realtime
