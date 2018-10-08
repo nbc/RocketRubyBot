@@ -1,0 +1,101 @@
+{
+    "user_join": {
+	"msg": "changed",
+	"collection": "stream-room-messages",
+	"fields": {
+	    "args": [
+		{
+		    "t": "uj"
+		}
+	    ]
+	}
+    },
+    "user_left": {
+	"msg": "changed",
+	"collection": "stream-room-messages",
+	"fields": {
+	    "eventName": "<room-id>",
+	    "args": [
+		{
+		    "t": "ul"
+		}
+	    ]
+	}
+    },
+    "user_muted": {
+	"msg": "changed",
+	"collection": "stream-room-messages",
+	"fields": {
+	    "eventName": "<room-id>",
+	    "args": [
+		{
+		    "t": "user-muted"
+		}
+	    ]
+	}
+    },
+    "message": {
+	"msg": "changed",
+	"collection": "stream-room-messages",
+	"fields": {
+	    "eventName": "<room-id>",
+	    "args": [
+		{
+		}
+	    ]
+	}
+    },
+    "notification": {
+	"msg": "changed",
+	"collection": "stream-notify-user",
+	"id": "id",
+	"fields": {
+	    "eventName": "<user-id>/notification"
+	}
+    },
+    "rooms_changed": {
+	"msg": "changed",
+	"collection": "stream-notify-user",
+	"fields": {
+	    "eventName": "<user-id>/rooms-changed",
+	    "args": [
+		"inserted"
+	    ]
+	}
+    },
+    "new_message": {
+	"msg": "changed",
+	"collection": "stream-notify-user",
+	"fields": {
+	    "eventName": "<user-id>/subscriptions-changed",
+	    "args": [
+		"inserted"
+	    ]
+	}
+    },
+    "added_to_room": {
+	"msg": "changed",
+	"collection": "stream-notify-user",
+	"id": "id",
+	"fields": {
+	    "eventName": "<user-id>/subscriptions-changed",
+	    "args": [
+		"updated"	    ]
+	}
+    },
+    "otr": {
+	"msg": "changed",
+	"collection": "stream-notify-user",
+	"id": "id",
+	"fields": {
+	    "eventName": "<user-id>/otr"
+	}
+    },
+
+    "authenticated": {
+	"msg": "result",
+	"result": {
+	    "token": "S8cdVJJUfaDs26VDvOZEdW3DXK2mzyW_q5Q5L5ugy4I"
+	}
+    }
+}
