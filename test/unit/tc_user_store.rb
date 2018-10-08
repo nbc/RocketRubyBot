@@ -10,10 +10,10 @@ class TestUserStore < Minitest::Test
   end
 
   def test_configure_as_hashie
-    assert_equal RocketRubyBot::UserStore.user_store.test, 'a value'
+    assert_equal 'a value', RocketRubyBot::UserStore.user_store.test
   end
 
   def test_configure_as_hash
-    assert_equal RocketRubyBot::UserStore.user_store['test'], 'a value'
+    assert_equal 'a value', RocketRubyBot::UserStore.user_store['test']
   end
 end
