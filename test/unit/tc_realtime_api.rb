@@ -139,10 +139,11 @@ class TestRealtimeApi < Minitest::Test
                  {msg: 'method',
                   method: 'sendMessage',
                   'params': [{message_id: 'uuid', rid: 'id', msg: 'test'}]}
+  end
 
-    # FIXME uuid problem
+  def test_send_message_without_uuid
+    skip "dependency problem"
     # assert send_message(room_id: 'id', msg: 'test')
-
   end
 
   def test_load_history
