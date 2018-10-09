@@ -8,26 +8,14 @@ module RocketRubyBot
       include RocketRubyBot::Loggable
       include RocketRubyBot::MessageId
 
-      class NoValidURL < StandardError; end
-      
       attr_accessor :hooks
 
       # FIXME
       @@fiber_store = Hash.new
 
-      def self.instance
-        @instance ||= new
-      end
-
       def initialize(hooks, url)
         @hooks = hooks
-
-        # FIXME, this shouldn't be here
-        @url = url.gsub 'https://', 'wss://'
-        @url.gsub! %r{/$}, ''
-        @url.concat '/websocket'
-
-        raise NoValidURL unless %r{wss?://}.match(@url)
+        @url   = url
       end
 
       def on_close(&block)

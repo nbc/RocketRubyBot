@@ -5,7 +5,7 @@ module RocketRubyBot
     include RocketRubyBot::UserStore
     
     def self.run
-      RocketRubyBot::App.instance.run(RocketRubyBot.config.url)
+      RocketRubyBot::App.instance.run(RocketRubyBot.config.websocket_url)
     end
 
     def self.web_client
