@@ -1,7 +1,7 @@
 module RocketRubyBot
   class App < Server
 
-    def initialize(options = {})
+    def initialize(config: RocketRubyBot.config)
       super
     end
 

@@ -5,15 +5,17 @@ module RocketRubyBot
   class Server
     include Loggable
     
-    attr_accessor :hooks, :url
+    attr_accessor :hooks, :websocket_url
     
     TRAPPED_SIGNALS = %w[INT TERM].freeze
 
-    def initialize(options = {})
+    def initialize(config:, options: {})
       @hooks = Hash.new { |h,k| h[k] = [] }
 
+      @websocket_url = config.websocket_url
+      
       if options.empty?
-        @hooks.merge!(connected: [RocketRubyBot::Hooks::Connected.new(config: RocketRubyBot.config,
+        @hooks.merge!(connected: [RocketRubyBot::Hooks::Connected.new(config: config,
                                                                       logger: logger)],
                       ping: [RocketRubyBot::Hooks::Ping.new])
       else
@@ -21,9 +23,7 @@ module RocketRubyBot
       end
     end
 
-    def run(url)
-      @url = url
-
+    def run
       loop do
         handle_signals
         start!
@@ -68,7 +68,7 @@ module RocketRubyBot
 
     def client
       @client ||= begin
-        client = RocketRubyBot::Realtime::Client.new(hooks, url)
+        client = RocketRubyBot::Realtime::Client.new(hooks, websocket_url)
         client.on_close do |_data|
           @client = nil
           restart! unless @stopping
