@@ -28,7 +28,6 @@ module RocketRubyBot
         handle_signals
         start!
       end
-      
     end
 
     def start!
@@ -66,15 +65,15 @@ module RocketRubyBot
       end
     end
 
-    def client
-      @client ||= begin
-        client = RocketRubyBot::Realtime::Client.new(hooks, websocket_url)
-        client.on_close do |_data|
+    def client(client: nil)
+      @client ||= client || begin
+        cl = RocketRubyBot::Realtime::Client.new(hooks, websocket_url)
+        cl.on_close do |_data|
           @client = nil
           restart! unless @stopping
         end
         
-        client
+        cl
       end
       
     end
