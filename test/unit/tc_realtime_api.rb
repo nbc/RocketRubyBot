@@ -1,10 +1,11 @@
 require_relative '../test_helpers'
 
 require 'json'
-require 'rocket-ruby-bot'
+require 'rocket-ruby-bot/realtime/api'
 
 class TestRealtimeApi < Minitest::Test
   include RocketRubyBot::Realtime::API
+  extend RocketRubyBot::Realtime::API
   
   def test_login
     assert_equal login(username: "name", digest: "digest"),
@@ -142,8 +143,7 @@ class TestRealtimeApi < Minitest::Test
   end
 
   def test_send_message_without_uuid
-    skip "dependency problem"
-    # assert send_message(room_id: 'id', msg: 'test')
+    assert RocketRubyBot::Realtime::API.send_message(room_id: 'id', msg: 'test')
   end
 
   def test_load_history
