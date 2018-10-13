@@ -40,20 +40,11 @@ module RocketRubyBot
       client.stop if client
     end
 
-    def restart!(wait = 1)
-      start!
+    def restart!
+      start! 
     rescue StandardError => e
-      case e.message
-      # FIXME quels erreurs
-      when /.*/  #/logged out by the server/
-        logger.error "#{RocketRubyBot.config.token}: #{e.message}"
-        @stopping = true
-      else
-        sleep wait
-        logger.error "#{e.message}, reconnecting in #{wait} second(s)."
-        logger.debug e
-        restart! [wait * 2, 60].min
-      end    
+      logger.error "#{RocketRubyBot.config.token}: #{e.message}"
+      @stopping = true
     end
     
     def handle_signals
