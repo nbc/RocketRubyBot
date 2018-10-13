@@ -3,6 +3,7 @@ require_relative '../utils'
 module RocketRubyBot
   module Realtime
     module API
+      include RocketRubyBot::UUID
       extend self
 
       class ArgumentNotAllowed < StandardError; end
@@ -142,7 +143,6 @@ module RocketRubyBot
       
       
       def send_message(room_id:, msg:, message_id: uuid)
-        message_id ||= uuid
         {msg: 'method',
          method: 'sendMessage',
          'params': [{message_id: message_id, rid: room_id, msg: msg}]}
