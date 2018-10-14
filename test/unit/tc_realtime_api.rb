@@ -23,12 +23,12 @@ class TestRealtimeApi < Minitest::Test
     end
   end
   
-  def test_get_users
+  def test_get_users_of_room
     value = {:msg=>"method",
              :method=>"getUsersOfRoom",
              :params=>["id", "true"]}
 
-    assert_equal get_users(room_id: value[:params].first, offline_users: value[:params].last), value
+    assert_equal get_users_of_room(room_id: value[:params].first, offline_users: value[:params].last), value
   end
 
   def test_room_roles
@@ -39,8 +39,8 @@ class TestRealtimeApi < Minitest::Test
     assert_equal room_roles(room_id: value[:params].first), value
   end
 
-  def test_get_subscription
-    assert_equal get_subscription,
+  def test_get_subscriptions
+    assert_equal get_subscriptions,
                  {msg: "method",
                   method: "subscriptions/get",
                   params: [ { '$date': 0 } ]
@@ -50,7 +50,7 @@ class TestRealtimeApi < Minitest::Test
              method: "subscriptions/get",
              params: [ { '$date': 100009 } ]
             }
-    assert_equal get_subscription(last_time: value[:params].first[:$date]), value
+    assert_equal get_subscriptions(since: value[:params].first[:$date]), value
   end
 
   def test_get_rooms
@@ -62,7 +62,7 @@ class TestRealtimeApi < Minitest::Test
     value = {msg: 'method',
              method: 'rooms/get',
              params: [{'$date': 100009}]}
-    assert_equal get_rooms(last_time: value[:params].first[:$date]), value
+    assert_equal get_rooms(since: value[:params].first[:$date]), value
   end
 
   def test_get_permissions
@@ -92,20 +92,20 @@ class TestRealtimeApi < Minitest::Test
   end
 
   def test_create_channel
-    assert_equal create_channel(channel_name: "test", users: ["a", "b", "c"], read_only: false),
+    assert_equal create_channel(name: "test", users: ["a", "b", "c"], read_only: false),
                  {:msg=>"method", :method=>"createChannel", :params=>["test", ["a", "b", "c"], false]}
 
     assert_raises ArgumentNotAllowed do
-      create_channel(channel_name: "test", users: "a", read_only: false)
+      create_channel(name: "test", users: "a", read_only: false)
     end
   end
 
   def test_create_private_group
-    assert_equal create_private_group(channel_name: "test", users: ["a", "b", "c"]),
+    assert_equal create_private_group(name: "test", users: ["a", "b", "c"]),
                  {:msg=>"method", :method=>"createPrivateGroup", :params=>["test", ["a", "b", "c"]]}
 
     assert_raises ArgumentNotAllowed do
-      create_private_group(channel_name: "test", users: "a")
+      create_private_group(name: "test", users: "a")
     end
   end
 
@@ -157,13 +157,6 @@ class TestRealtimeApi < Minitest::Test
     assert_equal send_pong, {msg: 'pong'}
   end
 
-  def test_sub_stream_room_messages
-    assert_equal sub_stream_room_messages(room_id: "id"),
-                 {:msg=>"sub",
-                  :name=>"stream-room-messages",
-                  :params=>["id", false]}
-  end
-
   def test_sub_stream_notify_all
     assert_equal sub_stream_notify_all(sub: "roles-change"),
                  {msg: "sub",
@@ -185,6 +178,10 @@ class TestRealtimeApi < Minitest::Test
       sub_stream_notify_logged(sub: 'bad_argument')
     end
   end
+
+  def test_stream_notify_room_users
+    skip "test not implemented yet"
+  end
   
   def test_sub_stream_notify_user
     assert_equal sub_stream_notify_user(user_id: "id", sub: "notification"),
@@ -197,6 +194,17 @@ class TestRealtimeApi < Minitest::Test
     end
   end
 
+  def test_stream_notify_room
+    skip "test not implemented yet"
+  end
+
+  def test_sub_stream_room_messages
+    assert_equal sub_stream_room_messages(room_id: "id"),
+                 {:msg=>"sub",
+                  :name=>"stream-room-messages",
+                  :params=>["id", false]}
+  end
+
   def test_get_room_id
     assert_equal get_room_id(room: 'name'),
                  {msg: "method",
@@ -204,23 +212,23 @@ class TestRealtimeApi < Minitest::Test
                   params: ['name']}
   end
 
-  def test_get_channels_list
-    assert_equal get_channels_list(filter: "test"),
+  def test_channels_list
+    assert_equal channels_list(filter: "test"),
                  {:msg=>"method",
                   :method=>"channelsList",
                   :params=>["test", "public", 500, "name"]}
 
-    assert_equal get_channels_list(filter: "test", type: "private", sort_by: "msgs", limit: 5),
+    assert_equal channels_list(filter: "test", type: "private", sort_by: "msgs", limit: 5),
                  {:msg=>"method",
                   :method=>"channelsList",
                   :params=>["test", "private", 5, "msgs"]}
 
     assert_raises ArgumentNotAllowed do
-      get_channels_list(filter: "test", type: "test")
+      channels_list(filter: "test", type: "test")
     end
 
     assert_raises ArgumentNotAllowed do
-      get_channels_list(filter: "test", sort_by: "test")
+      channels_list(filter: "test", sort_by: "test")
     end
   end
 

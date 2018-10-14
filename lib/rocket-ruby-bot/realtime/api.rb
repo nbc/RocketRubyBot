@@ -8,6 +8,13 @@ module RocketRubyBot
 
       class ArgumentNotAllowed < StandardError; end
       
+      #= # Method calls
+
+      #= https://rocket.chat/docs/developer-guides/realtime-api/method-calls/
+      #=
+      #= parameters not yet documented. Read lib/rocket-ruby-bot/realtime/api.rb
+      
+      #= * `login`
       def login(options)
         if options.has_key? :digest and options.has_key? :username
           return {msg: 'method',
@@ -23,13 +30,32 @@ module RocketRubyBot
         end
       end
 
-      def get_users(room_id: , offline_users: false)
+      def register_user
+        # FIXME
+      end
+
+      def get_user_roles
+        # FIXME
+      end
+
+      def get_public_settings
+        # FIXME
+      end
+      
+      #=
+      #= * `get_users_or_room`
+      #=   * `room_id:`
+      #=   * `offline_users:` true/false
+      
+      def get_users_of_room(room_id: , offline_users: false)
         {msg: 'method',
          method: 'getUsersOfRoom',
          params: [ room_id, offline_users]
         }
       end
 
+      #= * `room_roles`
+      #=   * `room_id:`
       def room_roles(room_id:)
         {msg: "method",
          method: "getRoomRoles",
@@ -37,20 +63,25 @@ module RocketRubyBot
         }
       end
 
-      def get_subscription(last_time: 0)
+      #= * `get_subscriptions`
+      #=   * `since:` timestamp
+      def get_subscriptions(since: 0)
         {msg: "method",
          method: "subscriptions/get",
-         params: [ { '$date': last_time } ]
+         params: [ { '$date': since } ]
         }
       end
       
-      def get_rooms(last_time: 0)
+      #= * `get_rooms`
+      #=   * `since:` timestamp
+      def get_rooms(since: 0)
         {msg: 'method',
          method: 'rooms/get',
-         params: [{'$date': last_time}]
+         params: [{'$date': since}]
         }
       end
 
+      #= * `get_permissions`
       def get_permissions
         {msg: "method",
          method: "permissions/get",
@@ -58,6 +89,7 @@ module RocketRubyBot
         }
       end
 
+      #= * `set_presence`
       ALLOWED_STATUS = %w[online busy away offline].freeze
       def set_presence(status:)
         verify_argument(ALLOWED_STATUS, status)
@@ -67,6 +99,7 @@ module RocketRubyBot
          params: [status]}
       end
 
+      #= * `create_direct_message`
       def create_direct_message(username:)
         {msg: "method",
          method: "createDirectMessage",
@@ -74,22 +107,25 @@ module RocketRubyBot
         }
       end
 
-      def create_channel(channel_name:, users: [], read_only:)
+      #= * `create_channel`
+      def create_channel(name:, users: [], read_only:)
         raise ArgumentNotAllowed, "users: must be an array" unless users.is_a? Array
         {msg: "method",
          method: "createChannel",
-         params: [ channel_name, users, read_only ]
+         params: [ name, users, read_only ]
         }
       end
 
-      def create_private_group(channel_name:, users: [])
+      #= * `create_private_group`
+      def create_private_group(name:, users: [])
         raise ArgumentNotAllowed, "users: must be an array" unless users.is_a? Array
         {msg: "method",
          method: "createPrivateGroup",
-         params: [channel_name, users]
+         params: [name, users]
         }
       end
 
+      #= * `erase_room`
       def erase_room(room_id:)
         {msg: "method",
          method: "eraseRoom",
@@ -97,6 +133,7 @@ module RocketRubyBot
         }
       end
 
+      #= * `archive_room`
       def archive_room(room_id:)
         {msg: "method",
          method: "archiveRoom",
@@ -104,6 +141,7 @@ module RocketRubyBot
         }
       end
 
+      #= * `unarchive_room`
       def unarchive_room(room_id:)
         {msg: "method",
          method: "unarchiveRoom",
@@ -111,6 +149,7 @@ module RocketRubyBot
         }
       end
 
+      #= * `join_channel`
       def join_channel(room_id:, join_code: false)
         params = join_code ? [room_id, join_code] : [room_id]
 
@@ -120,6 +159,7 @@ module RocketRubyBot
         }
       end
 
+      #= * `leave_room`
       def leave_room(room_id:)
         {msg: "method",
          method: "leaveRoom",
@@ -127,6 +167,7 @@ module RocketRubyBot
         }
       end
 
+      #= * `hide_room`
       def hide_room(room_id:)
         {msg: "method",
          method: "hideRoom",
@@ -134,6 +175,7 @@ module RocketRubyBot
         }
       end
 
+      #= * `open_room`
       def open_room(room_id:)
         {msg: "method",
          method: "openRoom",
@@ -141,13 +183,14 @@ module RocketRubyBot
         }
       end
       
-      
+      #= * `send_message`
       def send_message(room_id:, msg:, message_id: uuid)
         {msg: 'method',
          method: 'sendMessage',
          'params': [{message_id: message_id, rid: room_id, msg: msg}]}
       end
 
+      #= * `load_history`
       def load_history(room_id:, limit: 50, msg_before: "null", last_received: 0)
         {msg: "method",
          method: "loadHistory",
@@ -155,16 +198,55 @@ module RocketRubyBot
         }
       end
 
+      #= * `send_pong`
       def send_pong
         {msg: 'pong'}
       end
+
+      #= 
+      #= methods found in https://github.com/mathieui/unha2/blob/master/docs/methods.rst
+      #=
       
-      def sub_stream_room_messages(room_id:)
-        {msg: "sub",
-         name: "stream-room-messages",
-         params: [room_id, false]}
+      #= * `get_room_id`
+      #=   get room id by name or id
+      def get_room_id(room:)
+        {msg: "method",
+         method: "getRoomIdByNameOrId",
+         params: [room]}
       end
 
+      #= * `channels_list`
+      ALLOWED_CHANNEL = %w[public private].freeze
+      ALLOWED_SORT    = %w[name msgs].freeze
+      def channels_list(filter: "", type: "public", sort_by: "name", limit: 500)
+        verify_argument(ALLOWED_CHANNEL, type)
+        verify_argument(ALLOWED_SORT, sort_by)
+
+        {msg: "method",
+         method: "channelsList",
+         params: [filter, type, limit, sort_by]}
+      end
+
+      #= * `get_users_of_room`
+      def get_users_of_room(room_id:, user_status: "true")
+        {msg: "method",
+         method: "getUsersOfRoom",
+         params: [room_id, user_status]}
+      end
+
+      #= * `read_messages`
+      def read_messages
+        {msg: "method",
+         method: "readMessages",
+         params: []}
+      end
+
+      #= 
+      #= # Subscriptions
+      #= 
+
+      #= * `stream_notify_all`
+      #=   https://rocket.chat/docs/developer-guides/realtime-api/subscriptions/stream-notify-all/
       ALLOWED_NOTIFY_ALL = %w[roles-change updateEmojiCustom deleteEmojiCustom updateAvatar public-settings-changed permissions-changed].freeze
       def sub_stream_notify_all(sub:)
         verify_argument(ALLOWED_NOTIFY_ALL, sub)
@@ -173,7 +255,9 @@ module RocketRubyBot
          params:[sub, false]}
       end
 
-
+      #= * `stream-notify-logged`
+      #=   https://rocket.chat/docs/developer-guides/realtime-api/subscriptions/stream-notify-logged/
+      #= 
       ALLOWED_NOTIFY_LOGGED = %w[Users:NameChanged Users:Deleted updateAvatar updateEmojiCustom deleteEmojiCustom roles-change].freeze
       def sub_stream_notify_logged(sub:)
         verify_argument(ALLOWED_NOTIFY_LOGGED, sub)
@@ -182,6 +266,16 @@ module RocketRubyBot
          params:[sub, false]}
       end
 
+      #= * `stream-notify-user`
+      #=   https://rocket.chat/docs/developer-guides/realtime-api/subscriptions/stream-notify-user/
+      #= 
+      #=   ```
+      #=   ["{\"msg\":\"sub\",\"id\":\"j3rDKZiswk48oD3xq\",\"name\":\"stream-notify-user\",\"params\":[\"hZKg86uJavE6jYLya/notification\",false]}"]
+      #=   ["{\"msg\":\"sub\",\"id\":\"BhQGCDSHbs2K8b6Qo\",\"name\":\"stream-notify-user\",\"params\":[\"oAKZSpTPTQHbp6nBD/rooms-changed\",false]}"]
+      #=   ["{\"msg\":\"sub\",\"id\":\"2wA7uGgSRcw67DsqW\",\"name\":\"stream-notify-user\",\"params\":[\"oAKZSpTPTQHbp6nBD/subscriptions-changed\",false]}"]
+      #=   ["{\"msg\":\"sub\",\"id\":\"d7R5u6pCkLKPfxFa7\",\"name\":\"stream-notify-user\",\"params\":[\"oAKZSpTPTQHbp6nBD/otr\",false]}"]
+      #=   ```
+      #= 
       ALLOWED_USER_SUBS = %w[notification rooms-changed subscriptions-changed otr webrtc message].freeze
       def sub_stream_notify_user(user_id:, sub:)
         verify_argument(ALLOWED_USER_SUBS, sub)
@@ -192,36 +286,41 @@ module RocketRubyBot
         }
       end
 
-      # methods found at https://github.com/mathieui/unha2/blob/master/docs/methods.rst
-      
-      def get_room_id(room:)
-        {msg: "method",
-         method: "getRoomIdByNameOrId",
-         params: [room]}
-      end
-
-      ALLOWED_CHANNEL = %w[public private].freeze
-      ALLOWED_SORT    = %w[name msgs].freeze
-      def get_channels_list(filter: "", type: "public", sort_by: "name", limit: 500)
-        verify_argument(ALLOWED_CHANNEL, type)
-        verify_argument(ALLOWED_SORT, sort_by)
-
-        {msg: "method",
-         method: "channelsList",
-         params: [filter, type, limit, sort_by]}
+      #= * `stream-notify-room-users`
+      #= 
+      #=   https://rocket.chat/docs/developer-guides/realtime-api/subscriptions/stream-notify-room-users/
+      #=   bug in documentation
+      ALLOWED_NOTIFY_ROOM_USERS = %w[webrtc].freeze
+      def sub_stream_notify_room_users(room_id:, sub:)
+        verify_argument(ALLOWED_NOTIFY_ROOM_USERS, sub)
+        {msg: "sub",
+         name: "stream-notify-room-users",
+         params: ["%s/%s" % [room_id, sub], false]
+        }
       end
       
-      def get_users_of_room(room_id:, user_status: "true")
-        {msg: "method",
-         method: "getUsersOfRoom",
-         params: [room_id, user_status]}
+      #= * `stream_notify_room`
+      #=   https://rocket.chat/docs/developer-guides/realtime-api/subscriptions/stream-notify-room/
+      ALLOWED_NOTIFY_ROOM = %w[deleteMessage typing].freeze
+      def sub_stream_notify_room(room_id:, sub:)
+        verify_argument(ALLOWED_NOTIFY_ROOM, sub)
+
+        { msg: 'sub',
+          name: 'stream-notify-room',
+          params: [ '%s/%s' % [room_id, sub], false ]
+        }
       end
 
-      def read_messages
-        {msg: "method",
-         method: "readMessages",
-         params: []}
+      #= * `stream_room_message`
+      #= 
+      #=   https://rocket.chat/docs/developer-guides/realtime-api/subscriptions/stream-room-messages/
+      #= 
+      def sub_stream_room_messages(room_id:)
+        {msg: "sub",
+         name: "stream-room-messages",
+         params: [room_id, false]}
       end
+
 
       private
       
