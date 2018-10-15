@@ -43,7 +43,7 @@ module RocketRubyBot
       end
       
       #=
-      #= * `get_users_or_room`
+      #= * `get_users_of_room`
       #=   * `room_id:`
       #=   * `offline_users:` true/false
       

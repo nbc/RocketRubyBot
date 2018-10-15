@@ -49,6 +49,8 @@ module RocketRubyBot
         # no log for ping
         logger.debug("<- #{data.to_json}") unless data.is_ping?
         
+        # FIXME
+        # Shouldn't dispatch event as it's already treated
         if @@fiber_store.has_key? data.uid
           @@fiber_store[data.uid].resume data
           @@fiber_store.delete data.uid
