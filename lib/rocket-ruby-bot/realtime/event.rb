@@ -1,3 +1,4 @@
+# coding: utf-8
 require 'hashie'
 
 #= # events
@@ -13,9 +14,10 @@ module RocketRubyBot
       def is_ping?
         return true if _type.eql? :ping
       end
-      
+
+      BASIC_EVENTS = %w[ping connected ready updated removed failed error nosub].freeze
       def _type
-        @type ||= if %w[ping connected ready updated removed failed error].include? msg
+        @type ||= if BASIC_EVENTS.include? self['msg']
           #= * `:connected`
           #=   return on server connection
           #= * `:ready`
@@ -26,12 +28,12 @@ module RocketRubyBot
           #= * `:failed`
           #= * `:error`
           #= * `:ping` : ping from server, automatically handled by the ping hook
-          msg.to_sym
-        elsif msg.eql? 'changed'
+          self['msg'].to_sym
+        elsif self['msg'].eql? 'changed'
           on_changed
-        elsif msg.eql? 'result'
+        elsif self['msg'].eql? 'result'
           on_result
-        elsif msg.eql? 'added'
+        elsif self['msg'].eql? 'added'
           on_added
         else
           :unknown
@@ -45,15 +47,20 @@ module RocketRubyBot
         @type
       end
 
-      def uid
-        self["id"]
+      def result_id
+        ret = if _type.eql? :ready
+          self['subs'].first
+        else
+          self['id']
+        end
+        ret
       end
 
       #= 
       #= ## `results` events
       #= 
       def on_result
-        type = if result.is_a?(Hash) and not result.token.nil?
+        type = if self['result'].is_a?(Hash) and not self['result']['token'].nil?
           #= * `:authenticated`
           #=   returned on successful login
           #=   https://rocket.chat/docs/developer-guides/realtime-api/method-calls/login/
@@ -74,8 +81,12 @@ module RocketRubyBot
       #= 
       #= ## `added` events
       #= 
+      # {"msg":"added","collection":"users","id":"hZKg86uJavE6jYLya",
+      #  "fields":{"emails":[{"address":"eion@robbmob.com","verified":true}],"username":"eionrobb"}}
+      # {"msg":"added","collection":"users","id":"M6m6odi9ufFJtFzZ3","fields":{"status":"online","username":"ali-14","utcOffset":3.5}}
+
       def on_added
-        return case collection
+        return case self['collection']
         when 'users'
           #= 
           #= * `:added_user`
@@ -90,8 +101,10 @@ module RocketRubyBot
 
       #= ## `changed` events
       #=
+      # FIXME : event found in librocketchat.c :
+      # {"msg":"changed","collection":"users","id":"123","fields":{"active":true,"name":"John Doe","type":"user"}}
       def on_changed
-        return case collection
+        return case self['collection']
         when 'stream-room-messages'
           on_stream_room_messages
         when 'stream-notify-user'
@@ -103,25 +116,39 @@ module RocketRubyBot
         end 
       end
       
-      #= ### `stream_notify_room` events
+      #= ### `stream-room-messages` events
+      #=
+      #= https://rocket.chat/docs/developer-guides/realtime-api/subscriptions/stream-room-messages/
       #=
       def on_stream_room_messages
-        tag = fields.args.first.t
+        tag = self['fields']['args'].first.t
 
         return case tag
         when nil
+          #= * `:message` : new message, event on message (reactions...)
+          #
+          # {"msg":"changed","collection":"stream-room-messages","id":"id",
+          #  "fields":{"eventName":"GENERAL",
+          #  "args":[{"_id":"ei3gxB5SqWJHoGDkm","rid":"GENERAL","msg":"Bonjour, ",
+          #           "ts":{"$date":1540063554370},"alias":"GODLEWSKI François",
+          #           "u":{"_id":"9fjarYAeJtEBo2quC","username":"francois.godlewski",
+          #           "name":"GODLEWSKI François"},"mentions":[],"channels":[],"_updatedAt":{"$date":1540284243523},
+          #           "reactions":{":hand_splayed_tone3:":{"usernames":["sylvain.comte","lionel.roturier",
+          #                                                             "marie.claude.costecalde","kamel.djerbi"]},
+          #                        ":wave:":{"usernames":["isabelle.k.blanc"]}}}]}}
+
           :message
         when 'uj'
-          #= * `:user_join` : a user join a room
+          #= * `:user_join` : user join room
           :user_join
         when 'ul'
-          #= * `:user_left` : a user left a room
+          #= * `:user_left` : user left room
           :user_left
         when 'au'
-          #= * `:added_user` : a user was added to room
+          #= * `:added_user` : user added to room
           :added_user
         when 'ru'
-          #= * `:remove_user` : a user was removed from room
+          #= * `:remove_user` : user removed from room
           :removed_user
         when /user-(un)?muted/
           #= * `:user_muted`
@@ -140,23 +167,40 @@ module RocketRubyBot
 
       end
 
-      #= ### `stream_notify_user` events
+      #= ### `stream-notify-user` events
+      #=
+      #= https://rocket.chat/docs/developer-guides/realtime-api/subscriptions/stream-notify-user/
+      #=
       def on_stream_notify_user
-        return case fields.eventName
+        return case self['fields']['eventName']
         when /notification$/
           #= * `:notification`
           :notification
         when /rooms-changed$/
           #= * `:rooms_changed`
+          # 
+          # New chat started
+	  # {"msg":"changed","collection":"stream-notify-user","id":"id","fields":{"eventName":"hZKg86uJavE6jYLya/rooms-changed",
+          #  "args":["inserted",{"_id":"JoxbibGnXizRb4ef4hZKg86uJavE6jYLya","t":"d"}]}}
+          #
+	  # {"msg":"changed","collection":"stream-notify-user","id":"id","fields":{"eventName":"hZKg86uJavE6jYLya/rooms-changed",
+          #  "args":["inserted",{"_id":"GENERAL","name":"general","t":"c","topic":"Community support in [#support](https://demo.rocket.chat/channel/support).
+          #      Developers in [#dev](https://demo.rocket.chat/channel/dev)","muted":["daly","kkloggg","staci.holmes.segarra"],
+          #      "jitsiTimeout":{"$date":1477687206856},"default":true}]}}
+          #
+	  # {"msg":"changed","collection":"stream-notify-user","id":"id","fields":{"eventName":"hZKg86uJavE6jYLya/rooms-changed",
+          #   "args":["updated",{"_id":"ocwXv7EvCJ69d3AdG","name":"eiontestchat","t":"p","u":{"_id":null,"username":null},"topic":"ham salad","ro":false}]}}
+
+
           :rooms_changed
         when /subscriptions-changed$/
           case fields.args.first
           when 'inserted'
-            #= * `:new_message`
-            :new_message
+            #= * `:inserted` user added to a new room
+            :inserted
           when 'updated'
-            #= * `:added_to_room`
-            :added_to_room
+            #= * `:updated` : something change in room, topic, announcement...
+            :updated
           else
             :unknown
           end
@@ -168,10 +212,10 @@ module RocketRubyBot
         end
       end
 
-      #= ## `stream_notify_room` events
+      #= ## `stream-notify-room` events
       def on_stream_notify_room
         
-        return case fields.eventName
+        return case self['fields']['eventName']
         when 'typing'
           #= * `:typing`
           :typing

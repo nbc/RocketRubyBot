@@ -63,7 +63,7 @@
 	    ]
 	}
     },
-    "new_message": {
+    "inserted": {
 	"msg": "changed",
 	"collection": "stream-notify-user",
 	"fields": {
@@ -73,7 +73,7 @@
 	    ]
 	}
     },
-    "added_to_room": {
+    "updated": {
 	"msg": "changed",
 	"collection": "stream-notify-user",
 	"id": "id",

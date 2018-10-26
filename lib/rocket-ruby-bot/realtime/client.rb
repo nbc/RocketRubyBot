@@ -33,27 +33,23 @@ module RocketRubyBot
 
         if block_given?
           f = Fiber.new do
-            @web_socket.send(args.to_json)
             message = Fiber.yield
             block.call message
           end
           @@fiber_store[uid] = f
           f.resume
-        else
-          @web_socket.send(args.to_json)
         end
+        @web_socket.send(args.to_json)
       end
 
       def dispatch_event(data)
         return unless data._type
         # no log for ping
         logger.debug("<- #{data.to_json}") unless data.is_ping?
-        
-        # FIXME
-        # Shouldn't dispatch event as it's already treated
-        if @@fiber_store.has_key? data.uid
-          @@fiber_store[data.uid].resume data
-          @@fiber_store.delete data.uid
+
+        if @@fiber_store.has_key? data.result_id
+          @@fiber_store[data.result_id].resume data
+          @@fiber_store.delete data.result_id
         end
 
         type = data._type
