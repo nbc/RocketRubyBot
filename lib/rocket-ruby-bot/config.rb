@@ -7,10 +7,10 @@ module RocketRubyBot
     attr_writer :websocket_url, :token
     
     def websocket_url
-      @websocket_url ||= url.
-                           gsub(%r<http(s?)://>, 'ws\1://').
-                           gsub(%r{/$}, '').
-                           concat('/websocket')
+      @websocket_url ||= url
+                           .gsub(%r<http(s?)://>, 'ws\1://')
+                           .gsub(%r{/$}, '')
+                           .concat('/websocket')
     end
 
     def token

@@ -1,17 +1,19 @@
 # coding: utf-8
+
 require 'hashie'
 
 #= # events
 
 #= list of events
-#= 
+#=
 
 # coding: utf-8
 module RocketRubyBot
   module Realtime
+    # parse data returned by RC
     class Event < Hashie::Mash
 
-      def is_ping?
+      def ping?
         return true if _type.eql? :ping
       end
 
@@ -40,8 +42,8 @@ module RocketRubyBot
         end
 
         # log the unknown event if first see
-        if @type == :unknown and @already_seen.nil?
-          p [:unknown, self.to_json]
+        if @type == :unknown && @already_seen.nil?
+          p [:unknown, to_json]
           @already_seen = false
         end
         @type
@@ -56,31 +58,31 @@ module RocketRubyBot
         ret
       end
 
-      #= 
+      #=
       #= ## `results` events
-      #= 
+      #=
       def on_result
-        type = if self['result'].is_a?(Hash) and not self['result']['token'].nil?
+        type = if self['result'].is_a?(Hash) && !self['result']['token'].nil?
           #= * `:authenticated`
           #=   returned on successful login
           #=   https://rocket.chat/docs/developer-guides/realtime-api/method-calls/login/
           #=   `:authenticated`
-          #= 
+          #=
           :authenticated
         else
           #= * `:result`
           #=   event returned for all requests except authentication
           #=   example : https://rocket.chat/docs/developer-guides/realtime-api/method-calls/get-user-roles/
           #=   ...
-          #= 
+          #=
           :result
         end
         type
       end
 
-      #= 
+      #=
       #= ## `added` events
-      #= 
+      #=
       # {"msg":"added","collection":"users","id":"hZKg86uJavE6jYLya",
       #  "fields":{"emails":[{"address":"eion@robbmob.com","verified":true}],"username":"eionrobb"}}
       # {"msg":"added","collection":"users","id":"M6m6odi9ufFJtFzZ3","fields":{"status":"online","username":"ali-14","utcOffset":3.5}}
@@ -88,13 +90,13 @@ module RocketRubyBot
       def on_added
         return case self['collection']
         when 'users'
-          #= 
+          #=
           #= * `:added_user`
-          #= 
+          #=
           :added_user
         else
           #= * `:added`
-          #= 
+          #=
           :added
         end
       end
@@ -130,12 +132,12 @@ module RocketRubyBot
           # {"msg":"changed","collection":"stream-room-messages","id":"id",
           #  "fields":{"eventName":"GENERAL",
           #  "args":[{"_id":"ei3gxB5SqWJHoGDkm","rid":"GENERAL","msg":"Bonjour, ",
-          #           "ts":{"$date":1540063554370},"alias":"GODLEWSKI François",
-          #           "u":{"_id":"9fjarYAeJtEBo2quC","username":"francois.godlewski",
-          #           "name":"GODLEWSKI François"},"mentions":[],"channels":[],"_updatedAt":{"$date":1540284243523},
-          #           "reactions":{":hand_splayed_tone3:":{"usernames":["sylvain.comte","lionel.roturier",
-          #                                                             "marie.claude.costecalde","kamel.djerbi"]},
-          #                        ":wave:":{"usernames":["isabelle.k.blanc"]}}}]}}
+          #           "ts":{"$date":1540063554370},"alias":"Francois",
+          #           "u":{"_id":"9fjarYAeJtEBo2quC","username":"f.g",
+          #           "name":"Francois"},"mentions":[],"channels":[],"_updatedAt":{"$date":1540284243523},
+          #           "reactions":{":hand_splayed_tone3:":{"usernames":["s.c","l.r",
+          #                                                             "m.c","k.d"]},
+          #                        ":wave:":{"usernames":["isabelle"]}}}]}}
 
           :message
         when 'uj'
@@ -153,7 +155,7 @@ module RocketRubyBot
         when /user-(un)?muted/
           #= * `:user_muted`
           #= * `:user_unmuted`
-          tag.gsub(/-/, '_').to_sym
+          tag.tr('-', '_').to_sym
         when /subscription-role-(added|removed)/
           #= * `:subscription-role-removed`
           #= * `:subscription-role-added`
@@ -228,15 +230,16 @@ module RocketRubyBot
       end
       
       private
+
       # see https://github.com/intridea/hashie/issues/394
       def log_built_in_message(*); end
     end
   end
 end
 
-#= 
+#=
 #= # Sources
-#= 
+#=
 #= For information on events, you can
 #= https://bitbucket.org/EionRobb/purple-rocketchat
 #= https://github.com/mathieui/unha2/blob/master/docs/methods.rst

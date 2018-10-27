@@ -1,8 +1,9 @@
 module RocketRubyBot
   module Hooks
+    # respond to server's ping
     class Ping < Base
-      def call(client, data)
-        client.say send_pong, false
+      def call(client, _data)
+        client.web_socket.send send_pong
       end
 
     end

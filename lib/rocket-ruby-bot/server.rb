@@ -10,7 +10,7 @@ module RocketRubyBot
     TRAPPED_SIGNALS = %w[INT TERM].freeze
 
     def initialize(config:, options: {})
-      @hooks = Hash.new { |h,k| h[k] = [] }
+      @hooks = Hash.new { |h, k| h[k] = [] }
 
       @websocket_url = config.websocket_url
       

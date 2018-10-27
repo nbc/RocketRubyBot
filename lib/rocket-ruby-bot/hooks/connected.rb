@@ -1,5 +1,6 @@
 module RocketRubyBot
   module Hooks
+    # login class
     class Connected < Base
 
       def initialize(config:, logger:)
@@ -7,7 +8,7 @@ module RocketRubyBot
         @logger = logger
       end
       
-      def call(client, data)
+      def call(client, _data)
         client.say login(token: @config.token) do |message|
           if message.error
             @logger.fatal message.error.message
@@ -16,7 +17,6 @@ module RocketRubyBot
           @config.user_id = message.result['id']
         end
       end
-      
     end
   end
 end

@@ -5,7 +5,7 @@ module RocketRubyBot
 
     class << self
       def configure
-        block_given? ? yield(self.user_store) : self.user_store
+        block_given? ? yield(user_store) : user_store
       end
     end
 

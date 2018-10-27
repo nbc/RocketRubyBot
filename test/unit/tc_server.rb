@@ -26,7 +26,7 @@ class TestServer < Minitest::Test
     assert_equal @config.websocket_url, server.websocket_url
 
     assert_instance_of RocketRubyBot::Realtime::Client, server.client
-    assert server.hooks.has_key? :ping
+    assert server.hooks.key? :ping
     assert_instance_of RocketRubyBot::Hooks::Ping, server.hooks[:ping].first
   end
 

@@ -1,4 +1,5 @@
 # coding: utf-8
+
 module RocketRubyBot
   class RocketRubyBot::Commands
     include RocketRubyBot::Loggable
@@ -26,7 +27,7 @@ module RocketRubyBot
           next if config.user_id == message.u['_id']
 
           if match = message.msg.match(regexp)
-            block.call(client, message, match)
+            yield client, message, match
           end
         end
       end

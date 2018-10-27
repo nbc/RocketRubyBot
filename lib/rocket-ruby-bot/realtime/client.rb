@@ -4,14 +4,17 @@ require 'json'
 
 module RocketRubyBot
   module Realtime
+    # low level interaction with websocket server
     class Client
       include RocketRubyBot::Loggable
       include RocketRubyBot::MessageId
 
       attr_accessor :hooks
-
-      # FIXME
-      @@fiber_store = Hash.new
+      attr_reader :web_socket
+      
+      def self.fiber_store
+        @fiber_store ||= {}
+      end
 
       def initialize(hooks, url)
         @hooks = hooks
@@ -22,34 +25,33 @@ module RocketRubyBot
         @on_close = block
       end
 
-      def say(args = {}, id = true, &block)
+      def say(args = {}, &block)
+        uid = next_id
+        args = { id: uid }.merge(args)
 
-        if id
-          uid = next_id
-          args = {id: uid}.merge(args)
-          # no log for ping
-          logger.debug("-> #{args}")
-        end
-
+        logger.debug("-> #{args.to_json}")
+       
         if block_given?
           f = Fiber.new do
             message = Fiber.yield
-            block.call message
+            yield message
           end
-          @@fiber_store[uid] = f
+          Client.fiber_store[uid] = f
           f.resume
         end
+
         @web_socket.send(args.to_json)
       end
 
       def dispatch_event(data)
         return unless data._type
+        
         # no log for ping
-        logger.debug("<- #{data.to_json}") unless data.is_ping?
+        logger.debug("<- #{data.to_json}") unless data.ping?
 
-        if @@fiber_store.has_key? data.result_id
-          @@fiber_store[data.result_id].resume data
-          @@fiber_store.delete data.result_id
+        if Client.fiber_store.key? data.result_id
+          Client.fiber_store[data.result_id].resume data
+          Client.fiber_store.delete data.result_id
         end
 
         type = data._type
@@ -76,9 +78,11 @@ module RocketRubyBot
         EM.run do
           @web_socket = Faye::WebSocket::Client.new(@url)
 
-          @web_socket.on :open do |event|
+          @web_socket.on :open do |_event|
             p [:open]
-            @web_socket.send({"msg" => "connect", "version" => "1", "support" =>  ["1"]}.to_json)
+            @web_socket.send({ 'msg' => 'connect',
+                               'version' => '1',
+                               'support' => ['1'] }.to_json)
           end
 
           @web_socket.on :message do |event|

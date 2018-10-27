@@ -2,6 +2,7 @@ module RocketRubyBot
   
   module MessageId
     private
+
     def next_id
       @next_id ||= 0
       @next_id += 1
@@ -15,7 +16,7 @@ module RocketRubyBot
     end
     module ClassMethods
       def uuid
-        SecureRandom::hex
+        SecureRandom.hex
       end
     end
   end

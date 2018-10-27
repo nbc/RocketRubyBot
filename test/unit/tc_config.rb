@@ -5,28 +5,28 @@ require 'rocket-ruby-bot/config'
 class TestConfig < MiniTest::Test
 
   def test_https_url
-    RocketRubyBot::Config.url = "https://my.server"
+    RocketRubyBot::Config.url = 'https://my.server'
     assert_equal 'wss://my.server/websocket', RocketRubyBot::Config.websocket_url
   end
 
   def test_http_url
-    RocketRubyBot::Config.url = "http://my.server"
+    RocketRubyBot::Config.url = 'http://my.server'
     assert_equal 'ws://my.server/websocket', RocketRubyBot::Config.websocket_url
   end
 
   def test_http_url_with_ending_slash
-    RocketRubyBot::Config.url = "http://my.server/"
+    RocketRubyBot::Config.url = 'http://my.server/'
     assert_equal 'ws://my.server/websocket', RocketRubyBot::Config.websocket_url
   end
   
   def test_websocket_url
-    RocketRubyBot::Config.websocket_url = "ws://my.other.server/websocket"
-    RocketRubyBot::Config.url = "http://my.server"
-    assert_equal "ws://my.other.server/websocket", RocketRubyBot::Config.websocket_url
+    RocketRubyBot::Config.websocket_url = 'ws://my.other.server/websocket'
+    RocketRubyBot::Config.url = 'http://my.server'
+    assert_equal 'ws://my.other.server/websocket', RocketRubyBot::Config.websocket_url
   end
 
   def test_no_token_in_env
-    assert_raises("Missing ENV['ROCKET_API_TOKEN'].") { RocketRubyBot::Config.token }
+    assert_raises('Missing ENV["ROCKET_API_TOKEN"].') { RocketRubyBot::Config.token }
   end
   
   def test_token_in_env
