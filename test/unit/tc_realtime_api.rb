@@ -22,7 +22,41 @@ class TestRealtimeApi < Minitest::Test
       login(some: "argument")
     end
   end
+
+
+  def test_register_user
+    value = {msg: "method",
+             method: "registerUser",
+             params: [{email: "string",
+                        pass: "string",
+                        name: "string"}]}
+    assert_equal register_user(email: "string", pass: "string", name: "string"), value
+  end
+
+  def test_register_user_with_secret_url
+    value = {msg: "method",
+             method: "registerUser",
+             params: [{email: "string",
+                       pass: "string",
+                       name: "string",
+                       secretURL: "string"}]}
+    assert_equal register_user(email: "string", pass: "string", name: "string", secret_url: "string"), value
+  end
+
+  def test_get_user_roles
+    value = {msg: "method",
+             method: "getUserRoles",
+             params: []}
+    assert_equal get_user_roles, value
+  end
   
+
+  def test_get_public_settings
+    value = {msg: "method",
+             method: "public-settings/get"}
+    assert_equal get_public_settings, value
+  end
+
   def test_get_users_of_room
     value = {:msg=>"method",
              :method=>"getUsersOfRoom",

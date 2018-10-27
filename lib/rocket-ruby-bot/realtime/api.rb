@@ -30,16 +30,26 @@ module RocketRubyBot
         end
       end
 
-      def register_user
-        # FIXME
+      def register_user(email:, pass:, name:, secret_url: false)
+        params = {email: email,
+                  pass: pass,
+                  name: name}
+        params[:secretURL] = secret_url if secret_url
+                 
+        {msg: "method",
+         method: "registerUser",
+         params: [ params ]}
       end
 
       def get_user_roles
-        # FIXME
+        {msg: "method",
+         method: "getUserRoles",
+         params: []}
       end
 
       def get_public_settings
-        # FIXME
+        {msg: "method",
+         method: "public-settings/get"}
       end
       
       #=
