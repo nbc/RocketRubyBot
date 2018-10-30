@@ -20,7 +20,6 @@ end
 require 'rocket-ruby-bot/rest/client'
 require 'rocket-ruby-bot/realtime/client'    
 require 'rocket-ruby-bot/server'
-require 'rocket-ruby-bot/app'
 require 'rocket-ruby-bot/commands'
 require 'rocket-ruby-bot/hooks'
 require 'rocket-ruby-bot/bot'

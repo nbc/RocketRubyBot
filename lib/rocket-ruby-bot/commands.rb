@@ -1,20 +1,20 @@
 # coding: utf-8
 
 module RocketRubyBot
-  class RocketRubyBot::Commands
+  class Commands
     include RocketRubyBot::Loggable
     extend RocketRubyBot::Realtime::API
     
     class << self
 
       def hooks
-        RocketRubyBot::App.instance.hooks
+        RocketRubyBot::Server.instance.hooks
       end
 
       def config
         RocketRubyBot.config
       end
-      
+
       def on_event(type, &block)
         hooks[type] << block
       end
@@ -31,6 +31,7 @@ module RocketRubyBot
           end
         end
       end
+
       
     end
   end

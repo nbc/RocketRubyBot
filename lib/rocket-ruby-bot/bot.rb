@@ -3,9 +3,9 @@ module RocketRubyBot
 
     include RocketRubyBot::UUID
     include RocketRubyBot::UserStore
-    
+
     def self.run
-      RocketRubyBot::App.instance.run
+      RocketRubyBot::Server.instance.run
     end
 
     def self.web_client
