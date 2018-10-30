@@ -1,5 +1,5 @@
 module RocketRubyBot
-  class Bot < RocketRubyBot::Commands
+  class Bot < Commands
 
     include RocketRubyBot::UUID
     include RocketRubyBot::UserStore

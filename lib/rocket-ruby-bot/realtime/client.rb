@@ -29,7 +29,7 @@ module RocketRubyBot
         uid = next_id
         args = { id: uid }.merge(args)
 
-        logger.debug("-> #{args.to_json}")
+        logger.debug("-> #{args.to_json}") unless args[:msg] == 'pong'
        
         if block_given?
           f = Fiber.new do
@@ -40,7 +40,7 @@ module RocketRubyBot
           f.resume
         end
 
-        @web_socket.send(args.to_json)
+        web_socket.send(args.to_json)
       end
 
       def dispatch_event(data)
@@ -68,7 +68,7 @@ module RocketRubyBot
           hook.call(self, '')
         end
 
-        @web_socket.close
+        web_socket.close
         EM.stop
       end
 
@@ -78,19 +78,19 @@ module RocketRubyBot
         EM.run do
           @web_socket = Faye::WebSocket::Client.new(@url)
 
-          @web_socket.on :open do |_event|
+          web_socket.on :open do |_event|
             p [:open]
-            @web_socket.send({ 'msg' => 'connect',
+            web_socket.send({ 'msg' => 'connect',
                                'version' => '1',
                                'support' => ['1'] }.to_json)
           end
 
-          @web_socket.on :message do |event|
+          web_socket.on :message do |event|
             data = RocketRubyBot::Realtime::Event.new JSON.parse(event.data)
             dispatch_event(data)
           end
 
-          @web_socket.on :close do |event|
+          web_socket.on :close do |event|
             p [:close]
             @on_close.call(event)
           end
