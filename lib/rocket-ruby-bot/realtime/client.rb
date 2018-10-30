@@ -55,7 +55,8 @@ module RocketRubyBot
         end
 
         type = data._type
-        return unless @hooks[type]
+
+        return unless @hooks.key? type
 
         hooks[type].each do |hook|
           hook.call(self, data)
