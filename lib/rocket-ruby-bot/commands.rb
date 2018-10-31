@@ -4,6 +4,7 @@ module RocketRubyBot
   class Commands
     include RocketRubyBot::Loggable
     extend RocketRubyBot::Realtime::API
+    extend RocketRubyBot::Routes
     
     class << self
 
@@ -19,19 +20,14 @@ module RocketRubyBot
         hooks[type] << block
       end
 
-      def on_message(regexp, &block)
-        on_event :message do |client, data|
-          message = data.fields.args.first
-
-          # never answer to ourself
-          next if config.user_id == message.u['_id']
-
-          if match = message.msg.match(regexp)
-            yield client, message, match
-          end
+      def setup(&block)
+        on_event :authenticated do |client, data|
+          yield client
         end
       end
 
+      def help
+      end
       
     end
   end

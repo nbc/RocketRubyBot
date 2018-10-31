@@ -9,16 +9,17 @@ module RocketRubyBot
     
     TRAPPED_SIGNALS = %w[INT TERM].freeze
 
-    def initialize(config: nil, options: {})
+    def initialize(config: RocketRubyBot.config, options: {})
       @hooks = Hash.new { |h, k| h[k] = [] }
 
-      config ||= RocketRubyBot.config
       @websocket_url = config.websocket_url
       
       if options.empty?
-        @hooks.merge! connected: [RocketRubyBot::Hooks::Connected.new(config: config,
+        @hooks.merge!(connected: [RocketRubyBot::Hooks::Connected.new(config: config,
                                                                       logger: config.logger)],
-                      ping: [RocketRubyBot::Hooks::Ping.new]
+                      message: [RocketRubyBot::Hooks::Message.new(config: config)],
+                                                                  
+                      ping: [RocketRubyBot::Hooks::Ping.new])
       else
         @hooks.merge! options
       end

@@ -10,6 +10,10 @@ require 'rocket-ruby-bot/hooks'
 require 'rocket-ruby-bot/config'
 
 
+class RocketRubyBot::Commands
+  def self.routes
+  end
+end
 
 class TestServer < Minitest::Test
 
