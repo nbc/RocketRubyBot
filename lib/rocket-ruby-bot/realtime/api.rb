@@ -1,4 +1,4 @@
-require_relative '../utils'
+require_relative '../utils/helper'
 
 module RocketRubyBot
   module Realtime
@@ -6,7 +6,7 @@ module RocketRubyBot
     # https://rocket.chat/docs/developer-guides/realtime-api/method-calls/
     module API
       
-      include RocketRubyBot::UUID
+      include RocketRubyBot::Utils::UUID
       extend self
 
       ArgumentNotAllowed = Class.new(StandardError)

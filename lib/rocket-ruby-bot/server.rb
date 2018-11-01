@@ -3,7 +3,7 @@ require 'singleton'
 
 module RocketRubyBot
   class Server
-    include Loggable
+    include RocketRubyBot::Utils::Loggable
     
     attr_accessor :hooks, :websocket_url
     

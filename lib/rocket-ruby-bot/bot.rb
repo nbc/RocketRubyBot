@@ -1,7 +1,7 @@
 module RocketRubyBot
   class Bot < Commands
 
-    include RocketRubyBot::UUID
+    include RocketRubyBot::Utils::UUID
     include RocketRubyBot::UserStore
 
     def self.run

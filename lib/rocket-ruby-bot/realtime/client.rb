@@ -7,8 +7,8 @@ module RocketRubyBot
   module Realtime
     # low level interaction with websocket server
     class Client
-      include RocketRubyBot::Loggable
-      include RocketRubyBot::MessageId
+      include RocketRubyBot::Utils::Loggable
+      include RocketRubyBot::Utils::MessageId
       include RocketRubyBot::Utils::Sync
       
       attr_accessor :hooks
