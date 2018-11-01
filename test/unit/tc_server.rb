@@ -10,10 +10,16 @@ require 'rocket-ruby-bot/events'
 require 'rocket-ruby-bot/config'
 
 
+module RocketRubyBot
+  def self.config
+  end
+end
+
 class RocketRubyBot::Commands
   def self.routes
   end
 end
+
 
 class TestServer < Minitest::Test
 

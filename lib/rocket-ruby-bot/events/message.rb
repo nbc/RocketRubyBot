@@ -2,9 +2,9 @@ module RocketRubyBot
   module Events
     # login class
     class Message < Base
+      attr_reader :routes
 
-      def initialize(config:, routes: RocketRubyBot::Commands.routes)
-        @config = config
+      def initialize(routes: RocketRubyBot::Commands.routes)
         @routes = routes
       end
 
@@ -18,9 +18,9 @@ module RocketRubyBot
         message = data.fields.args.first
 
         # never reply to self
-        return if @config.user_id == message.u['_id']
+        return if config.user_id == message.u['_id']
 
-        route = @routes.find { |route| message.msg.match route[:regexp] }
+        route = routes.find { |route| message.msg.match route[:regexp] }
         return unless route
         
         if match = message.msg.match(route[:regexp])
