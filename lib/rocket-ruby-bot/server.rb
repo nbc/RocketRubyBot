@@ -15,11 +15,11 @@ module RocketRubyBot
       @websocket_url = config.websocket_url
       
       if options.empty?
-        @hooks.merge!(connected: [RocketRubyBot::Hooks::Connected.new(config: config,
-                                                                      logger: config.logger)],
-                      message: [RocketRubyBot::Hooks::Message.new(config: config)],
-                                                                  
-                      ping: [RocketRubyBot::Hooks::Ping.new])
+        @hooks.merge!(
+          connected: [RocketRubyBot::Hooks::Connected.new(config: config,
+                                                          logger: config.logger)],
+          message: [RocketRubyBot::Hooks::Message.new(config: config)],
+          ping: [RocketRubyBot::Hooks::Ping.new])
       else
         @hooks.merge! options
       end
@@ -65,7 +65,7 @@ module RocketRubyBot
     def client(client: nil)
       @client ||= client || begin
         cl = RocketRubyBot::Realtime::Client.new(hooks, websocket_url)
-        cl.on_close do |_data|
+        cl.exec_on_close do |_data|
           @client = nil
           restart! unless @stopping
         end

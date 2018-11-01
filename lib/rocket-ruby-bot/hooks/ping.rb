@@ -3,7 +3,7 @@ module RocketRubyBot
     # respond to server's ping
     class Ping < Base
       def call(client, _data)
-        client.say send_pong
+        client.send_json send_pong
       end
 
     end

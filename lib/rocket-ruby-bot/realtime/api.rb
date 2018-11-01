@@ -323,6 +323,12 @@ module RocketRubyBot
           params: [room_id, false] }
       end
 
+      def connect
+        { 'msg' => 'connect',
+          'version' => '1',
+          'support' => ['1'] }
+      end
+      
       private
 
       def argument_is_in(allowed, arg)
