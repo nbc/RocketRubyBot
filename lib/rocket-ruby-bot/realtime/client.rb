@@ -21,6 +21,14 @@ module RocketRubyBot
       def exec_on_close(&block)
         @on_close = block
       end
+
+      def names
+        [RocketRubyBot.config.user.lowercase]
+      end
+      
+      def name?(name)
+        names.include?(name.lowercase)
+      end
       
       def say(args = {}, &block)
         uid = next_id
