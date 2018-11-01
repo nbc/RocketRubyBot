@@ -63,7 +63,7 @@
 	    ]
 	}
     },
-    "inserted": {
+    "subscriptions_changed": {
 	"msg": "changed",
 	"collection": "stream-notify-user",
 	"fields": {
@@ -73,7 +73,7 @@
 	    ]
 	}
     },
-    "updated": {
+    "subscriptions_changed": {
 	"msg": "changed",
 	"collection": "stream-notify-user",
 	"id": "id",
