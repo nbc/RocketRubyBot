@@ -21,8 +21,9 @@ module RocketRubyBot
         return if @config.user_id == message.u['_id']
 
         route = @routes.find { |route| message.msg.match route[:regexp] }
+        return unless route
         
-        if route and match = message.msg.match(route[:regexp])
+        if match = message.msg.match(route[:regexp])
           route[:block].call(client, message, match)
         end
 

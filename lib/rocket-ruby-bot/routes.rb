@@ -1,6 +1,5 @@
 module RocketRubyBot
   module Routes
-    extend self
 
     @@routes = []
 
@@ -12,5 +11,7 @@ module RocketRubyBot
       routes << { regexp: regexp, block: block }
     end
 
+    alias_method :on_message, :match
+    
   end
 end
