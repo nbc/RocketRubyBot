@@ -9,10 +9,10 @@ module RocketRubyBot
       include RocketRubyBot::UUID
       extend self
 
-      class ArgumentNotAllowed < StandardError; end
-      
-      #= # Method calls
+      ArgumentNotAllowed = Class.new(StandardError)
 
+      #= # Method calls
+      #=
       #= https://rocket.chat/docs/developer-guides/realtime-api/method-calls/
       #=
       #= parameters not yet documented. Read lib/rocket-ruby-bot/realtime/api.rb
@@ -20,17 +20,26 @@ module RocketRubyBot
       #= * `login`
       def login(options)
         if options.key?(:digest) && options.key?(:username)
-          { msg: 'method', method: 'login',
-            params: [{ user: { username: options[:username] },
-                       password: { digest: options[:digest], algorithm: 'sha-256' } }] }
+          login_with_username username: options[:username],
+                              digest: options[:digest]
         elsif options.key? :token
-          { msg: 'method', method: 'login',
-            params: [{ resume: options[:token] }] }
+          login_with_token token: options[:token]
         else
           raise ArgumentError, 'should have (digest and username) or token'
         end
       end
 
+      def login_with_username(username:, digest:)
+        { msg: 'method', method: 'login',
+          params: [{ user: { username: username },
+                     password: { digest: digest, algorithm: 'sha-256' } }] }
+      end
+
+      def login_with_token(token:)
+        { msg: 'method', method: 'login',
+          params: [{ resume: token }] }
+      end
+      
       def register_user(email:, pass:, name:, secret_url: false)
         params = { email: email,
                    pass: pass,
@@ -87,7 +96,7 @@ module RocketRubyBot
       #= * `set_presence`
       ALLOWED_STATUS = %w[online busy away offline].freeze
       def set_presence(status:)
-        verify_argument(ALLOWED_STATUS, status)
+        argument_is_in(ALLOWED_STATUS, status)
 
         { msg: 'method',
           method: 'UserPresence:setDefaultStatus',
@@ -101,9 +110,13 @@ module RocketRubyBot
           params: [username] }
       end
 
+      def verify_array_of_users(users)
+        raise ArgumentNotAllowed, 'users: must be an array' unless users.is_a? Array
+      end
+      
       #= * `create_channel`
       def create_channel(name:, users: [], read_only:)
-        raise ArgumentNotAllowed, 'users: must be an array' unless users.is_a? Array
+        verify_array_of_users(users)
 
         { msg: 'method',
           method: 'createChannel',
@@ -112,7 +125,7 @@ module RocketRubyBot
 
       #= * `create_private_group`
       def create_private_group(name:, users: [])
-        raise ArgumentNotAllowed, 'users: must be an array' unless users.is_a? Array
+        verify_array_of_users(users)
 
         { msg: 'method',
           method: 'createPrivateGroup',
@@ -205,8 +218,8 @@ module RocketRubyBot
       ALLOWED_CHANNEL = %w[public private].freeze
       ALLOWED_SORT    = %w[name msgs].freeze
       def channels_list(filter: '', type: 'public', sort_by: 'name', limit: 500)
-        verify_argument(ALLOWED_CHANNEL, type)
-        verify_argument(ALLOWED_SORT, sort_by)
+        argument_is_in(ALLOWED_CHANNEL, type)
+        argument_is_in(ALLOWED_SORT, sort_by)
 
         { msg: 'method',
           method: 'channelsList',
@@ -240,7 +253,7 @@ module RocketRubyBot
       ALLOWED_NOTIFY_ALL = %w[roles-change updateEmojiCustom deleteEmojiCustom
                               updateAvatar public-settings-changed permissions-changed].freeze
       def sub_stream_notify_all(sub:)
-        verify_argument(ALLOWED_NOTIFY_ALL, sub)
+        argument_is_in(ALLOWED_NOTIFY_ALL, sub)
         { msg: 'sub',
           name: 'stream-notify-all',
           params: [sub, false] }
@@ -252,7 +265,7 @@ module RocketRubyBot
       ALLOWED_NOTIFY_LOGGED = %w[Users:NameChanged Users:Deleted updateAvatar
                                  updateEmojiCustom deleteEmojiCustom roles-change].freeze
       def sub_stream_notify_logged(sub:)
-        verify_argument(ALLOWED_NOTIFY_LOGGED, sub)
+        argument_is_in(ALLOWED_NOTIFY_LOGGED, sub)
         { msg: 'sub',
           name: 'stream-notify-logged',
           params: [sub, false] }
@@ -270,7 +283,7 @@ module RocketRubyBot
       #=
       ALLOWED_USER_SUBS = %w[notification rooms-changed subscriptions-changed otr webrtc message].freeze
       def sub_stream_notify_user(user_id:, sub:)
-        verify_argument(ALLOWED_USER_SUBS, sub)
+        argument_is_in(ALLOWED_USER_SUBS, sub)
 
         { msg: 'sub',
           name: 'stream-notify-user',
@@ -283,7 +296,7 @@ module RocketRubyBot
       #=   bug in documentation
       ALLOWED_NOTIFY_ROOM_USERS = %w[webrtc].freeze
       def sub_stream_notify_room_users(room_id:, sub:)
-        verify_argument(ALLOWED_NOTIFY_ROOM_USERS, sub)
+        argument_is_in(ALLOWED_NOTIFY_ROOM_USERS, sub)
         { msg: 'sub',
           name: 'stream-notify-room-users',
           params: [format('%s/%s', room_id, sub), false] }
@@ -293,7 +306,7 @@ module RocketRubyBot
       #=   https://rocket.chat/docs/developer-guides/realtime-api/subscriptions/stream-notify-room/
       ALLOWED_NOTIFY_ROOM = %w[deleteMessage typing].freeze
       def sub_stream_notify_room(room_id:, sub:)
-        verify_argument(ALLOWED_NOTIFY_ROOM, sub)
+        argument_is_in(ALLOWED_NOTIFY_ROOM, sub)
 
         { msg: 'sub',
           name: 'stream-notify-room',
@@ -312,7 +325,7 @@ module RocketRubyBot
 
       private
 
-      def verify_argument(allowed, arg)
+      def argument_is_in(allowed, arg)
         raise ArgumentNotAllowed, "should be in [#{allowed.join(' ')}]" \
           unless allowed.include? arg
       end
