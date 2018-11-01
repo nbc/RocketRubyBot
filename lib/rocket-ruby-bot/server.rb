@@ -16,10 +16,10 @@ module RocketRubyBot
       
       if options.empty?
         @hooks.merge!(
-          connected: [RocketRubyBot::Hooks::Connected.new(config: config,
+          connected: [RocketRubyBot::Events::Connected.new(config: config,
                                                           logger: config.logger)],
-          message: [RocketRubyBot::Hooks::Message.new(config: config)],
-          ping: [RocketRubyBot::Hooks::Ping.new])
+          message: [RocketRubyBot::Events::Message.new(config: config)],
+          ping: [RocketRubyBot::Events::Ping.new])
       else
         @hooks.merge! options
       end

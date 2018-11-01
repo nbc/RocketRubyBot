@@ -6,7 +6,7 @@ require 'rocket-ruby-bot/utils'
 require 'rocket-ruby-bot/realtime/client'
 require 'rocket-ruby-bot/realtime/api'
 require 'rocket-ruby-bot/server'
-require 'rocket-ruby-bot/hooks'
+require 'rocket-ruby-bot/events'
 require 'rocket-ruby-bot/config'
 
 
@@ -31,7 +31,7 @@ class TestServer < Minitest::Test
 
     assert_instance_of RocketRubyBot::Realtime::Client, server.client
     assert server.hooks.key? :ping
-    assert_instance_of RocketRubyBot::Hooks::Ping, server.hooks[:ping].first
+    assert_instance_of RocketRubyBot::Events::Ping, server.hooks[:ping].first
   end
 
   def test_with_mock_run

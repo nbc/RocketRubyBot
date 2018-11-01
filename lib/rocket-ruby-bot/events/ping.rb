@@ -1,5 +1,5 @@
 module RocketRubyBot
-  module Hooks
+  module Events
     # respond to server's ping
     class Ping < Base
       def call(client, _data)
