@@ -20,8 +20,8 @@ module RocketRubyBot
         hooks[type] << block
       end
 
-      def setup(&block)
-        on_event :authenticated do |client, data|
+      def setup(&_block)
+        on_event :authenticated do |client, _data|
           yield client
         end
       end

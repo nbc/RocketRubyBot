@@ -6,7 +6,7 @@ module RocketRubyBot
         @fiber_store ||= {}
       end
 
-      def create_fiber(id, &block)
+      def create_fiber(id, &_block)
         f = Fiber.new do
           message = Fiber.yield
           yield message
