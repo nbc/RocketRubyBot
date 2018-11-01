@@ -1,6 +1,7 @@
 require 'faye/websocket'
 require 'eventmachine'
 require 'json'
+require_relative '../utils/sync'
 
 module RocketRubyBot
   module Realtime
@@ -8,14 +9,11 @@ module RocketRubyBot
     class Client
       include RocketRubyBot::Loggable
       include RocketRubyBot::MessageId
-
+      include RocketRubyBot::Utils::Sync
+      
       attr_accessor :hooks
       attr_reader :web_socket
       
-      def self.fiber_store
-        @fiber_store ||= {}
-      end
-
       def initialize(hooks, url)
         @hooks = hooks
         @url   = url
@@ -32,12 +30,7 @@ module RocketRubyBot
         logger.debug("-> #{args.to_json}") unless args[:msg] == 'pong'
        
         if block_given?
-          f = Fiber.new do
-            message = Fiber.yield
-            yield message
-          end
-          Client.fiber_store[uid] = f
-          f.resume
+          create_fiber(uid, &block)
         end
 
         web_socket.send(args.to_json)
@@ -49,16 +42,11 @@ module RocketRubyBot
         # no log for ping
         logger.debug("<- #{data.to_json}") unless data.ping?
 
-        if Client.fiber_store.key? data.result_id
-          Client.fiber_store[data.result_id].resume data
-          Client.fiber_store.delete data.result_id
-        end
+        resume_fiber(data)
 
-        type = data._type
+        return unless hooks.key? data._type
 
-        return unless @hooks.key? type
-
-        hooks[type].each do |hook|
+        hooks[data._type].each do |hook|
           hook.call(self, data)
         end
       end
