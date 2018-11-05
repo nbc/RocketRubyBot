@@ -165,10 +165,6 @@ class TestRealtimeApi < Minitest::Test
                    'params': [{ message_id: 'uuid', rid: 'id', msg: 'test' }] }
   end
 
-  def test_send_message_without_uuid
-    assert RocketRubyBot::Realtime::API.send_message(room_id: 'id', msg: 'test')
-  end
-
   def test_load_history
     assert_equal load_history(room_id: 'id'), 
                  { msg: 'method',
@@ -203,7 +199,14 @@ class TestRealtimeApi < Minitest::Test
   end
 
   def test_stream_notify_room_users
-    skip 'test not implemented yet'
+    assert_equal sub_stream_notify_room_users(room_id: 'room_id', sub: 'webrtc'),
+                 { msg: 'sub',
+                   name: 'stream-notify-room-users',
+                   params: ['room_id/webrtc', false] }
+
+    assert_raises ArgumentNotAllowed do
+      sub_stream_notify_room_users(room_id: '', sub: 'sub')
+    end
   end
   
   def test_sub_stream_notify_user
@@ -218,7 +221,15 @@ class TestRealtimeApi < Minitest::Test
   end
 
   def test_stream_notify_room
-    skip 'test not implemented yet'
+    assert_equal sub_stream_notify_room(room_id: 'room_id', sub: 'typing'),
+                 { msg: 'sub',
+                   name: 'stream-notify-room',
+                   params: ['room_id/typing', false] }
+
+    assert_raises ArgumentNotAllowed do
+      sub_stream_notify_room(room_id: 'room_id', sub: 'other')
+    end
+
   end
 
   def test_sub_stream_room_messages
