@@ -27,7 +27,7 @@ module RocketRubyBot
       end
 
       def config
-        RocketRubyBot.config
+        RocketRubyBot::Config
       end
       
     end

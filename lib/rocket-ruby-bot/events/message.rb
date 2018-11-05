@@ -16,27 +16,25 @@ module RocketRubyBot
 
       def call(client, data)
         message = data.fields.args.first
-        return if message_to_self?(message)
-        
-        route = routes.find { |r| message.msg.match r[:regexp] }
-        return unless route
+        return if message_to_self? message
 
-        match = message_match_route?(message)
-        return unless send_to_bot(match)
-        
-        route[:block].call(client, message, match) if match
+        routes.find do |route|
+          match = message.msg.match route[:regexp]
+          next unless match
+          
+          next if send_to_other_bot(client, match)
+          
+          route[:block].call(client, message, match)
+          true
+        end
       end
 
-      def send_to_bot(match)
-        match.include('bot') && client.name?(match['bot'])
+      def send_to_other_bot(client, match)
+        match.names.include?('bot') && !client.name?(match[:bot])
       end
       
       def message_to_self?(message)
         config.user_id == message.u['_id']
-      end
-
-      def message_match_route?(message)
-        message.msg.match route[:regexp]
       end
     end
   end

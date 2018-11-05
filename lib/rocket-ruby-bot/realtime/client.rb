@@ -23,11 +23,11 @@ module RocketRubyBot
       end
 
       def names
-        [RocketRubyBot.config.user.lowercase]
+        [RocketRubyBot::Config.user.downcase]
       end
       
       def name?(name)
-        names.include?(name.lowercase)
+        names.include?(name.downcase)
       end
       
       def say(args = {}, &block)
