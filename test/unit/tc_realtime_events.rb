@@ -30,7 +30,7 @@ class TestEvents < MiniTest::Test
     assert_equal true, event.ping?
   end
 
-  def unknown_event
+  def test_unknown_event
     event = RocketRubyBot::Realtime::Event.new(msg: 'unknown')
     var = false
     event.yield_unless_seen { var = true }
