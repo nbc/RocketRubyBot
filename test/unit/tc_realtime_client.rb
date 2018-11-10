@@ -26,40 +26,40 @@ class RealtimeClient < MiniTest::Test
   def test_send_json
     mock = Minitest::Mock.new
     mock.expect :send, nil, ['""']
+    @client.web_socket = mock
     
-    @client.stub :web_socket, mock do
-      @client.send_json ''
-    end
+    @client.send_json ''
+
     assert_mock mock
   end
 
   def test_empty_say
     mock = Minitest::Mock.new
     mock.expect :send, nil, [{id:'1'}.to_json]
-    
-    @client.stub :web_socket, mock do
-      @client.say( {} )
-    end
+    @client.web_socket = mock
+
+    @client.say( {} )
+
     assert_mock mock
   end
   
   def test_say
     mock = Minitest::Mock.new
     mock.expect :send, nil, [{id:'1', arg: 'arg'}.to_json]
+    @client.web_socket = mock
     
-    @client.stub :web_socket, mock do
-      @client.say({ arg: 'arg' })
-    end
+    @client.say({ arg: 'arg' })
+
     assert_mock mock
   end
   
   def test_say_with_block
     mock = Minitest::Mock.new
     mock.expect :send, nil, [{id:'1', arg: 'arg'}.to_json]
+    @client.web_socket = mock
     
-    @client.stub :web_socket, mock do
-      @client.say({ arg: 'arg' }) {}
-    end
+    @client.say({ arg: 'arg' }) {}
+
     assert_mock mock
     assert RocketRubyBot::Utils::Sync.fiber_store.key?('1')
     assert_instance_of Fiber, RocketRubyBot::Utils::Sync.fiber_store['1']
@@ -68,13 +68,13 @@ class RealtimeClient < MiniTest::Test
   def test_on_open
     logger = Minitest::Mock.new
     logger.expect :debug, nil, [':open']
-
+    
     mock = Minitest::Mock.new
     mock.expect :send, nil, [RocketRubyBot::Realtime::API.connect.to_json]
+    @client.web_socket = mock
     
-    @client.stub :web_socket, mock do
-      @client.on_open
-    end
+    @client.on_open
+
     assert_mock mock
   end
 
