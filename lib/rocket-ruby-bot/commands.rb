@@ -26,6 +26,12 @@ module RocketRubyBot
         end
       end
 
+      def closing(&_block)
+        on_event :closing do |client, _data|
+          yield client
+        end
+      end
+      
       def help
       end
       
