@@ -29,12 +29,12 @@ module RocketRubyBot
       #= * `:ping` : ping from server, automatically handled by the ping hook
 
 
-      def unknown_first_time_see
-        # log the unknown event if first see
-        if @type == :unknown && @already_seen.nil?
-          p [:unknown, to_json]
-          @already_seen = true
-        end
+      # FIXME: should'nt be here cause it pollute the real event
+      def yield_unless_seen
+        return if @_already_seen
+
+        yield
+        @_already_seen = true
       end
       
       BASIC_EVENTS = %w[ping connected ready updated removed failed error nosub].freeze
@@ -49,10 +49,9 @@ module RocketRubyBot
           elsif self['msg'].eql? 'added'
             on_added
           else
+            yield_unless_seen { p [:unknown, to_json] }
             :unknown
           end
-
-        unknown_first_time_see
         @type
       end
 
@@ -204,7 +203,7 @@ module RocketRubyBot
           'deleteMessage' => :delete_message }
       
       def on_stream_notify_room
-        event =  self['fields']['eventName']
+        event =  self['fields']['eventName'].split('/').last
         return STREAM_NOTIFY_ROOM[event] if STREAM_NOTIFY_ROOM.key? event
         :unknown
       end
