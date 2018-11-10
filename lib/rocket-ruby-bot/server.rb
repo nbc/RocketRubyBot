@@ -5,14 +5,18 @@ module RocketRubyBot
   class Server
     include RocketRubyBot::Utils::Loggable
     
-    attr_accessor :hooks, :websocket_url
+    attr_accessor :websocket_url
+    attr_writer :hooks
     
     TRAPPED_SIGNALS = %w[INT TERM].freeze
 
     def initialize(config:)
       @websocket_url = config.websocket_url
+    end
+
+    def hooks
       # FIXME: why dup ?
-      @hooks = RocketRubyBot::Events::Base.event_hooks.dup
+      @hooks ||= RocketRubyBot::Events::Base.event_hooks.dup
     end
 
     def self.instance
