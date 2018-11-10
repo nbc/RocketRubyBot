@@ -16,30 +16,29 @@ class TestCommands < Minitest::Test
   end
 
   def test_on_event
-    @class.on_event :test do
-    end
+    @class.on_event(:test) {}
+
     assert @class.hooks.key? :test
     assert_kind_of Array, @class.hooks[:test]
   end
 
   def test_setup
     value = false
-    @class.setup do
-      value = true
-    end
-    assert @class.hooks.key? :authenticated
 
+    @class.setup { value = true }
     @class.hooks[:authenticated].first.call
+
+    assert @class.hooks.key? :authenticated
     assert value
   end
 
   def test_closing
     value = false
-    @class.closing do
-      value = true
-    end
-    assert @class.hooks.key? :closing
+
+    @class.closing { value = true }
     @class.hooks[:closing].first.call
+
+    assert @class.hooks.key? :closing
     assert value
   end
 
