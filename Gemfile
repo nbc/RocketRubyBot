@@ -10,4 +10,5 @@ group :test do
   gem 'minitest'
   gem 'minitest-reporters'
   gem "simplecov", "~> 0.14.1", :require => false
+  gem 'climate_control'
 end
