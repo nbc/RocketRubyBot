@@ -32,4 +32,22 @@ class TestServer < Minitest::Test
 
     assert_mock client
   end
+
+  def test_signal_handler
+    # server = RocketRubyBot::Server.new(config: @config)
+    # signal_handler = Minitest::Mock.new
+    # signal_handler.expect(:call, nil, [])
+
+    # client = Minitest::Mock.new
+    # client.expect(:start, nil, [])
+
+    # server.stub :signal_handler, signal_handler do
+    #  server.trap_signals
+    #  server.client(client: client)
+    #  Process.kill 'TERM', 0
+    # end
+    
+    # assert_mock signal_handler
+  end
+
 end
