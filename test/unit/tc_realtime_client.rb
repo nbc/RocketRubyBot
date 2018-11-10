@@ -77,4 +77,46 @@ class RealtimeClient < MiniTest::Test
     end
     assert_mock mock
   end
+
+  def test_dispatch_event
+    message = RocketRubyBot::Realtime::Event.new({ "msg": "ping" })
+    mock = Minitest::Mock.new
+    mock.expect :call, '', [@client, message ]
+    @client.hooks = { ping: [mock] }
+    
+    @client.dispatch_event message
+
+    assert_mock mock
+  end
+
+  def test_on_message
+    message = RocketRubyBot::Realtime::Event.new({ "msg": "ping" })
+    event = OpenStruct.new :data => { "msg": "ping" }.to_json
+    mock = Minitest::Mock.new
+    mock.expect :call, '', [@client, message]
+    @client.hooks = { ping: [mock] }
+    
+    @client.on_message(event)
+
+    assert_mock mock
+  end
+
+  def test_stop
+    hook = Minitest::Mock.new
+    hook.expect :call, '', [@client, '']
+    web_socket = Minitest::Mock.new
+    web_socket.expect :close, '', []
+    @client.web_socket = web_socket
+    @client.hooks = { closing: [hook] }
+
+    @client.stop
+    
+    assert_mock hook
+    assert_mock web_socket
+  end
+
+  def teardown
+    @client.hooks = {}
+  end
+  
 end

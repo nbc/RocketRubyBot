@@ -12,6 +12,7 @@ module RocketRubyBot
       include RocketRubyBot::Utils::Sync
       
       attr_accessor :hooks
+      attr_writer :web_socket
       
       def initialize(hooks, url)
         @hooks = hooks
@@ -59,7 +60,7 @@ module RocketRubyBot
         end
 
         web_socket.close
-        EM.stop
+        EM.stop if EM.reactor_running?
       end
 
       def web_socket
