@@ -11,6 +11,7 @@ module RocketRubyBot
 
     def initialize(config:)
       @websocket_url = config.websocket_url
+      # FIXME: why dup ?
       @hooks = RocketRubyBot::Events::Base.event_hooks.dup
     end
 
@@ -20,7 +21,7 @@ module RocketRubyBot
     
     def run
       loop do
-        handle_signals
+        trap_signals
         start!
       end
     end
@@ -42,15 +43,19 @@ module RocketRubyBot
       @stopping = true
     end
     
-    def handle_signals
+    def trap_signals
       TRAPPED_SIGNALS.each do |signal|
         Signal.trap(signal) do
-          stop!
-          exit
+          signal_handler
         end
       end
     end
 
+    def signal_handler
+      stop!
+      exit
+    end
+    
     def client(client: nil)
       @client ||= client || begin
         cl = RocketRubyBot::Realtime::Client.new(hooks, websocket_url)
