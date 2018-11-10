@@ -24,8 +24,6 @@ class EventsConnected < MiniTest::Test
       yield RocketRubyBot::Realtime::Event.new({"msg":"result","error": {"message":"a reason"}})
     end
     
-    assert_raises "a reason" do
-      @event.call(@client, nil)
-    end
+    assert_raises("a reason") { @event.call(@client, nil) }
   end
 end
