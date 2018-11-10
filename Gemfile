@@ -6,5 +6,8 @@ gem 'json'
 gem 'eventmachine'
 gem 'faye-websocket'
 
-gem 'minitest'
-gem 'minitest-reporters'
+group :test do
+  gem 'minitest'
+  gem 'minitest-reporters'
+  gem "simplecov", "~> 0.14.1", :require => false
+end
