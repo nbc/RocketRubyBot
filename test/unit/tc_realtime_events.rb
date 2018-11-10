@@ -11,7 +11,7 @@ class TestEvents < MiniTest::Test
 
     hash.each_pair do |k, v|
       event = RocketRubyBot::Realtime::Event.new(v)
-      assert_equal k.to_sym, event._type
+      assert_equal k.to_sym, event.type
     end
   end
 

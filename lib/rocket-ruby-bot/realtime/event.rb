@@ -14,7 +14,7 @@ module RocketRubyBot
     class Event < Hashie::Mash
 
       def ping?
-        return true if _type.eql? :ping
+        return true if type.eql? :ping
       end
 
       #= * `:connected`
@@ -38,7 +38,7 @@ module RocketRubyBot
       end
       
       BASIC_EVENTS = %w[ping connected ready updated removed failed error nosub].freeze
-      def _type
+      def type
         @type ||=
           if BASIC_EVENTS.include? self['msg']
             self['msg'].to_sym
@@ -56,7 +56,7 @@ module RocketRubyBot
       end
 
       def result_id
-        return self['subs'].first if _type.eql? :ready
+        return self['subs'].first if type.eql? :ready
         self['id']
       end
 

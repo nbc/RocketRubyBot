@@ -44,11 +44,11 @@ module RocketRubyBot
       end
       
       def dispatch_event(data)
-        return unless data._type
+        return unless data.type
         logger.debug("<- #{data.to_json}") unless data.ping?
         resume_fiber(data)
-        return unless hooks.key? data._type
-        hooks[data._type].each do |hook|
+        return unless hooks.key? data.type
+        hooks[data.type].each do |hook|
           hook.call(self, data)
         end
       end
