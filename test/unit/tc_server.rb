@@ -1,26 +1,5 @@
 require_relative '../test_helpers'
 
-require 'hashie'
-
-require 'rocket-ruby-bot/utils'
-require 'rocket-ruby-bot/realtime/client'
-require 'rocket-ruby-bot/realtime/api'
-require 'rocket-ruby-bot/server'
-require 'rocket-ruby-bot/events'
-require 'rocket-ruby-bot/config'
-
-
-module RocketRubyBot
-  def self.config
-  end
-end
-
-class RocketRubyBot::Commands
-  def self.routes
-  end
-end
-
-
 class TestServer < Minitest::Test
 
   def setup
@@ -42,15 +21,15 @@ class TestServer < Minitest::Test
 
   def test_with_mock_run
     server = RocketRubyBot::Server.new(config: @config)
-    mock = Minitest::Mock.new
-    server.client(client: mock)
+    client = Minitest::Mock.new
+    client.expect(:start, nil, [])
+    client.expect(:stop, nil, [])
 
-    mock.expect(:start, nil, [])
-    mock.expect(:stop, nil, [])
+    server.client(client: client)
 
     server.start!
     server.stop!
 
-    assert_mock mock
+    assert_mock client
   end
 end
