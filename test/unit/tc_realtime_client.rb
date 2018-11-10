@@ -66,9 +66,6 @@ class RealtimeClient < MiniTest::Test
   end
 
   def test_on_open
-    logger = Minitest::Mock.new
-    logger.expect :debug, nil, [':open']
-    
     mock = Minitest::Mock.new
     mock.expect :send, nil, [RocketRubyBot::Realtime::API.connect.to_json]
     @client.web_socket = mock
