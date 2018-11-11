@@ -19,11 +19,12 @@ module RocketRubyBot
       
       #= * `login`
       def login(options)
-        if options.key?(:digest) && options.key?(:username)
+        if options[:token]
+          login_with_token token: options[:token]
+          
+        elsif options[:digest] && options[:username]
           login_with_username username: options[:username],
                               digest: options[:digest]
-        elsif options.key? :token
-          login_with_token token: options[:token]
         else
           raise ArgumentError, 'should have (digest and username) or token'
         end

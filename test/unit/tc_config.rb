@@ -25,12 +25,6 @@ class TestConfig < MiniTest::Test
     assert_equal 'ws://my.other.server/websocket', RocketRubyBot::Config.websocket_url
   end
 
-  def test_no_token_in_env
-    ClimateControl.modify ROCKET_API_TOKEN: nil do 
-      assert_raises('Missing ENV["ROCKET_API_TOKEN"].') { RocketRubyBot::Config.token }
-    end
-  end
-  
   def test_token_in_env
     ClimateControl.modify ROCKET_API_TOKEN: 'a token' do
       assert_equal 'a token', RocketRubyBot::Config.token

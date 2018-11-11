@@ -3,7 +3,9 @@ module RocketRubyBot
     # login class
     class Connected < Base
       def call(client, _data)
-        client.say login(token: config.token) do |message|
+        client.say login(username: config.user,
+                         digest: config.digest,
+                         token: config.token) do |message|
           if message.error
             logger.fatal message.error.message
             raise message.error.message

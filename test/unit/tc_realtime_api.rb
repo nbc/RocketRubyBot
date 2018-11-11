@@ -7,22 +7,32 @@ class TestRealtimeApi < Minitest::Test
   include RocketRubyBot::Realtime::API
   extend RocketRubyBot::Realtime::API
   
-  def test_login
+  def test_login_with_digest
     assert_equal login(username: 'name', digest: 'digest'),
                  { msg: 'method',
                    method: 'login',
                    params: [{ user: { username: 'name' }, password: { digest: 'digest', algorithm: 'sha-256' } }] }
-    
+  end
+
+  def test_login_with_token
     assert_equal login(token: 'token'),
                  { msg: 'method',
                    method: 'login',
                    params: [{ resume: 'token' }] }
+  end
 
+  def test_login_with_everything
+    assert_equal login(username: 'name', digest: 'digest', token: 'token'),
+                 { msg: 'method',
+                   method: 'login',
+                   params: [{ resume: 'token' }] }
+  end
+  
+  def test_login_with_nothing
     assert_raises ArgumentError do
       login(some: 'argument')
     end
   end
-
 
   def test_register_user
     value = { msg: 'method',
