@@ -1,5 +1,4 @@
 require 'forwardable'
-require 'singleton'
 
 module RocketRubyBot
   class Server
