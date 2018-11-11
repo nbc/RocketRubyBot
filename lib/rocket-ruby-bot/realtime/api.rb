@@ -192,7 +192,7 @@ module RocketRubyBot
       end
 
       #= * `load_history`
-      def load_history(room_id:, limit: 50, msg_before: 'null', last_received: 0)
+      def load_history(room_id:, limit: 50, msg_before: nil, last_received: 0)
         { msg: 'method',
           method: 'loadHistory',
           params: [room_id, msg_before, limit, { '$date': last_received }] }

@@ -179,7 +179,7 @@ class TestRealtimeApi < Minitest::Test
     assert_equal load_history(room_id: 'id'), 
                  { msg: 'method',
                    method: 'loadHistory',
-                   params: ['id', 'null', 50, { '$date': 0 }] }
+                   params: ['id', nil, 50, { '$date': 0 }] }
   end
 
   def test_pong
