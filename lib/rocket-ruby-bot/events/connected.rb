@@ -11,6 +11,7 @@ module RocketRubyBot
             raise message.error.message
           end
           config.user_id = message.result['id']
+          config.token = message.result['token']
         end
       end
     end
