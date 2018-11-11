@@ -253,7 +253,7 @@ module RocketRubyBot
       #=   https://rocket.chat/docs/developer-guides/realtime-api/subscriptions/stream-notify-all/
       ALLOWED_NOTIFY_ALL = %w[roles-change updateEmojiCustom deleteEmojiCustom
                               updateAvatar public-settings-changed permissions-changed].freeze
-      def sub_stream_notify_all(sub:)
+      def stream_notify_all(sub:)
         argument_is_in(ALLOWED_NOTIFY_ALL, sub)
         { msg: 'sub',
           name: 'stream-notify-all',
@@ -265,7 +265,7 @@ module RocketRubyBot
       #=
       ALLOWED_NOTIFY_LOGGED = %w[Users:NameChanged Users:Deleted updateAvatar
                                  updateEmojiCustom deleteEmojiCustom roles-change].freeze
-      def sub_stream_notify_logged(sub:)
+      def stream_notify_logged(sub:)
         argument_is_in(ALLOWED_NOTIFY_LOGGED, sub)
         { msg: 'sub',
           name: 'stream-notify-logged',
@@ -283,7 +283,7 @@ module RocketRubyBot
       #=   ```
       #=
       ALLOWED_USER_SUBS = %w[notification rooms-changed subscriptions-changed otr webrtc message].freeze
-      def sub_stream_notify_user(user_id:, sub:)
+      def stream_notify_user(user_id:, sub:)
         argument_is_in(ALLOWED_USER_SUBS, sub)
 
         { msg: 'sub',
@@ -296,7 +296,7 @@ module RocketRubyBot
       #=   https://rocket.chat/docs/developer-guides/realtime-api/subscriptions/stream-notify-room-users/
       #=   bug in documentation
       ALLOWED_NOTIFY_ROOM_USERS = %w[webrtc].freeze
-      def sub_stream_notify_room_users(room_id:, sub:)
+      def stream_notify_room_users(room_id:, sub:)
         argument_is_in(ALLOWED_NOTIFY_ROOM_USERS, sub)
         { msg: 'sub',
           name: 'stream-notify-room-users',
@@ -306,7 +306,7 @@ module RocketRubyBot
       #= * `stream_notify_room`
       #=   https://rocket.chat/docs/developer-guides/realtime-api/subscriptions/stream-notify-room/
       ALLOWED_NOTIFY_ROOM = %w[deleteMessage typing].freeze
-      def sub_stream_notify_room(room_id:, sub:)
+      def stream_notify_room(room_id:, sub:)
         argument_is_in(ALLOWED_NOTIFY_ROOM, sub)
 
         { msg: 'sub',
@@ -318,7 +318,7 @@ module RocketRubyBot
       #=
       #=   https://rocket.chat/docs/developer-guides/realtime-api/subscriptions/stream-room-messages/
       #=
-      def sub_stream_room_messages(room_id:)
+      def stream_room_messages(room_id:)
         { msg: 'sub',
           name: 'stream-room-messages',
           params: [room_id, false] }

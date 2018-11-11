@@ -18,7 +18,7 @@ class PongBot < RocketRubyBot::Bot
   setup do |client|
     client.say get_room_id(room: user_store.room_name) do |message|
       user_store.room_id = message.result
-      client.say sub_stream_room_messages(room_id: user_store.room_id)
+      client.say stream_room_messages(room_id: user_store.room_id)
     end
   end
 
