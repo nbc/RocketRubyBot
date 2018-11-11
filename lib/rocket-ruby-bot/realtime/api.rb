@@ -116,7 +116,7 @@ module RocketRubyBot
       end
       
       #= * `create_channel`
-      def create_channel(name:, users: [], read_only:)
+      def create_channel(name:, users: [], read_only: false)
         verify_array_of_users(users)
 
         { msg: 'method',
