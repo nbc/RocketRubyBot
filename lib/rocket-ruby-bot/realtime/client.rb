@@ -32,6 +32,7 @@ module RocketRubyBot
         args = { id: uid }.merge(args)
 
         create_fiber(uid, &block) if block_given?
+        logger.debug("-> #{args.to_json}")
         send_json(args)
       end
 
