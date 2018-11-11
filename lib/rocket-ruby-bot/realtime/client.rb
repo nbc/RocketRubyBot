@@ -16,19 +16,15 @@ module RocketRubyBot
       
       def initialize(hooks, url)
         @hooks = hooks
-        @url   = url
+        @url = url
       end
 
       def exec_on_close(&block)
         @on_close = block
       end
 
-      def names
-        [RocketRubyBot::Config.user.downcase]
-      end
-      
       def name?(name)
-        names.include?(name.downcase)
+        RocketRubyBot::Config.bot_names.include?(name.downcase)
       end
       
       def say(args = {}, &block)

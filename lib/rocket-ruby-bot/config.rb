@@ -4,7 +4,7 @@ module RocketRubyBot
 
     ATTRS = %i[url user user_id digest logger].freeze
     attr_accessor(*ATTRS)
-    attr_writer :websocket_url, :token
+    attr_writer :websocket_url, :token, :bot_names
     
     def websocket_url
       @websocket_url ||= url
@@ -13,6 +13,11 @@ module RocketRubyBot
                            .concat('/websocket')
     end
 
+    def bot_names
+      # FIXME: memorize this
+      [user].map &:downcase
+    end
+    
     def token
       @token ||= ENV['ROCKET_API_TOKEN']
     end

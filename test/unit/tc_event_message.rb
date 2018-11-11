@@ -17,6 +17,7 @@ class EventsMessage < MiniTest::Test
 
   def teardown
     @class.routes = []
+    RocketRubyBot::Config.bot_names = nil
   end
 
   def test_message_from_self

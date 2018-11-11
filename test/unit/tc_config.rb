@@ -37,6 +37,11 @@ class TestConfig < MiniTest::Test
       assert_equal 'another token', RocketRubyBot::Config.token
     end
   end
+
+  def test_bot_names
+    RocketRubyBot::Config.user = 'NAME'
+    assert_equal ['name'], RocketRubyBot::Config.bot_names
+  end
   
   def teardown
     RocketRubyBot::Config.websocket_url = nil
