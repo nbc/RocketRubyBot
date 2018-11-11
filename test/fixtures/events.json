@@ -53,6 +53,28 @@
 	    "eventName": "<user-id>/notification"
 	}
     },
+
+    "self_inserted": {
+	"msg":"changed","collection":"stream-notify-user","id":"id",
+		 "fields":{"eventName":"YzdhBRGZvssu2Lm6x/subscriptions-changed",
+			   "args":["inserted",{"_id":"6wdWfNBRSnQGFHNhb","open":true,"alert":true,"unread":1,"userMentions":1,"groupMentions":0,
+					       "ts":{"$date":1541952876942},"rid":"ipm7yudHF8A4yRHcN","name":"unautrecanal","fname":"unautrecanal","t":"c",
+					       "u":{"_id":"YzdhBRGZvssu2Lm6x","username":"mybot","name":"mybot"},"_updatedAt":{"$date":1541952876944}}]}
+    },
+
+    "self_updated": {
+	"msg":"changed","collection":"stream-notify-user","id":"id",
+	"fields":{"eventName":"YzdhBRGZvssu2Lm6x/subscriptions-changed","args":["updated"]}
+    },
+
+
+    "self_removed": {
+	"msg":"changed","collection":"stream-notify-user","id":"id",
+	"fields":{"eventName":"YzdhBRGZvssu2Lm6x/subscriptions-changed",
+		  "args":["removed",{"_id":"6wdWfNBRSnQGFHNhb","u":{"_id":"YzdhBRGZvssu2Lm6x","username":"mybot","name":"mybot"}}]}
+    },
+
+
     "rooms_changed": {
 	"msg": "changed",
 	"collection": "stream-notify-user",
@@ -61,26 +83,6 @@
 	    "args": [
 		"inserted"
 	    ]
-	}
-    },
-    "subscriptions_changed": {
-	"msg": "changed",
-	"collection": "stream-notify-user",
-	"fields": {
-	    "eventName": "<user-id>/subscriptions-changed",
-	    "args": [
-		"inserted"
-	    ]
-	}
-    },
-    "subscriptions_changed": {
-	"msg": "changed",
-	"collection": "stream-notify-user",
-	"id": "id",
-	"fields": {
-	    "eventName": "<user-id>/subscriptions-changed",
-	    "args": [
-		"updated"	    ]
 	}
     },
     "otr": {
@@ -119,4 +121,7 @@
 	"collection":"stream-notify-room",
 	"fields":{"eventName":"GENERAL/typing","args":["an arg",true]}
     }
+
+
+
 }

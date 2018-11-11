@@ -166,6 +166,9 @@ module RocketRubyBot
       #=
       #= * `:notification`
       #= * `:rooms_changed`
+      #= * `:self_inserted` : self added to room
+      #= * `:self_removed` : self removed from room
+      #= * `:self_updated` : self updated (new role, owner...)
       # 
       # New chat started
       # {"msg":"changed","collection":"stream-notify-user","id":"id","fields":{"eventName":"hZKg86uJavE6jYLya/rooms-changed",
@@ -185,12 +188,17 @@ module RocketRubyBot
       STREAM_NOTIFY_USER =
         { 'notification' => :notification,
           'rooms-changed' => :rooms_changed,
-          'subscriptions-changed' => :subscriptions_changed,
           'otr' => :otr }
           
       def on_stream_notify_user
         event = self['fields']['eventName'].split('/').last
         return STREAM_NOTIFY_USER[event] if STREAM_NOTIFY_USER.key? event
+
+        action = self['fields']['args'][0]
+        if event == 'subscriptions-changed' and action
+          return "self_#{action}".to_sym
+        end 
+        
         :unknown
       end
 
