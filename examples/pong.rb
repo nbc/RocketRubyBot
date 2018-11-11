@@ -23,7 +23,7 @@ class PongBot < RocketRubyBot::Bot
   end
 
   command 'ping' do |client, message, match|
-    client.say send_message(message_id: uuid, room_id: message.rid, msg: "pong")
+    client.say send_message(room_id: message.rid, msg: "pong")
   end
 end
 
