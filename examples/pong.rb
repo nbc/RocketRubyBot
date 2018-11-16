@@ -15,6 +15,7 @@ RocketRubyBot::UserStore.configure do |user_store|
 end
 
 class PongBot < RocketRubyBot::Bot
+  # subscribe to new messages in the general room
   setup do |client|
     client.say get_room_id(room: user_store.room_name) do |message|
       user_store.room_id = message.result
@@ -22,7 +23,13 @@ class PongBot < RocketRubyBot::Bot
     end
   end
 
+  # reply pong to "mybot ping"
   command 'ping' do |client, message, match|
+    client.say send_message(room_id: message.rid, msg: "pong")
+  end
+
+  # reply pong to "! ping"
+  match /!\s*ping/ do |client, message, match|
     client.say send_message(room_id: message.rid, msg: "pong")
   end
 end
