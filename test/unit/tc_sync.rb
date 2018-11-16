@@ -29,7 +29,7 @@ class TestSync < Minitest::Test
 
     result = nil
     Fiber.new do
-      result = obj.sync_fiber(id) { }
+      result = obj.sync_fiber(id) {}
     end.resume
 
     assert RocketRubyBot::Utils::Sync.fiber_store.key?(id)
@@ -38,7 +38,6 @@ class TestSync < Minitest::Test
     obj.resume_fiber(id, value)
     assert_equal value, result
   end
-
   
   def test_resume_without_create
     mock = Minitest::Mock.new

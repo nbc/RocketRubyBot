@@ -11,19 +11,25 @@ class EventsConnected < MiniTest::Test
   end
   
   def test_connected
+    # rubocop:disable Lint/NestedMethodDefinition
     def @client.say(_data)
-      yield RocketRubyBot::Realtime::Event.new({"msg":"result","result": {"id":"an id"}})
+      yield RocketRubyBot::Realtime::Event.new(msg: 'result',
+                                               result: { id: 'an id' })
     end
+    # rubocop:enable Lint/NestedMethodDefinition
     
     @event.call(@client, nil)
-    assert_equal "an id", RocketRubyBot::Config.user_id
+    assert_equal 'an id', RocketRubyBot::Config.user_id
   end
 
   def test_connection_error
+    # rubocop:disable Lint/NestedMethodDefinition
     def @client.say(_data)
-      yield RocketRubyBot::Realtime::Event.new({"msg":"result","error": {"message":"a reason"}})
+      yield RocketRubyBot::Realtime::Event.new(msg: 'result',
+                                               error: { message: 'a reason' })
     end
+    # rubocop:enable Lint/NestedMethodDefinition
     
-    assert_raises("a reason") { @event.call(@client, nil) }
+    assert_raises('a reason') { @event.call(@client, nil) }
   end
 end

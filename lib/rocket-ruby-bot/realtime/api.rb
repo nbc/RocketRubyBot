@@ -278,13 +278,18 @@ module RocketRubyBot
       #=   https://rocket.chat/docs/developer-guides/realtime-api/subscriptions/stream-notify-user/
       #= 
       #=   ```
-      #=   ["{\"msg\":\"sub\",\"id\":\"j3rDKZiswk48oD3xq\",\"name\":\"stream-notify-user\",\"params\":[\"hZKg86uJavE6jYLya/notification\",false]}"]
-      #=   ["{\"msg\":\"sub\",\"id\":\"BhQGCDSHbs2K8b6Qo\",\"name\":\"stream-notify-user\",\"params\":[\"oAKZSpTPTQHbp6nBD/rooms-changed\",false]}"]
-      #=   ["{\"msg\":\"sub\",\"id\":\"2wA7uGgSRcw67DsqW\",\"name\":\"stream-notify-user\",\"params\":[\"oAKZSpTPTQHbp6nBD/subscriptions-changed\",false]}"]
-      #=   ["{\"msg\":\"sub\",\"id\":\"d7R5u6pCkLKPfxFa7\",\"name\":\"stream-notify-user\",\"params\":[\"oAKZSpTPTQHbp6nBD/otr\",false]}"]
+      #= ["{"msg":"sub","id":"j3rDKZiswk48oD3xq","name":"stream-notify-user",
+      #=                "params":["hZKg86uJavE6jYLya/notification",false]}"]
+      #= ["{"msg":"sub","id":"BhQGCDSHbs2K8b6Qo","name":"stream-notify-user",
+      #=                "params":["oAKZSpTPTQHbp6nBD/rooms-changed",false]}"]
+      #= ["{"msg":"sub","id":"2wA7uGgSRcw67DsqW","name":"stream-notify-user",
+      #=                "params":["oAKZSpTPTQHbp6nBD/subscriptions-changed",false]}"]
+      #= ["{"msg":"sub","id":"d7R5u6pCkLKPfxFa7","name":"stream-notify-user",
+      #=                "params":["oAKZSpTPTQHbp6nBD/otr",false]}"]
       #=   ```
       #=
-      ALLOWED_USER_SUBS = %w[notification rooms-changed subscriptions-changed otr webrtc message].freeze
+      ALLOWED_USER_SUBS = %w[notification rooms-changed
+                             subscriptions-changed otr webrtc message].freeze
       def stream_notify_user(user_id:, sub:)
         argument_is_in(ALLOWED_USER_SUBS, sub)
 

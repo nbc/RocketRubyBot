@@ -11,7 +11,8 @@ class TestRealtimeApi < Minitest::Test
     assert_equal login(username: 'name', digest: 'digest'),
                  { msg: 'method',
                    method: 'login',
-                   params: [{ user: { username: 'name' }, password: { digest: 'digest', algorithm: 'sha-256' } }] }
+                   params: [{ user: { username: 'name' },
+                              password: { digest: 'digest', algorithm: 'sha-256' } }] }
   end
 
   def test_login_with_token
@@ -50,7 +51,10 @@ class TestRealtimeApi < Minitest::Test
                          pass: 'string',
                          name: 'string',
                          secretURL: 'string' }] }
-    assert_equal register_user(email: 'string', pass: 'string', name: 'string', secret_url: 'string'), value
+    assert_equal register_user(email: 'string',
+                               pass: 'string',
+                               name: 'string',
+                               secret_url: 'string'), value
   end
 
   def test_get_user_roles
@@ -59,7 +63,6 @@ class TestRealtimeApi < Minitest::Test
               params: [] }
     assert_equal get_user_roles, value
   end
-  
 
   def test_get_public_settings
     value = { msg: 'method',
@@ -126,7 +129,9 @@ class TestRealtimeApi < Minitest::Test
 
   def test_create_channel
     assert_equal create_channel(name: 'test', users: ['a', 'b', 'c'], read_only: false),
-                 { msg: 'method', method: 'createChannel', params: ['test', ['a', 'b', 'c'], false] }
+                 { msg: 'method',
+                   method: 'createChannel',
+                   params: ['test', ['a', 'b', 'c'], false] }
 
     assert_raises ArgumentNotAllowed do
       create_channel(name: 'test', users: 'a', read_only: false)
@@ -135,7 +140,9 @@ class TestRealtimeApi < Minitest::Test
 
   def test_create_private_group
     assert_equal create_private_group(name: 'test', users: ['a', 'b', 'c']),
-                 { msg: 'method', method: 'createPrivateGroup', params: ['test', ['a', 'b', 'c']] }
+                 { msg: 'method',
+                   method: 'createPrivateGroup',
+                   params: ['test', ['a', 'b', 'c']] }
 
     assert_raises ArgumentNotAllowed do
       create_private_group(name: 'test', users: 'a')

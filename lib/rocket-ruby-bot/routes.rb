@@ -18,7 +18,8 @@ module RocketRubyBot
 
     def command(*values, &block)
       regexp_text = values.map { |v| v.is_a?(Regexp) ? v.source : Regexp.escape(v) }.join('|')
-      regexp = Regexp.new "^(?<bot>\\S+)\\s+(?<command>#{regexp_text})(\\s+(?<text>.*)|)$", Regexp::IGNORECASE | Regexp::MULTILINE
+      regexp = Regexp.new("^(?<bot>\\S+)\\s+(?<command>#{regexp_text})(\\s+(?<text>.*)|)$",
+                          Regexp::IGNORECASE | Regexp::MULTILINE)
       match regexp, &block
     end
     

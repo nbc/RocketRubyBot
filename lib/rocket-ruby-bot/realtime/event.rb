@@ -28,7 +28,6 @@ module RocketRubyBot
       #= * `:error`
       #= * `:ping` : ping from server, automatically handled by the ping hook
 
-
       # FIXME: should'nt be here cause it pollute the real event
       def yield_unless_seen
         return if @_already_seen
@@ -87,8 +86,10 @@ module RocketRubyBot
       #= ## `added` events
       #=
       # {"msg":"added","collection":"users","id":"hZKg86uJavE6jYLya",
-      #  "fields":{"emails":[{"address":"eion@robbmob.com","verified":true}],"username":"eionrobb"}}
-      # {"msg":"added","collection":"users","id":"M6m6odi9ufFJtFzZ3","fields":{"status":"online","username":"ali-14","utcOffset":3.5}}
+      #  "fields":{"emails":[{"address":"eion@robbmob.com","verified":true}],
+      #                       "username":"eionrobb"}}
+      # {"msg":"added","collection":"users","id":"M6m6odi9ufFJtFzZ3",
+      #  "fields":{"status":"online","username":"ali-14","utcOffset":3.5}}
       #=
       #= * `:added_user`
       #=
@@ -103,7 +104,8 @@ module RocketRubyBot
       #= ## `changed` events
       #=
       # FIXME : event found in librocketchat.c :
-      # {"msg":"changed","collection":"users","id":"123","fields":{"active":true,"name":"John Doe","type":"user"}}
+      # {"msg":"changed","collection":"users","id":"123",
+      #  "fields":{"active":true,"name":"John Doe","type":"user"}}
 
       def on_changed
         return case self['collection']
@@ -129,7 +131,8 @@ module RocketRubyBot
       #  "args":[{"_id":"ei3gxB5SqWJHoGDkm","rid":"GENERAL","msg":"Bonjour, ",
       #           "ts":{"$date":1540063554370},"alias":"Francois",
       #           "u":{"_id":"9fjarYAeJtEBo2quC","username":"f.g",
-      #           "name":"Francois"},"mentions":[],"channels":[],"_updatedAt":{"$date":1540284243523},
+      #           "name":"Francois"},"mentions":[],"channels":[],
+      #                              "_updatedAt":{"$date":1540284243523},
       #           "reactions":{":hand_splayed_tone3:":{"usernames":["s.c","l.r",
       #                                                             "m.c","k.d"]},
       #                        ":wave:":{"usernames":["isabelle"]}}}]}}
@@ -171,16 +174,23 @@ module RocketRubyBot
       #= * `:self_updated` : self updated (new role, owner...)
       # 
       # New chat started
-      # {"msg":"changed","collection":"stream-notify-user","id":"id","fields":{"eventName":"hZKg86uJavE6jYLya/rooms-changed",
-      #  "args":["inserted",{"_id":"JoxbibGnXizRb4ef4hZKg86uJavE6jYLya","t":"d"}]}}
+      # {"msg":"changed","collection":"stream-notify-user","id":"id",
+      #  "fields":{"eventName":"hZKg86uJavE6jYLya/rooms-changed",
+      #            "args":["inserted",{"_id":"JoxbibGnXizRb4ef4hZKg86uJavE6jYLya","t":"d"}]}}
       #
-      # {"msg":"changed","collection":"stream-notify-user","id":"id","fields":{"eventName":"hZKg86uJavE6jYLya/rooms-changed",
-      #  "args":["inserted",{"_id":"GENERAL","name":"general","t":"c","topic":"Community support in [#support](https://demo.rocket.chat/channel/support).
-      #      Developers in [#dev](https://demo.rocket.chat/channel/dev)","muted":["daly","kkloggg","staci.holmes.segarra"],
+      # {"msg":"changed","collection":"stream-notify-user","id":"id",
+      # "fields":{"eventName":"hZKg86uJavE6jYLya/rooms-changed",
+      #           "args":["inserted",{"_id":"GENERAL","name":"general","t":"c","topic":
+      #                                 "Community support in [#support](https://demo.rocket.chat/channel/support).
+      #      Developers in [#dev](https://demo.rocket.chat/channel/dev)",
+      #                               "muted":["daly","kkloggg","staci.holmes.segarra"],
       #      "jitsiTimeout":{"$date":1477687206856},"default":true}]}}
       #
-      # {"msg":"changed","collection":"stream-notify-user","id":"id","fields":{"eventName":"hZKg86uJavE6jYLya/rooms-changed",
-      #   "args":["updated",{"_id":"ocwXv7EvCJ69d3AdG","name":"eiontestchat","t":"p","u":{"_id":null,"username":null},"topic":"ham salad","ro":false}]}}
+      # {"msg":"changed","collection":"stream-notify-user","id":"id",
+      #  "fields":{"eventName":"hZKg86uJavE6jYLya/rooms-changed",
+      #            "args":["updated",{"_id":"ocwXv7EvCJ69d3AdG","name":"eiontestchat",
+      #                               "t":"p","u":{"_id":null,"username":null},
+      #                               "topic":"ham salad","ro":false}]}}
       #= * `:inserted` user added to a new room
       #= * `:updated` : something change in room, topic, announcement...
       #= * `:otr`
