@@ -1,4 +1,8 @@
-Rocket-Ruby-Bot
+# Rocket-Ruby-Bot
+
+[![Build Status](https://travis-ci.org/slack-ruby/slack-ruby-bot.svg?branch=master)](https://travis-ci.org/slack-ruby/slack-ruby-bot)
+[![Maintainability](https://api.codeclimate.com/v1/badges/9e4737be0f78d44ad414/maintainability)](https://codeclimate.com/github/nbc/RocketRubyBot/maintainability)
+[![Test Coverage](https://api.codeclimate.com/v1/badges/9e4737be0f78d44ad414/test_coverage)](https://codeclimate.com/github/nbc/RocketRubyBot/test_coverage)
 
 ## Features
 
@@ -22,8 +26,7 @@ gem 'rocket-ruby-bot', :git => 'https://github.com/nbc/rocket-ruby-bot.git'
 
 ```ruby
 # coding: utf-8
-path = File.expand_path( File.join( File.dirname( __FILE__) , "..", "lib"))
-$:.unshift path
+$:.unshift File.expand_path('../lib', __dir__)
 
 require 'rocket-ruby-bot'
 
