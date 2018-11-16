@@ -41,12 +41,14 @@ module RocketRubyBot
           params: [{ resume: token }] }
       end
       
+      # doesn't work 
+      # https://github.com/RocketChat/Rocket.Chat/issues/11890
       def register_user(email:, pass:, name:, secret_url: false)
         params = { email: email,
                    pass: pass,
                    name: name }
         params[:secretURL] = secret_url if secret_url
-                 
+        
         { msg: 'method',
           method: 'registerUser',
           params: [params] }
