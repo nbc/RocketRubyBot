@@ -1,6 +1,6 @@
 # Rocket-Ruby-Bot
 
-[![Build Status](https://travis-ci.org/slack-ruby/slack-ruby-bot.svg?branch=master)](https://travis-ci.org/slack-ruby/slack-ruby-bot)
+[![Build Status](https://travis-ci.org/nbc/RocketRubyBot.svg?branch=master)](https://travis-ci.org/nbc/RocketRubyBot)
 [![Maintainability](https://api.codeclimate.com/v1/badges/9e4737be0f78d44ad414/maintainability)](https://codeclimate.com/github/nbc/RocketRubyBot/maintainability)
 [![Test Coverage](https://api.codeclimate.com/v1/badges/9e4737be0f78d44ad414/test_coverage)](https://codeclimate.com/github/nbc/RocketRubyBot/test_coverage)
 
