@@ -7,6 +7,7 @@ gem 'eventmachine'
 gem 'faye-websocket'
 
 group :test do
+  gem 'rake'
   gem 'minitest'
   gem 'minitest-reporters'
   gem "simplecov", "~> 0.14.1", :require => false
