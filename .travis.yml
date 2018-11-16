@@ -1,4 +1,32 @@
+env:
+  global:
+    - CC_TEST_REPORTER_ID=ad832ccecd77a5e148be14d0754fe6ce40ce92dfe5e5bba89d353e2597fd78dd
+
 language: ruby
+
 rvm:
- - 2.3
- - 2.5
+  - 2.1
+  - 2.3
+  - 2.5
+
+before_install:
+  - gem update bundler
+  
+install:
+  - bundle install --jobs=3 --retry=3
+  - gem install rubocop
+  
+before_script:
+  - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
+  - chmod +x ./cc-test-reporter
+  - ./cc-test-reporter before-build
+
+script:
+  - rubocop
+  - bundle exec rake
+
+after_script:
+  - ./cc-test-reporter format-coverage -t simplecov -o coverage/codeclimate.backend.json coverage/backend/.resultset.json # Format backend coverage
+  - ./cc-test-reporter format-coverage -t lcov -o coverage/codeclimate.frontend.json coverage/frontend/lcov.info  # Format frontend coverage
+  - ./cc-test-reporter sum-coverage coverage/codeclimate.*.json -p 2                  # Sum both coverage parts into coverage/codeclimate.json
+  - if [[ "$TRAVIS_TEST_RESULT" == 0 ]]; then ./cc-test-reporter upload-coverage; fi  # Upload coverage/codeclimate.json
