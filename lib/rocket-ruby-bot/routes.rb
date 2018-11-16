@@ -1,6 +1,5 @@
 module RocketRubyBot
   module Routes
-
     @@routes = []
 
     def routes

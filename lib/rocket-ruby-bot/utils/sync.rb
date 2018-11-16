@@ -31,7 +31,6 @@ module RocketRubyBot
         fiber = Sync.fiber_store.delete id
         fiber.resume data
       end
-
     end
   end
 end

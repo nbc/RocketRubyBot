@@ -2,7 +2,6 @@ require 'faye/websocket'
 require 'eventmachine'
 require 'json'
 require_relative '../utils/sync'
-
 require 'fiber'
 
 module RocketRubyBot
@@ -34,7 +33,7 @@ module RocketRubyBot
         args = { id: uid }.merge(args)
         logger.debug("-> #{args.to_json}")
 
-        return uid, args
+        [uid, args]
       end
       
       def say(args = {}, &block)

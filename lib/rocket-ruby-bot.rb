@@ -24,4 +24,3 @@ require 'rocket-ruby-bot/realtime/client'
 require 'rocket-ruby-bot/server'
 require 'rocket-ruby-bot/events'
 require 'rocket-ruby-bot/bot'
-

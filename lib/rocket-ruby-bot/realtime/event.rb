@@ -74,12 +74,12 @@ module RocketRubyBot
       #=   ...
       #=
 
-      def has_token
+      def token?
         self['result'].is_a?(Hash) && self['result'].key?('token')
       end
       
       def on_result
-        return :authenticated if has_token
+        return :authenticated if token?
         
         :result
       end
@@ -111,7 +111,7 @@ module RocketRubyBot
       #  "fields":{"active":true,"name":"John Doe","type":"user"}}
 
       def on_changed
-        return case self['collection']
+        case self['collection']
         when 'stream-room-messages'
           on_stream_room_messages
         when 'stream-notify-user'
