@@ -230,7 +230,7 @@ class TestRealtimeApi < Minitest::Test
     assert_equal stream_notify_user(user_id: 'id', sub: 'notification'),
                  { msg: 'sub',
                    name: 'stream-notify-user',
-                   params: ['id/notification' , false] }
+                   params: ['id/notification', false] }
     
     assert_raises ArgumentNotAllowed do
       stream_notify_user(user_id: 'id', sub: 'test')

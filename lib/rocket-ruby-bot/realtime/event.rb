@@ -157,7 +157,7 @@ module RocketRubyBot
           'user-umuted' => :user_unmuted,
           'subscription-role-added' => :subscription_role_added,
           'subscription-role-removed' => :subscription_role_removed,
-          'room-changed-topic' => :room_changed_topic }
+          'room-changed-topic' => :room_changed_topic }.freeze
       
       def on_stream_room_messages
         message = self['fields']['args'].first
@@ -203,16 +203,14 @@ module RocketRubyBot
       STREAM_NOTIFY_USER =
         { 'notification' => :notification,
           'rooms-changed' => :rooms_changed,
-          'otr' => :otr }
+          'otr' => :otr }.freeze
       
       def on_stream_notify_user
         event = self['fields']['eventName'].split('/').last
         return STREAM_NOTIFY_USER[event] if STREAM_NOTIFY_USER.key? event
 
         action = self['fields']['args'][0]
-        if event == 'subscriptions-changed' and action
-          return "self_#{action}".to_sym
-        end 
+        return "self_#{action}".to_sym if event.eql?('subscriptions-changed') && action
         
         :unknown
       end
@@ -223,10 +221,10 @@ module RocketRubyBot
 
       STREAM_NOTIFY_ROOM =
         { 'typing' => :typing,
-          'deleteMessage' => :delete_message }
+          'deleteMessage' => :delete_message }.freeze
       
       def on_stream_notify_room
-        event =  self['fields']['eventName'].split('/').last
+        event = self['fields']['eventName'].split('/').last
         return STREAM_NOTIFY_ROOM[event] if STREAM_NOTIFY_ROOM.key? event
         
         :unknown

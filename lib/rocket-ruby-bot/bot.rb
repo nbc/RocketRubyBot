@@ -10,8 +10,8 @@ module RocketRubyBot
 
     def self.web_client
       @web_client ||= RocketRubyBot::Rest::Client.session(
-        url:     RocketRubyBot::Config.url,
-        token:   RocketRubyBot::Config.token,
+        url: RocketRubyBot::Config.url,
+        token: RocketRubyBot::Config.token,
         user_id: RocketRubyBot::Config.user_id
       )
     end

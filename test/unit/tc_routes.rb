@@ -29,7 +29,7 @@ class RoutesConfig < MiniTest::Test
     assert match
 
     match = 'other_string'.match @class.routes.first[:regexp]
-    assert ! match
+    assert !match
   end
   
   def test_command
@@ -46,7 +46,7 @@ class RoutesConfig < MiniTest::Test
     @class.command('about') {}
 
     match = 'about'.match @class.routes.first[:regexp]
-    assert ! match
+    assert !match
 
     match = 'mybot about'.match @class.routes.first[:regexp]
     assert match

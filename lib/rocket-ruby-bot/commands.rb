@@ -32,8 +32,7 @@ module RocketRubyBot
         end
       end
       
-      def help
-      end
+      def help; end
       
     end
   end

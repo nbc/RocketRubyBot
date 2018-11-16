@@ -8,9 +8,9 @@ class EventsMessage < MiniTest::Test
     @class = Class.new
     @class.extend RocketRubyBot::Routes
 
-    message = {"msg": "changed","collection": "stream-room-messages",
+    message = {"msg": "changed", "collection": "stream-room-messages",
                "fields": {"args": [{"msg": "THIS_BOT TEXT here",
-                                   "u": {"_id": 'id'}}]}}
+                                    "u": {"_id": 'id'}}]}}
     @message = RocketRubyBot::Realtime::Event.new message
     @event = RocketRubyBot::Events::Message.new routes: []
   end
@@ -22,7 +22,7 @@ class EventsMessage < MiniTest::Test
 
   def test_message_from_self
     @class.match(/text/) {}
-    @event.routes =  @class.routes
+    @event.routes = @class.routes
     RocketRubyBot::Config.user_id = 'id'
 
     ret = @event.call(Object.new, @message)
@@ -58,7 +58,7 @@ class EventsMessage < MiniTest::Test
     @class.command('text') {}
     @event.routes = @class.routes
 
-    RocketRubyBot::configure do |config|
+    RocketRubyBot.configure do |config|
       config.user_id = 'other_user_id'
       config.user = 'other_bot'
     end
@@ -72,7 +72,7 @@ class EventsMessage < MiniTest::Test
   def test_command_for_this_bot
     @class.command('text') {}
     @event.routes = @class.routes
-    RocketRubyBot::configure do |config|
+    RocketRubyBot.configure do |config|
       config.user_id = 'other_user_id'
       config.user = 'this_bot'
     end
