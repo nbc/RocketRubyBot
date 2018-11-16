@@ -8,9 +8,9 @@ class EventsMessage < MiniTest::Test
     @class = Class.new
     @class.extend RocketRubyBot::Routes
 
-    message = {"msg":"changed","collection":"stream-room-messages",
-               "fields": {"args":[{"msg":"THIS_BOT TEXT here",
-                                   "u":{"_id": 'id'}}]}}
+    message = {"msg": "changed","collection": "stream-room-messages",
+               "fields": {"args": [{"msg": "THIS_BOT TEXT here",
+                                   "u": {"_id": 'id'}}]}}
     @message = RocketRubyBot::Realtime::Event.new message
     @event = RocketRubyBot::Events::Message.new routes: []
   end

@@ -35,7 +35,7 @@ class RealtimeClient < MiniTest::Test
 
   def test_empty_say
     mock = Minitest::Mock.new
-    mock.expect :send, nil, [{id:'1'}.to_json]
+    mock.expect :send, nil, [{id: '1'}.to_json]
     @client.web_socket = mock
 
     @client.say( {} )
@@ -45,7 +45,7 @@ class RealtimeClient < MiniTest::Test
   
   def test_say
     mock = Minitest::Mock.new
-    mock.expect :send, nil, [{id:'1', arg: 'arg'}.to_json]
+    mock.expect :send, nil, [{id: '1', arg: 'arg'}.to_json]
     @client.web_socket = mock
     
     @client.say({ arg: 'arg' })
@@ -55,7 +55,7 @@ class RealtimeClient < MiniTest::Test
   
   def test_say_with_block
     mock = Minitest::Mock.new
-    mock.expect :send, nil, [{id:'1', arg: 'arg'}.to_json]
+    mock.expect :send, nil, [{id: '1', arg: 'arg'}.to_json]
     @client.web_socket = mock
     
     @client.say({ arg: 'arg' }) {}

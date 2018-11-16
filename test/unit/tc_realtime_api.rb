@@ -197,7 +197,7 @@ class TestRealtimeApi < Minitest::Test
     assert_equal stream_notify_all(sub: 'roles-change'),
                  { msg: 'sub',
                    name: 'stream-notify-all',
-                   params:['roles-change', false] }
+                   params: ['roles-change', false] }
 
     assert_raises ArgumentNotAllowed do
       stream_notify_all(sub: 'bad_argument')
@@ -208,7 +208,7 @@ class TestRealtimeApi < Minitest::Test
     assert_equal stream_notify_logged(sub: 'roles-change'),
                  { msg: 'sub',
                    name: 'stream-notify-logged',
-                   params:['roles-change', false] }
+                   params: ['roles-change', false] }
 
     assert_raises ArgumentNotAllowed do
       stream_notify_logged(sub: 'bad_argument')
