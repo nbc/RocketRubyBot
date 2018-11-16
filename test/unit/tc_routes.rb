@@ -19,7 +19,7 @@ class RoutesConfig < MiniTest::Test
     assert_instance_of Hash, @class.routes.first
 
     assert_instance_of Proc, @class.routes.first[:block]
-    assert_equal /test/i, @class.routes.first[:regexp]
+    assert_equal(/test/i, @class.routes.first[:regexp])
   end
 
   def test_match_regexp

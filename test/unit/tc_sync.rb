@@ -13,7 +13,7 @@ class TestSync < Minitest::Test
     value = OpenStruct.new result_id: id, msg: 'test'
     
     obj = @klass.new
-    obj.block_fiber(id) { |value| value }
+    obj.block_fiber(id) { |v| v }
 
     assert RocketRubyBot::Utils::Sync.fiber_store.key?(id)
     assert_instance_of Fiber, RocketRubyBot::Utils::Sync.fiber_store[id]
@@ -28,7 +28,7 @@ class TestSync < Minitest::Test
     obj = @klass.new
 
     result = nil
-    f = Fiber.new do
+    Fiber.new do
       result = obj.sync_fiber(id) { }
     end.resume
 

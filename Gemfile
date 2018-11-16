@@ -1,15 +1,15 @@
 source 'https://rubygems.org'
 
-gem 'rocketchat'
-gem 'hashie'
-gem 'json'
 gem 'eventmachine'
 gem 'faye-websocket'
+gem 'hashie'
+gem 'json'
+gem 'rocketchat'
 
 group :test do
-  gem 'rake'
+  gem 'climate_control'
   gem 'minitest'
   gem 'minitest-reporters'
-  gem "simplecov", "~> 0.14.1", :require => false
-  gem 'climate_control'
+  gem 'rake'
+  gem 'simplecov', '~> 0.14.1', require: false
 end

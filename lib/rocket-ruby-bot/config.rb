@@ -15,7 +15,7 @@ module RocketRubyBot
 
     def bot_names
       # FIXME: memorize this
-      [user].map &:downcase
+      [user].map(&:downcase)
     end
     
     def token

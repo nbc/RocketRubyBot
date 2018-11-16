@@ -1,5 +1,5 @@
 # coding: utf-8
-path = File.expand_path ( File.join( File.dirname( __FILE__) , "..", "lib"))
+path = File.expand_path(File.join( File.dirname( __FILE__) , "..", "lib"))
 $:.unshift path
 
 require 'simplecov'            # These two lines must go first

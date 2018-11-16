@@ -189,7 +189,7 @@ module RocketRubyBot
         { 'notification' => :notification,
           'rooms-changed' => :rooms_changed,
           'otr' => :otr }
-          
+      
       def on_stream_notify_user
         event = self['fields']['eventName'].split('/').last
         return STREAM_NOTIFY_USER[event] if STREAM_NOTIFY_USER.key? event

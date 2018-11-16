@@ -17,19 +17,19 @@ end
 class PongBot < RocketRubyBot::Bot
   # subscribe to new messages in the general room
   setup do |client|
-    client.say get_room_id(room: user_store.room_name) do |message|
-      user_store.room_id = message.result
+    client.say get_room_id(room: user_store.room_name) do |mess|
+      user_store.room_id = mess.result
       client.say stream_room_messages(room_id: user_store.room_id)
     end
   end
 
   # reply pong to "mybot ping"
-  command 'ping' do |client, message, match|
+  command 'ping' do |client, message, _match|
     client.say send_message(room_id: message.rid, msg: "pong")
   end
 
   # reply pong to "! ping"
-  match /!\s*ping/ do |client, message, match|
+  match(/!\s*ping/) do |client, message, _match|
     client.say send_message(room_id: message.rid, msg: "pong")
   end
 end
