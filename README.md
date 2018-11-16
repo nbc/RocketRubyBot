@@ -30,7 +30,6 @@ require 'rocket-ruby-bot'
 RocketRubyBot.configure do |config|
   config.url    = 'http://localhost:3000'
   config.user   = 'mybot'
-  config.digest  = '2e6669346178ab7d3edb94d7141082c0ba481e52a21d94ac422c6b68a99b34fc' # mybot
 end
 
 RocketRubyBot::UserStore.configure do |user_store|
@@ -67,11 +66,11 @@ curl -H "Content-type:application/json" \
 ```
 
 
-## Commands
+## Bot interaction
 
 ### on_event
 
-The most low level command is `on\_event :event\_type`. With it you can access all types of event
+The most low level command is `on_event :event_type`. With it you can access all types of event
 
 ```ruby
 on_event :authenticated do |client, data|
@@ -82,7 +81,7 @@ end
 `client` is used to speak with the server
 `data` is the data return by the event.
 
-You can find an events list in doc/events.md
+You can find the list of events [here](doc/events.md)
 
 ### setup
 
@@ -129,7 +128,7 @@ If you want to do something with the server response, you can call `client.say` 
 ```ruby
 client.say get_room_id(room: "room_name") do |message|
   user_store.room_id = message.result
-  client.say sub_stream_room_messages(room_id: user_store.room_id)
+  client.say stream_room_messages(room_id: user_store.room_id)
 end
 ```
 
@@ -138,7 +137,7 @@ or use `sync_say` that serialize answer :
 ```ruby
 res = client.sync_say get_room_id(room: "room_name")
 user_store.room_id = res.result
-client.say sub_stream_room_messages(room_id: user_store.room_id)
+client.say stream_room_messages(room_id: user_store.room_id)
 ```
 
 
@@ -149,17 +148,43 @@ In this case, a rest call to get the `room_id` is perhaps a simplier solution:
 ```ruby
 on_event :authenticated do |client, data|
   group = web_client.groups.info(name: "room_name")
-  client.say sub_stream_room_messages(room_id: group.id)
+  client.say stream_room_messages(room_id: group.id)
 end
 ```
 
+## RocketChat API
 
-### environment
+All the methods of the [realtime API](https://rocket.chat/docs/developer-guides/realtime-api/) are available. The beginning of a documentation [here](doc/realtime_api.md). For more information, use [the code](lib/rocket-ruby-bot/realtime/api.rb) for the moment.
+
+They all return well-formed message you can send to RocketChat with `say` or `sync_say`.
+
+```ruby
+client.say stream_notify_user user_id: "user_id", sub: "message"
+```
+
+## config
+
+In your bot, you can access configuration with the `config` command. It has three useful methods:
+* `config.url` : RocketChat server URL
+* `config.user` : the name of your bot
+* `config.user_id` : the user_id of your bot
+
+```ruby
+client.say stream_notify_user user_id: config.user_id, sub: "message"
+```
+
+
+## other useful methods 
 
 You have access to 2 useful methods in your bot:
 
-* `web_client` a fully fonctionnal `RocketChat::Session` already logged to do REST interaction. See https://github.com/abrom/rocketchat-ruby for documentation
-* `user_store` to store things. It's a hash and `Hashie::Mash` subclass so you can use keys as methods to access value.
+### `web_client`
+
+a fully fonctionnal `RocketChat::Session` already logged to do REST interaction. See https://github.com/abrom/rocketchat-ruby for documentation
+
+###  `user_store` 
+
+useful to store things. It's a hash and `Hashie::Mash` subclass so you can use keys as methods to access value.
 
   ```ruby
   user_store.my_value
