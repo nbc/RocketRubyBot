@@ -56,6 +56,7 @@ module RocketRubyBot
 
       def result_id
         return self['subs'].first if type.eql? :ready
+
         self['id']
       end
 
@@ -79,6 +80,7 @@ module RocketRubyBot
       
       def on_result
         return :authenticated if has_token
+        
         :result
       end
 
@@ -98,6 +100,7 @@ module RocketRubyBot
 
       def on_added
         return :added_user if self['collection'] == 'users'
+        
         :added
       end
 
@@ -159,7 +162,9 @@ module RocketRubyBot
       def on_stream_room_messages
         message = self['fields']['args'].first
         return :message unless message.key? 't'
+        
         return STREAM_ROOM_MESSAGE[message.t] if STREAM_ROOM_MESSAGE.key? message.t
+        
         :unknown
       end
 
@@ -223,6 +228,7 @@ module RocketRubyBot
       def on_stream_notify_room
         event =  self['fields']['eventName'].split('/').last
         return STREAM_NOTIFY_ROOM[event] if STREAM_NOTIFY_ROOM.key? event
+        
         :unknown
       end
       

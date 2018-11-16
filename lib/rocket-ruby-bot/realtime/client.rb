@@ -54,6 +54,7 @@ module RocketRubyBot
       
       def dispatch_event(data)
         return unless data.type
+
         logger.debug("<- #{data.to_json}") unless data.ping?
         resume_fiber(data.result_id, data)
         run_hooks(data)
@@ -61,6 +62,7 @@ module RocketRubyBot
 
       def run_hooks(data)
         return unless hooks.key? data.type
+        
         hooks[data.type].each do |hook|
           event_fiber { hook.call(self, data) }
         end
