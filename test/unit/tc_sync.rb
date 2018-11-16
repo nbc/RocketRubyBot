@@ -8,28 +8,43 @@ class TestSync < Minitest::Test
     @klass.include RocketRubyBot::Utils::Sync
   end
 
-  def test_create_and_resume
-    value = 'value'
-
-    obj = @klass.new
-    obj.create_fiber('1') { value }
-
-    assert RocketRubyBot::Utils::Sync.fiber_store.key?('1')
-    assert_instance_of Fiber, RocketRubyBot::Utils::Sync.fiber_store['1']
+  def test_block_and_resume
+    id = '1'
+    value = OpenStruct.new result_id: id, msg: 'test'
     
-    mock = Minitest::Mock.new
-    mock.expect(:result_id, '1')
+    obj = @klass.new
+    obj.block_fiber(id) { |value| value }
 
-    assert_equal value, obj.resume_fiber(mock)
-    assert_mock mock
+    assert RocketRubyBot::Utils::Sync.fiber_store.key?(id)
+    assert_instance_of Fiber, RocketRubyBot::Utils::Sync.fiber_store[id]
+
+    assert_equal value, obj.resume_fiber(id, value)
     assert RocketRubyBot::Utils::Sync.fiber_store.empty?
   end
 
+  def test_sync_and_resume
+    id = '2'
+    value = OpenStruct.new result_id: id, msg: 'test'
+    obj = @klass.new
+
+    result = nil
+    f = Fiber.new do
+      result = obj.sync_fiber(id) { }
+    end.resume
+
+    assert RocketRubyBot::Utils::Sync.fiber_store.key?(id)
+    assert_instance_of Fiber, RocketRubyBot::Utils::Sync.fiber_store[id]
+    
+    obj.resume_fiber(id, value)
+    assert_equal value, result
+  end
+
+  
   def test_resume_without_create
     mock = Minitest::Mock.new
-    mock.expect(:result_id, '2')
+    mock.expect(:result_id, '3', )
 
     obj = @klass.new
-    assert_nil nil, obj.resume_fiber(mock)
+    assert_nil nil, obj.resume_fiber('3', mock)
   end
 end

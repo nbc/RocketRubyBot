@@ -3,6 +3,8 @@ require 'eventmachine'
 require 'json'
 require_relative '../utils/sync'
 
+require 'fiber'
+
 module RocketRubyBot
   module Realtime
     # low level interaction with websocket server
@@ -26,16 +28,26 @@ module RocketRubyBot
       def name?(name)
         RocketRubyBot::Config.bot_names.include?(name.downcase)
       end
-      
-      def say(args = {}, &block)
+
+      def merge_arguments(args)
         uid = next_id
         args = { id: uid }.merge(args)
-
-        create_fiber(uid, &block) if block_given?
         logger.debug("-> #{args.to_json}")
+
+        return uid, args
+      end
+      
+      def say(args = {}, &block)
+        uid, args = merge_arguments args
+        block_fiber(uid, &block) if block_given?
         send_json(args)
       end
 
+      def sync_say(args = {})
+        uid, args = merge_arguments args
+        sync_fiber(uid) { send_json(args) }
+      end
+      
       def send_json(args)
         web_socket.send(args.to_json)
       end
@@ -43,10 +55,10 @@ module RocketRubyBot
       def dispatch_event(data)
         return unless data.type
         logger.debug("<- #{data.to_json}") unless data.ping?
-        resume_fiber(data)
+        resume_fiber(data.result_id, data)
         return unless hooks.key? data.type
         hooks[data.type].each do |hook|
-          hook.call(self, data)
+          event_fiber { hook.call(self, data) }
         end
       end
 

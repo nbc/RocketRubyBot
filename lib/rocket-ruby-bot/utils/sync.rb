@@ -6,7 +6,11 @@ module RocketRubyBot
         @fiber_store ||= {}
       end
 
-      def create_fiber(id, &_block)
+      def event_fiber(&_block)
+        Fiber.new { yield }.resume
+      end
+      
+      def block_fiber(id, &_block)
         f = Fiber.new do
           message = Fiber.yield
           yield message
@@ -15,13 +19,19 @@ module RocketRubyBot
         f.resume
       end
 
-      def resume_fiber(data)
-        id = data.result_id
+      def sync_fiber(id, &_block)
+        Sync.fiber_store[id] = Fiber.current
+        yield
+        Fiber.yield
+      end
+      
+      def resume_fiber(id, data)
         return unless Sync.fiber_store.key? id
 
         fiber = Sync.fiber_store.delete id
         fiber.resume data
       end
+
     end
   end
 end
