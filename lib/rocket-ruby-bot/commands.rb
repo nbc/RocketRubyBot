@@ -2,12 +2,14 @@
 
 module RocketRubyBot
   class Commands
-    include RocketRubyBot::Utils::Loggable
     extend RocketRubyBot::Realtime::API
     extend RocketRubyBot::Routes
-    
-    class << self
 
+    include RocketRubyBot::Utils::Loggable
+    include RocketRubyBot::Utils::UUID
+    include RocketRubyBot::UserStore
+
+    class << self
       def hooks
         RocketRubyBot::Server.instance.hooks
       end
@@ -33,7 +35,18 @@ module RocketRubyBot
       end
       
       def help; end
-      
+
+      def web_client
+        @web_client ||= RocketRubyBot::Rest::Client.session(
+          url: RocketRubyBot::Config.url,
+          token: RocketRubyBot::Config.token,
+          user_id: RocketRubyBot::Config.user_id
+        )
+      end
+    
+      def user_store
+        RocketRubyBot::UserStore.user_store
+      end
     end
   end
 end

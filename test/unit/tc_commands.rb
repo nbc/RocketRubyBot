@@ -41,8 +41,16 @@ class TestCommands < Minitest::Test
     assert value
   end
 
+  def test_routes
+    @class.match(/test/) {}
+
+    assert_equal /test/i, @class.routes.first[:regexp]
+  end
+  
   def teardown
     RocketRubyBot::Config.url = nil
     RocketRubyBot::Config.websocket_url = nil
+    @class.routes = []
+    @class = nil
   end
 end
