@@ -4,6 +4,10 @@ require 'json'
 require 'rocket-ruby-bot/realtime/event'
 
 class TestEvents < MiniTest::Test
+  def setup
+    RocketRubyBot::Config.logger = Logger.new StringIO.new
+  end
+
   def test_coherence_events
     json = File.read('test/fixtures/events.json')
     hash = JSON.parse(json)
