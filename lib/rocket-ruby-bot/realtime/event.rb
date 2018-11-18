@@ -12,7 +12,8 @@ module RocketRubyBot
   module Realtime
     # parse data returned by RC
     class Event < Hashie::Mash
-
+      include RocketRubyBot::Utils::Loggable
+      
       def ping?
         return true if type.eql? :ping
       end
@@ -48,7 +49,7 @@ module RocketRubyBot
           elsif self['msg'].eql? 'added'
             on_added
           else
-            yield_unless_seen { p [:unknown, to_json] }
+            yield_unless_seen { logger.info [:unknown, to_json] }
             :unknown
           end
         @type
