@@ -82,4 +82,10 @@ class EventsMessage < MiniTest::Test
     
     assert_equal @class.routes.first, ret
   end
+
+  def teardown
+    @class.routes = []
+    @class = nil
+  end
+
 end
