@@ -1,7 +1,6 @@
 require_relative '../test_helpers'
 
 class TestCommands < Minitest::Test
-
   def setup
     RocketRubyBot::Config.url = 'https://my.server/'
     @class = Class.new(RocketRubyBot::Commands)
@@ -46,5 +45,4 @@ class TestCommands < Minitest::Test
     RocketRubyBot::Config.url = nil
     RocketRubyBot::Config.websocket_url = nil
   end
-  
 end

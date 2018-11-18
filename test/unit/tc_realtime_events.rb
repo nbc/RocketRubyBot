@@ -4,7 +4,6 @@ require 'json'
 require 'rocket-ruby-bot/realtime/event'
 
 class TestEvents < MiniTest::Test
-
   def test_coherence_events
     json = File.read('test/fixtures/events.json')
     hash = JSON.parse(json)
@@ -36,5 +35,4 @@ class TestEvents < MiniTest::Test
     event.yield_unless_seen { var = true }
     assert_equal true, var
   end
-  
 end
