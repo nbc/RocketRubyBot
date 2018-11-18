@@ -4,8 +4,8 @@ require 'rocket-ruby-bot'
 require 'ostruct'
 
 class RealtimeClient < MiniTest::Test
-
   def setup
+    RocketRubyBot::Config.logger = Logger.new StringIO.new
     @client = RocketRubyBot::Realtime::Client.new(nil, nil)
   end
   
@@ -115,5 +115,4 @@ class RealtimeClient < MiniTest::Test
   def teardown
     @client.hooks = {}
   end
-  
 end

@@ -6,6 +6,7 @@ class EventsConnected < MiniTest::Test
 
   def setup
     RocketRubyBot::Config.token = 'a token'
+    RocketRubyBot::Config.logger = Logger.new StringIO.new
     @event = RocketRubyBot::Events::Connected.new
     @client = Class.new
   end
