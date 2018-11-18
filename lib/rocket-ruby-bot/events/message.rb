@@ -2,6 +2,7 @@ module RocketRubyBot
   module Events
     # login class
     class Message < Base
+      register :message
       attr_accessor :routes
 
       def initialize(routes: RocketRubyBot::Commands.routes)

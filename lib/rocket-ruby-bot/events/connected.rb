@@ -2,6 +2,8 @@ module RocketRubyBot
   module Events
     # login class
     class Connected < Base
+      register :connected
+
       def call(client, _data)
         client.say login(username: config.user,
                          digest: config.digest,
