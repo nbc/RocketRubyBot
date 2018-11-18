@@ -5,8 +5,11 @@ module RocketRubyBot
     # implements methods calls from
     # https://rocket.chat/docs/developer-guides/realtime-api/method-calls/
     module API
-      
       include RocketRubyBot::Utils::UUID
+      
+      def included(base)
+        base.extend self
+      end
       extend self
 
       ArgumentNotAllowed = Class.new(StandardError)

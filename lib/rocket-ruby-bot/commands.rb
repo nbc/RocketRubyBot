@@ -2,8 +2,8 @@
 
 module RocketRubyBot
   class Commands
-    extend RocketRubyBot::Realtime::API
-    extend RocketRubyBot::Routes
+    include RocketRubyBot::Realtime::API
+    include RocketRubyBot::Routes
 
     include RocketRubyBot::Utils::Loggable
     include RocketRubyBot::Utils::UUID

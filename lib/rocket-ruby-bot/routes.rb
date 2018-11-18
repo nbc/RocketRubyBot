@@ -1,13 +1,17 @@
 module RocketRubyBot
   module Routes
-    @@routes = []
+
+    def included(base)
+      base.extend self
+    end
+    extend self
 
     def routes
-      @@routes
+      @routes ||= []
     end
 
     def routes=(arg)
-      @@routes = arg
+      @routes = arg
     end
     
     def match(regexp, &block)
