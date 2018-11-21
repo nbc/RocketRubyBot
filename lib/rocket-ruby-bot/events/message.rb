@@ -26,6 +26,8 @@ module RocketRubyBot
         message = data.fields.args.first
         return if message_to_self? message
 
+        routes ||= []
+        
         routes.find do |route|
           match = message.msg.match route[:regexp]
           next unless match
