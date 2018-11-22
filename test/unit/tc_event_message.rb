@@ -10,8 +10,8 @@ class EventsMessage < MiniTest::Test
 
     message = {"msg": "changed", "collection": "stream-room-messages",
                "fields": {"args": [{"msg": "THIS_BOT TEXT here",
-                                    "u": {"_id": 'id'}}]}}
-    @message = RocketRubyBot::Realtime::Event.new message
+                                    "u": {"_id": 'id'}}]}}.to_json
+    @message = RocketRubyBot::Realtime::Events::EventFactory.builder message
     @event = RocketRubyBot::Events::Message.new routes: []
   end
 
@@ -33,7 +33,6 @@ class EventsMessage < MiniTest::Test
   def test_empty_routes
     @event.routes = []
     RocketRubyBot::Config.user_id = 'other_user_id'
-
     ret = @event.call(Object.new, @message)
 
     assert_nil ret

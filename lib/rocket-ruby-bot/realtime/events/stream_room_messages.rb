@@ -92,16 +92,16 @@ module RocketRubyBot
           @fields = OpenStruct.new
           @fields.eventName = params.fields.eventName
           if STREAM_ROOM_MESSAGES.key? type
-            @fields.args = STREAM_ROOM_MESSAGES[type].new params.fields.args.first
+            @fields.args = params.fields.args { |m| STREAM_ROOM_MESSAGES[type].new m }
           elsif type == :message
-            @fields.args = RoomMessage.new params.fields.args.first
+            @fields.args = params.fields.args.map { |m| RoomMessage.new m }
           else
             logger.info [:unknown, params.fields.params.first]
           end
         end
 
         def type
-          @fields.args.type
+          @fields.args.first.type
         end
         
       end
