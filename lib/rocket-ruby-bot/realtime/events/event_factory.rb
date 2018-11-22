@@ -4,14 +4,16 @@ module RocketRubyBot
   module Realtime
     module Events
       module EventFactory
+
         def self.builder(event)
-          result = JSON.parse(event, symbolize_names: true)
+          result = JSON.parse(event, object_class: OpenStruct)
           
-          if BASIC_EVENTS.include? result[:msg]
-            return RocketRubyBot::Realtime::Events.basic_events[result[:msg]].new result
+          # if BASIC_EVENTS.include? result.msg
+          if RocketRubyBot::Realtime::Events.basic_events.key? result.msg
+            return RocketRubyBot::Realtime::Events.basic_events[result.msg].new result
           end
 
-          case result[:msg]
+          case result.msg
           when 'changed'
             return stream_builder result
           end
@@ -23,8 +25,8 @@ module RocketRubyBot
         
         def self.stream_builder(event)
           pp event
-          if STREAM.include? event[:collection]
-            STREAM[event[:collection]].new event
+          if STREAM.include? event.collection
+            STREAM[event.collection].new event
           end
         end
       end

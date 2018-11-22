@@ -6,13 +6,13 @@ module RocketRubyBot
         attr_reader :rid, :_id, :ts, :msg, :u, :_updatedAt, :groupable
         def initialize(params)
           # @_base = params
-          @rid = params[:rid]
-          @_id = params[:_id]
-          @ts = params[:ts]
-          @msg = params[:msg]
-          @u = User.new params[:u]
-          @_updatedAt = params[:_updatedAt]
-          @groupable = params[:groupable]
+          @rid = params.rid
+          @_id = params._id
+          @ts = params.ts
+          @msg = params.msg
+          @u = User.new params.u
+          @_updatedAt = params._updatedAt
+          @groupable = params.groupable
         end
         alias_method :room_id, :rid
         alias_method :event_id, :_id
@@ -36,7 +36,7 @@ module RocketRubyBot
         attr_reader :role
         def initialize(params)
           super params
-          @role = params[:role]
+          @role = params.role
         end
       end
 
@@ -47,7 +47,7 @@ module RocketRubyBot
         attr_reader :topic
         def initialize(params)
           super params
-          @topic = params[:topic]
+          @topic = params.topic
         end
       end
 
@@ -55,15 +55,15 @@ module RocketRubyBot
         attr_reader :urls, :mentions, :channels, :attachments, :reactions
         def initialize(params)
           super params
-          @urls = params[:urls]
-          @mentions = params[:mentions].map { |u| User.new u }
-          @channels = params[:channels]
-          @editedAt = params[:editedAt] || ''
-          @editedBy = params[:editedBy] || ''
-          @alias = params[:alias] || ''
-          @avatar = params[:avatar] || ''
-          @attachments = params[:attachments].map { |a| MessageAttachment.new a }
-          @reactions = params[:reactions]
+          @urls = params.urls
+          @mentions = params.mentions.map { |u| User.new u }
+          @channels = params.channels
+          @editedAt = params.editedAt || ''
+          @editedBy = params.editedBy || ''
+          @alias = params.alias || ''
+          @avatar = params.avatar || ''
+          @attachments = params.attachments.map { |a| MessageAttachment.new a }
+          @reactions = params.reactions
         end
         alias_method :user, :u
       end
@@ -85,18 +85,18 @@ module RocketRubyBot
 
         def initialize(params)
           # @_base = params
-          @msg = params[:msg]
-          @collection = params[:collection]
+          @msg = params.msg
+          @collection = params.collection
 
-          type = params[:fields][:params].first[:t] || :message
+          type = params.fields.params.first.t || :message
           @fields = OpenStruct.new
-          @fields.eventName = params[:fields][:eventName]
+          @fields.eventName = params.fields.eventName
           if STREAM_ROOM_MESSAGES.key? type
-            @fields.params = STREAM_ROOM_MESSAGES[type].new params[:fields][:params].first
+            @fields.params = STREAM_ROOM_MESSAGES[type].new params.fields.params.first
           elsif type == :message
-            @fields.params = RoomMessage.new params[:fields][:params].first
+            @fields.params = RoomMessage.new params.fields.params.first
           else
-            puts "ERREUR #{params[:fields][:params].first}"
+            puts "ERREUR #{params.fields.params.first}"
           end
         end
       end
