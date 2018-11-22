@@ -81,13 +81,14 @@ module RocketRubyBot
 
 
       class StreamRoomMessages
-        attr_reader :msg, :collection, :fields
+        attr_reader :msg, :collection, :fields, :id
 
         def initialize(params)
           # @_base = params
           @msg = params.msg
           @collection = params.collection
-
+          @id = params.id
+          
           type = params.fields.args.first.t || :message
           @fields = OpenStruct.new
           @fields.eventName = params.fields.eventName
@@ -102,6 +103,10 @@ module RocketRubyBot
 
         def type
           @fields.args.first.type
+        end
+
+        def result_id
+          id
         end
         
       end
