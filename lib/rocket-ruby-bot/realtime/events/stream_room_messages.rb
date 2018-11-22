@@ -19,7 +19,7 @@ module RocketRubyBot
         alias_method :timestamp, :ts
 
         def type
-          @name ||= to_snake_case
+          @name ||= to_snake_case.to_sym
         end
       end
 
@@ -56,13 +56,13 @@ module RocketRubyBot
         def initialize(params)
           super params
           @urls = params.urls
-          @mentions = params.mentions.map { |u| User.new u }
+          @mentions = (params.mentions || []).map { |u| User.new u }
           @channels = params.channels
           @editedAt = params.editedAt || ''
           @editedBy = params.editedBy || ''
           @alias = params.alias || ''
           @avatar = params.avatar || ''
-          @attachments = params.attachments.map { |a| MessageAttachment.new a }
+          @attachments = (params.attachments || []).map { |a| MessageAttachment.new a }
           @reactions = params.reactions
         end
         alias_method :user, :u
@@ -88,17 +88,22 @@ module RocketRubyBot
           @msg = params.msg
           @collection = params.collection
 
-          type = params.fields.params.first.t || :message
+          type = params.fields.args.first.t || :message
           @fields = OpenStruct.new
           @fields.eventName = params.fields.eventName
           if STREAM_ROOM_MESSAGES.key? type
-            @fields.params = STREAM_ROOM_MESSAGES[type].new params.fields.params.first
+            @fields.args = STREAM_ROOM_MESSAGES[type].new params.fields.args.first
           elsif type == :message
-            @fields.params = RoomMessage.new params.fields.params.first
+            @fields.args = RoomMessage.new params.fields.args.first
           else
-            puts "ERREUR #{params.fields.params.first}"
+            logger.info [:unknown, params.fields.params.first]
           end
         end
+
+        def type
+          @fields.args.type
+        end
+        
       end
     end
   end

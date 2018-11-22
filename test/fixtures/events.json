@@ -1,5 +1,5 @@
 {
-    "user_join": {
+    "room_join": {
 	"msg": "changed",
 	"collection": "stream-room-messages",
 	"fields": {
@@ -10,7 +10,7 @@
 	    ]
 	}
     },
-    "user_left": {
+    "room_left": {
 	"msg": "changed",
 	"collection": "stream-room-messages",
 	"fields": {
@@ -22,7 +22,7 @@
 	    ]
 	}
     },
-    "user_muted": {
+    "room_muted": {
 	"msg": "changed",
 	"collection": "stream-room-messages",
 	"fields": {
@@ -34,7 +34,7 @@
 	    ]
 	}
     },
-    "message": {
+    "room_message": {
 	"msg": "changed",
 	"collection": "stream-room-messages",
 	"fields": {
@@ -54,7 +54,7 @@
 	}
     },
 
-    "self_inserted": {
+    "subscriptions_changed": {
 	"msg":"changed","collection":"stream-notify-user","id":"id",
 		 "fields":{"eventName":"YzdhBRGZvssu2Lm6x/subscriptions-changed",
 			   "args":["inserted",{"_id":"6wdWfNBRSnQGFHNhb","open":true,"alert":true,"unread":1,"userMentions":1,"groupMentions":0,
@@ -62,13 +62,13 @@
 					       "u":{"_id":"YzdhBRGZvssu2Lm6x","username":"mybot","name":"mybot"},"_updatedAt":{"$date":1541952876944}}]}
     },
 
-    "self_updated": {
+    "subscriptions_changed": {
 	"msg":"changed","collection":"stream-notify-user","id":"id",
 	"fields":{"eventName":"YzdhBRGZvssu2Lm6x/subscriptions-changed","args":["updated"]}
     },
 
 
-    "self_removed": {
+    "subscriptions_changed": {
 	"msg":"changed","collection":"stream-notify-user","id":"id",
 	"fields":{"eventName":"YzdhBRGZvssu2Lm6x/subscriptions-changed",
 		  "args":["removed",{"_id":"6wdWfNBRSnQGFHNhb","u":{"_id":"YzdhBRGZvssu2Lm6x","username":"mybot","name":"mybot"}}]}
@@ -110,7 +110,7 @@
     },
 
     
-    "added_user": {
+    "added": {
 	"msg":"added",
 	"collection":"users",
 	"id":"M6m6odi9ufFJtFzZ3"
@@ -121,7 +121,4 @@
 	"collection":"stream-notify-room",
 	"fields":{"eventName":"GENERAL/typing","args":["an arg",true]}
     }
-
-
-
 }

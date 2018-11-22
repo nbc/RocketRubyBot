@@ -18,6 +18,18 @@ module RocketRubyBot
           event.to_sym
         end
       end
+
+      class Ready
+        def result_id
+          return subs.first
+        end
+      end
+
+      class Ping
+        def ping?
+          true
+        end
+      end
       
       class Result < ::OpenStruct
         def token?
@@ -27,6 +39,10 @@ module RocketRubyBot
         def type
           return :authenticated if token?
           :result
+        end
+
+        def result_id
+          self.id
         end
       end
       @basic_events['result'] = Result

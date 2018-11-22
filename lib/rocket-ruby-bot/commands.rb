@@ -47,6 +47,19 @@ module RocketRubyBot
       def user_store
         RocketRubyBot::UserStore.user_store
       end
+
+      def dump(object)
+        object.each_pair.with_object({}) do |(key, value), hash|
+          hash[key] = case value
+          when OpenStruct
+            dump(value)
+          when Array
+            value.map { |a| dump(a) }
+          else
+            value
+          end
+        end
+      end
     end
   end
 end
