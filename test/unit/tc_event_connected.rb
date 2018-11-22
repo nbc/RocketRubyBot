@@ -14,8 +14,8 @@ class EventsConnected < MiniTest::Test
   def test_connected
     # rubocop:disable Lint/NestedMethodDefinition
     def @client.say(_data)
-      yield RocketRubyBot::Realtime::Event.new(msg: 'result',
-                                               result: { id: 'an id' })
+      yield RocketRubyBot::Realtime::Events::EventFactory.builder({ msg: 'result',
+                                                                    result: { id: 'an id' }}.to_json)
     end
     # rubocop:enable Lint/NestedMethodDefinition
     
