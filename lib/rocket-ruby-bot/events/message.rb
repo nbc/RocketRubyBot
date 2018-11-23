@@ -2,13 +2,15 @@ module RocketRubyBot
   module Events
     # login class
     class Message < Base
-      register :room_message
       attr_accessor :routes
 
       def initialize(routes: RocketRubyBot::Commands.routes)
         @routes = routes
       end
 
+      # FIXME
+      register :room_message
+      
       # sample message :
       # {"msg":"changed","collection":"stream-room-messages","id":"id",
       #  "fields":{"eventName":"WNqBb5jkkFNeYswcp",
