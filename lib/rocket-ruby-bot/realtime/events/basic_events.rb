@@ -26,12 +26,6 @@ module RocketRubyBot
         end
       end
 
-      class Ping
-        def ping?
-          true
-        end
-      end
-      
       class Result < ::OpenStruct
         def token?
           return true if result.respond_to?(:token)

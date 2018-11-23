@@ -30,11 +30,6 @@ class TestEvents < MiniTest::Test
     assert_equal '2', event.result_id
   end
 
-  def test_ping
-    event = RocketRubyBot::Realtime::Events::EventFactory.builder({ msg: 'ping' }.to_json)
-    assert_equal true, event.respond_to?(:ping?)
-  end
-
   def test_log_unknown_event
     # FIXME
     RocketRubyBot::Realtime::Events::EventFactory.builder({ msg: 'unknown' }.to_json)
