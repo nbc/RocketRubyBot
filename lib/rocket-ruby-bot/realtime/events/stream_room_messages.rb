@@ -1,6 +1,8 @@
 module RocketRubyBot
   module Realtime
     module Events
+      class User < ::OpenStruct; end
+
       class RoomEvent
         include Utils
         attr_reader :rid, :_id, :ts, :msg, :u, :_updatedAt, :groupable
@@ -62,7 +64,8 @@ module RocketRubyBot
           @editedBy = params.editedBy || ''
           @alias = params.alias || ''
           @avatar = params.avatar || ''
-          @attachments = (params.attachments || []).map { |a| MessageAttachment.new a }
+          @file   = params.file if params.file
+          @attachments = params.attachments || []
           @reactions = params.reactions
         end
         alias_method :user, :u
