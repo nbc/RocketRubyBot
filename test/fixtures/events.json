@@ -120,5 +120,31 @@
 	"msg":"changed",
 	"collection":"stream-notify-room",
 	"fields":{"eventName":"GENERAL/typing","args":["an arg",true]}
-    }
+    },
+
+    "room_message": {"msg":"changed",
+		     "collection":"stream-room-messages",
+		     "id":"id",
+		     "fields":{"eventName":"GENERAL",
+			       "args":[{"_id":"wzGAszTEif5isqWPf",
+					"rid":"GENERAL",
+					"ts":{"$date":1542996973182},
+					"msg":"",
+					"file":{"_id":"sSdSwLqYedeSEphDT",
+						"name":"mozilla.pdf",
+						"type":"application/pdf"},
+					"groupable":false,
+					"attachments":[{"ts":"1970-01-01T00:00:00.000Z",
+							"title":"mozilla.pdf",
+							"title_link":"/file-upload/sSdSwLqYedeSEphDT/mozilla.pdf",
+							"title_link_download":true,
+							"type":"file",
+							"description":""}],
+					"u":{"_id":"BATd9C33CdKGRbRf4",
+					     "username":"nicolas",
+					     "name":"C"},
+					"_updatedAt":{"$date":1542996973193},"mentions":[],
+					"channels":[]}]}}
+
+
 }
