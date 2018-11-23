@@ -19,7 +19,7 @@ module RocketRubyBot
         alias_method :timestamp, :ts
 
         def type
-          @name ||= to_snake_case.to_sym
+          @type ||= to_snake_case.to_sym
         end
       end
 
@@ -108,7 +108,6 @@ module RocketRubyBot
         def result_id
           id
         end
-        
       end
     end
   end

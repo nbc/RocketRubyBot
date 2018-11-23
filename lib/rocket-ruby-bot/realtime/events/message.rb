@@ -7,7 +7,7 @@ module RocketRubyBot
 
       class MessageAttachment
         attr_reader :text, :translation, :author_name,
-                      :author_icon, :message_link, :attachments, :ts
+                    :author_icon, :message_link, :attachments, :ts
         def initialize(args)
           @text = args.text
           @translation = args.translation
@@ -21,7 +21,7 @@ module RocketRubyBot
 
       class Message
         attr_reader :_id, :rid, :msg, :ts, :u, :urls, :mentions,
-                      :channels, :_updatedAd, :attachments, :reactions, :groupable
+                    :channels, :_updatedAd, :attachments, :reactions, :groupable
         def initialize(args)
           @_id = args._id
           @rid = args.rid

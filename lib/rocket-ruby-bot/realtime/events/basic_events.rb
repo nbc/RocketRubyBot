@@ -6,13 +6,14 @@ module RocketRubyBot
       BASIC_EVENTS = %w[ping connected ready updated removed
                         failed error nosub added].freeze
 
+      # FIXME : awful hack to register Result
       @basic_events = {}
       def self.basic_events
         @basic_events
       end
       
       BASIC_EVENTS.each do |event|
-        klass = self.const_set event.capitalize, Class.new(::OpenStruct)
+        klass = const_set event.capitalize, Class.new(::OpenStruct)
         @basic_events[event] = klass
         klass.define_method :type do
           event.to_sym
@@ -21,7 +22,7 @@ module RocketRubyBot
 
       class Ready
         def result_id
-          return subs.first
+          subs.first
         end
       end
 
@@ -33,16 +34,17 @@ module RocketRubyBot
       
       class Result < ::OpenStruct
         def token?
-          return true if self.result.respond_to?(:token)
+          return true if result.respond_to?(:token)
         end
 
         def type
           return :authenticated if token?
+
           :result
         end
 
         def result_id
-          self.id
+          id
         end
       end
       @basic_events['result'] = Result

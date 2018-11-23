@@ -19,8 +19,8 @@ module RocketRubyBot
 
         STREAM = { 'stream-room-messages' => StreamRoomMessages,
                    'stream-notify-logged' => StreamNotifyLogged,
-                   'stream-notify-user'   => StreamNotifyUser,
-                   'stream-notify-room'   => StreamNotifyRoom }.freeze
+                   'stream-notify-user' => StreamNotifyUser,
+                   'stream-notify-room' => StreamNotifyRoom }.freeze
         
         def self.stream_builder(event)
           if STREAM.include? event.collection

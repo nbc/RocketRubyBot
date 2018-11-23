@@ -5,7 +5,7 @@ module RocketRubyBot
         def to_snake_case
           name = self.class.name
           name = name.split('::')[-1]
-          name.gsub!(/(.)([A-Z])/,'\1_\2')
+          name.gsub!(/(.)([A-Z])/, '\1_\2')
           name.downcase!
         end
       end
