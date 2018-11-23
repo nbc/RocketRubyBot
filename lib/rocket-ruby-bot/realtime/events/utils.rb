@@ -8,6 +8,12 @@ module RocketRubyBot
           name.gsub!(/(.)([A-Z])/, '\1_\2')
           name.downcase!
         end
+
+        def to_timestamp(struct)
+          return unless struct
+          Time.at struct.delete_field('$date') / 1000
+        end
+        
       end
 
       module UserActor

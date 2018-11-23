@@ -8,11 +8,11 @@ module RocketRubyBot
           # @_base = params
           @rid = params.rid
           @_id = params._id
-          @ts = params.ts
+          @ts = to_timestamp(params.ts)
           @msg = params.msg
           @u = User.new params.u
-          @_updatedAt = params._updatedAt
-          @groupable = params.groupable
+          @_updatedAt = to_timestamp(params._updatedAt)
+          @groupable = params.groupable || false
         end
         alias_method :room_id, :rid
         alias_method :event_id, :_id
@@ -58,7 +58,7 @@ module RocketRubyBot
           @urls = params.urls
           @mentions = (params.mentions || []).map { |u| User.new u }
           @channels = params.channels
-          @editedAt = params.editedAt || ''
+          @editedAt = to_timestamp(params.editedAt)
           @editedBy = params.editedBy || ''
           @alias = params.alias || ''
           @avatar = params.avatar || ''
