@@ -1,17 +1,20 @@
 module RocketRubyBot
   module Routes
 
+    # FIXME : should'nt use class variable
+    @@routes = []
+    
     def included(base)
       base.extend self
     end
     extend self
 
     def routes
-      @routes ||= []
+      @@routes ||= []
     end
 
     def routes=(arg)
-      @routes = arg
+      @@routes = arg
     end
     
     def match(regexp, &block)
