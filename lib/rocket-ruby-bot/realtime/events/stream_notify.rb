@@ -1,29 +1,23 @@
 module RocketRubyBot
   module Realtime
     module Events
-      class StreamNotifyLogged < OpenStruct
+      module SimpleEventName
         def type
           @type ||= fields.eventName.to_sym
         end
       end
 
-      class StreamNotifyAll < OpenStruct
-        def type
-          @type ||= fields.eventName.to_sym
-        end
-      end
+      StreamNotifyLogged = Class.new(OpenStruct).include SimpleEventName
+      StreamNotifyAll = Class.new(OpenStruct).include SimpleEventName
 
-      class StreamNotifyUser < OpenStruct
+      module ComplexEventName
         def type
           @type ||= fields.eventName.split('/')[-1].tr('-', '_').to_sym
         end
-      end
+      end      
 
-      class StreamNotifyRoom < OpenStruct
-        def type
-          @type ||= fields.eventName.split('/')[-1].tr('-', '_').to_sym
-        end
-      end
+      StreamNotifyUser = Class.new(OpenStruct).include ComplexEventName
+      StreamNotifyRoom = Class.new(OpenStruct).include ComplexEventName
 
       class Unknown < OpenStruct
         include RocketRubyBot::Utils::Loggable
