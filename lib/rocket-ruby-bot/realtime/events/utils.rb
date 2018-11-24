@@ -2,7 +2,7 @@ module RocketRubyBot
   module Realtime
     module Events
       module Utils
-        def to_snake_case
+        def class_to_snake_case
           name = self.class.name
           name = name.split('::')[-1]
           name.gsub!(/(.)([A-Z])/, '\1_\2')
@@ -11,9 +11,9 @@ module RocketRubyBot
 
         def to_timestamp(struct)
           return unless struct
+
           Time.at struct.delete_field('$date') / 1000
         end
-        
       end
 
       module UserActor

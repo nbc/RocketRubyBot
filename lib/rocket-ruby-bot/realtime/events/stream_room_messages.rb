@@ -19,9 +19,10 @@ module RocketRubyBot
         alias_method :room_id, :rid
         alias_method :event_id, :_id
         alias_method :timestamp, :ts
+        alias_method :user, :u
 
         def type
-          @type ||= to_snake_case.to_sym
+          @type ||= class_to_snake_case.to_sym
         end
       end
 
@@ -54,21 +55,19 @@ module RocketRubyBot
       end
 
       class RoomMessage < RoomEvent
-        attr_reader :urls, :mentions, :channels, :attachments, :reactions
+        attr_reader :urls, :mentions, :editedAt, :editedBy, :alias,
+                    :file, :attachments, :reactions
         def initialize(params)
           super params
           @urls = params.urls
           @mentions = (params.mentions || []).map { |u| User.new u }
-          @channels = params.channels
           @editedAt = to_timestamp(params.editedAt)
           @editedBy = params.editedBy || ''
           @alias = params.alias || ''
-          @avatar = params.avatar || ''
-          @file   = params.file if params.file
+          @file = params.file if params.file
           @attachments = params.attachments || []
           @reactions = params.reactions
         end
-        alias_method :user, :u
       end
 
       STREAM_ROOM_MESSAGES =
@@ -87,14 +86,12 @@ module RocketRubyBot
         attr_reader :msg, :collection, :fields, :id
 
         def initialize(params)
-          # @_base = params
           @msg = params.msg
           @collection = params.collection
           @id = params.id
-          
+          @fields = OpenStruct.new eventName: params.fields.eventName
+
           type = params.fields.args.first.t || :message
-          @fields = OpenStruct.new
-          @fields.eventName = params.fields.eventName
           if STREAM_ROOM_MESSAGES.key? type
             @fields.args = params.fields.args.map { |m| STREAM_ROOM_MESSAGES[type].new m }
           elsif type == :message
@@ -105,7 +102,7 @@ module RocketRubyBot
         end
 
         def type
-          @fields.args.first.type
+          @type ||= fields.args.first.type
         end
 
         def result_id
