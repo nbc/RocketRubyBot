@@ -49,6 +49,8 @@ module RocketRubyBot
       end
 
       def dump(object)
+        return object unless object.respond_to? :each_pair
+
         object.each_pair.with_object({}) do |(key, value), hash|
           hash[key] = case value
           when OpenStruct
