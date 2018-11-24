@@ -30,6 +30,17 @@ class TestEventsUtils < MiniTest::Test
     assert_equal date, AnotherCase.new.to_timestamp(a)
   end
 
+  def test_extract_type
+    klass = Class.new.include RocketRubyBot::Realtime::Events::Utils
+    obj = klass.new
+    
+    res = obj.extract_type('simple')
+    assert_equal :simple, res
+
+    res = obj.extract_type('complex/event-name')
+    assert_equal :event_name, res
+  end
+  
   def test_user_actor
     klass = Class.new do
       attr_accessor :u, :msg

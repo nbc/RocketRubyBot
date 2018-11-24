@@ -14,6 +14,18 @@ module RocketRubyBot
 
           Time.at struct.delete_field('$date') / 1000
         end
+
+        def extract_type(name)
+          name.split('/')[-1].tr('-', '_').to_sym
+        end
+
+      end
+
+      module EventName
+        include Utils
+        def type
+          @type ||= extract_type fields.eventName
+        end
       end
 
       module UserActor
