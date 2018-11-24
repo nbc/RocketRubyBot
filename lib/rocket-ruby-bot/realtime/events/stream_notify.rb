@@ -1,6 +1,13 @@
 module RocketRubyBot
   module Realtime
     module Events
+      module EventName
+        include Utils
+        def type
+          @type ||= extract_type fields.eventName
+        end
+      end
+
       StreamNotifyLogged = Class.new(OpenStruct).include EventName
       StreamNotifyAll = Class.new(OpenStruct).include EventName
       StreamNotifyUser = Class.new(OpenStruct).include EventName
