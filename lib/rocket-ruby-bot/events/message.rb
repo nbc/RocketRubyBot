@@ -2,7 +2,6 @@ module RocketRubyBot
   module Events
     # login class
     class Message < Base
-      register :message
       attr_accessor :routes
 
       def initialize(routes: RocketRubyBot::Commands.routes)
@@ -44,6 +43,8 @@ module RocketRubyBot
       def message_to_self?(message)
         config.user_id == message.u['_id']
       end
+
+      register :message
     end
   end
 end
