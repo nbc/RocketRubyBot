@@ -13,10 +13,13 @@ end
 RocketRubyBot::UserStore.configure do |user_store|
   user_store.room_name = 'general'
   user_store.default_time = 10
+  user_store.no_vote = 'no vote on the run'
 end
 
 class VoteBot < RocketRubyBot::Bot
   setup do |client|
+    Vote.bot_name = config.user
+
     # we subscribe to all group we are in
     client.say get_subscriptions do |message|
       message.result.update.each do |canal|
@@ -43,38 +46,25 @@ class VoteBot < RocketRubyBot::Bot
       vote = Vote.vote(message.room_id)
       next unless vote
 
-      msg = Vote.close(vote.user, message.room_id)
-      client.say send_message room_id: message.room_id, msg: msg
+      # msg = Vote.close(vote.user, message.room_id)
+      # client.say send_message room_id: message.room_id, msg: msg
     end
   end
 
   command('vote') do |client, message, _match|
     vote = Vote.vote(message.room_id)
-    if vote
-      msg = vote.voice(message.user.username, message.msg)
-    else
-      msg = 'pas de vote en cours'
-    end
+    msg = vote.voice(message.user.username, message.msg)
     client.say send_message room_id: message.room_id, msg: msg
   end
 
   command('show vote') do |client, message, _match|
     vote = Vote.vote(message.room_id)
-    if vote
-      msg = vote.message
-    else
-      msg = 'pas de vote en cours'
-    end
+    msg = vote.message
     client.say send_message room_id: message.room_id, msg: msg
   end
-  
+
   command('close vote') do |client, message, _match|
-    vote = Vote.vote(message.room_id)
-    if vote
-      msg = Vote.close(message.user.username, message.room_id)
-    else
-      msg = 'pas de vote en cours'
-    end
+    msg = Vote.close(message.user.username, message.room_id)
     client.say send_message(room_id: message.room_id, msg: msg)
   end
 end

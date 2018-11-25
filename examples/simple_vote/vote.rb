@@ -7,31 +7,35 @@ class Vote
   attr_reader :choices, :user, :voters, :room_id
 
   class << self
-    def create_vote(user, room_id, args)
-      return %(désolé, un vote est déjà en cours) if @vote
+    attr_accessor :bot_name
+    
+    def votes
+      @votes ||= {}
+    end
 
-      @vote ||= {}
+    def create_vote(user, room_id, args)
+      return %(désolé, un vote est déjà en cours dans ce canal) if votes[room_id]
       
-      @vote[room_id] = Vote.new(user, room_id, args)
-      @vote[room_id].message
+      votes[room_id] = Vote.new(user, room_id, args)
+      votes[room_id].message
     end
 
     def vote(room_id)
-      return unless @vote && @vote.key?(room_id)
+      return NullVote.new unless votes.key?(room_id)
       
-      @vote[room_id]
+      votes[room_id]
     end
-    
-    def close(user, room_id)
-      return unless @vote.key?(room_id) && 
-                    (user == @vote[room_id].user)
 
-      msg = @vote[room_id].result
-      @vote[room_id] = nil
+    def close(user, room_id)
+      return 'pas de vote en cours' unless votes.key?(room_id) && 
+                                           (user == votes[room_id].user)
+
+      msg = votes[room_id].result
+      votes.delete room_id
       msg
     end
   end
-  
+
   def initialize(user, room_id, str)
     @user = user
     @choices = {}
@@ -53,7 +57,7 @@ class Vote
 
   def propositions
     msg = choices.inject('') do |c, (_k, v)|
-      c + "#{user} vote #{v.id}: #{v.text}\n"
+      c + "vote #{v.id}: #{v.text}\n"
     end
     msg << message_to_vote
   end
@@ -87,22 +91,15 @@ class Vote
   end
 
   def message_to_vote
-    %(pour voter, envoyer "vote <numero>"\n)
+    %(pour voter, envoyer "#{Vote.bot_name} vote <numero>"\n)
   end
 end
 
-__END__
-
-puts Vote.create_vote('Nicolas Chuche',
-                      '"un premier choix", "un second choix", "un troisieme choix"')
-
-puts Vote.vote.voice('is', 1)
-puts Vote.vote.voice('nc', 1)
-puts Vote.vote.voice('nc', 2)
-puts Vote.vote.voice('al', 2)
-puts Vote.vote.voice('ae', 2)
-puts Vote.vote.voice('ab', 4)
-
-puts Vote.vote.result
-
-puts Vote.close
+class NullVote
+  def voice(*args)
+    'pas de vote en cours'
+  end
+  alias_method :propositions, :voice
+  alias_method :message, :voice
+  alias_method :close, :voice
+end
