@@ -46,6 +46,13 @@ class TestCommands < Minitest::Test
 
     assert_equal /test/i, @class.routes.first[:regexp]
   end
+
+  def test_subclass_inherite_routes
+    @class.match(/test/) {}
+    subclass = Class.new(@class)
+    
+    assert_equal /test/i, subclass.routes.first[:regexp]
+  end
   
   def teardown
     RocketRubyBot::Config.url = nil
