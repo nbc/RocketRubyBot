@@ -3,8 +3,6 @@ require_relative '../test_helpers'
 require 'json'
 require 'rocket-ruby-bot/realtime/events'
 
-require 'ap'
-
 class TestEvents < MiniTest::Test
   def setup
     RocketRubyBot::Config.logger = Logger.new StringIO.new
