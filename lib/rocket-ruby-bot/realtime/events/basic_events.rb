@@ -15,7 +15,7 @@ module RocketRubyBot
       BASIC_EVENTS.each do |event|
         klass = const_set event.capitalize, Class.new(::OpenStruct)
         @basic_events[event] = klass
-        klass.define_method :type do
+        klass.send :define_method, :type do
           event.to_sym
         end
       end
