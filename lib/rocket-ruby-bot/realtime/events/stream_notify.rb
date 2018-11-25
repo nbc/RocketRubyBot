@@ -13,6 +13,16 @@ module RocketRubyBot
       StreamNotifyUser = Class.new(OpenStruct).include EventName
       StreamNotifyRoom = Class.new(OpenStruct).include EventName
 
+      class StreamNotifyUser
+        def added_to_group?
+          return unless fields.args &&
+                        fields.args[0] &&
+                        fields.args.first.eql?('inserted')
+          
+          fields.args[1][:rid]
+        end
+      end
+      
       class Unknown < OpenStruct
         include RocketRubyBot::Utils::Loggable
 
