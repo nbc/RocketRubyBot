@@ -3,7 +3,7 @@
 require 'ostruct'
 
 # class to handle voting system
-module Vote
+module SimpleVote
   class << self
     attr_writer :bot_name, :votes
 
@@ -22,7 +22,7 @@ module Vote
       votes[room_id].message
     end
 
-    def vote(room_id)
+    def find_vote(room_id)
       return NullVote.new unless votes.key?(room_id)
       
       votes[room_id]
@@ -68,7 +68,7 @@ module Vote
       msg << message_to_vote
     end
 
-    def voice(user, msg)
+    def vote_for(user, msg)
       re = msg.match(/vote\s+(\d+)/)
       return message_to_vote unless re
       
@@ -97,16 +97,16 @@ module Vote
     end
 
     def message_to_vote
-      %(pour voter, envoyer "#{::Vote.bot_name} vote <numero>"\n)
+      %(pour voter, envoyer "#{SimpleVote.bot_name} vote <numero>"\n)
     end
   end
 
   class NullVote
-    def voice(*args)
+    def vote_for(*args)
       'pas de vote en cours'
     end
-    alias_method :propositions, :voice
-    alias_method :message, :voice
-    alias_method :close, :voice
+    alias_method :propositions, :vote_for
+    alias_method :message, :vote_for
+    alias_method :close, :vote_for
   end
 end
