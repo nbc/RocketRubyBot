@@ -5,10 +5,14 @@ module RocketRubyBot
         def class_to_snake_case
           name = self.class.name
           name = name.split('::')[-1]
+          to_snake_case(name)
+        end
+
+        def to_snake_case(name)
           name.gsub!(/(.)([A-Z])/, '\1_\2')
           name.downcase!
         end
-
+        
         def to_timestamp(struct)
           return unless struct
 
