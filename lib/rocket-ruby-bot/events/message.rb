@@ -5,9 +5,12 @@ module RocketRubyBot
       attr_accessor :routes
 
       def initialize(routes: RocketRubyBot::Commands.routes)
-        @routes = routes || []
+        @routes = routes
       end
 
+      # FIXME
+      register :room_message
+      
       # sample message :
       # {"msg":"changed","collection":"stream-room-messages","id":"id",
       #  "fields":{"eventName":"WNqBb5jkkFNeYswcp",

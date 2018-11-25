@@ -1,7 +1,7 @@
 require 'rocket-ruby-bot/version'
 require 'rocket-ruby-bot/utils'
-require 'rocket-ruby-bot/realtime/event'
 require 'rocket-ruby-bot/realtime/api'
+require 'rocket-ruby-bot/realtime/events'
 require 'rocket-ruby-bot/config'
 require 'rocket-ruby-bot/user_store'
 

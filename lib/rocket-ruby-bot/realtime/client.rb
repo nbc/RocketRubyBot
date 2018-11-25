@@ -54,7 +54,6 @@ module RocketRubyBot
       def dispatch_event(data)
         return unless data.type
 
-        logger.debug("<- #{data.to_json}") unless data.ping?
         resume_fiber(data.result_id, data)
         run_hooks(data)
       end
@@ -87,7 +86,8 @@ module RocketRubyBot
       end
 
       def on_message(event)
-        data = RocketRubyBot::Realtime::Event.new JSON.parse(event.data)
+        logger.debug("<- #{event.data}")
+        data = RocketRubyBot::Realtime::Events::EventFactory.builder event.data
         dispatch_event(data)
       end
 
