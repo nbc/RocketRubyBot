@@ -22,7 +22,7 @@ module RocketRubyBot
         alias_method :user, :u
 
         def type
-          @type ||= class_to_snake_case.to_sym
+          @type ||= class_to_snake_case
         end
       end
 

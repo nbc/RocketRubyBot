@@ -3,8 +3,12 @@ module RocketRubyBot
     module Events
       module Utils
         def class_to_snake_case
-          name = self.class.name
-          to_snake_case name.split('::')[-1]
+          extract_type self.class.name
+        end
+
+        def extract_type(name)
+          name = name.split(/::|\//)[-1]
+          to_snake_case(name).to_sym
         end
 
         def to_snake_case(name)
@@ -19,11 +23,6 @@ module RocketRubyBot
           return unless struct
 
           Time.at struct.delete_field('$date') / 1000
-        end
-
-        def extract_type(name)
-          name = name.split('/')[-1].tr('-', '_')
-          to_snake_case(name).to_sym
         end
       end
 

@@ -15,16 +15,18 @@ class AnotherCase
 end
 
 class TestEventsUtils < MiniTest::Test
+
   def test_class_to_snake_case
-    res = Test::CamelCase.new.class_to_snake_case
-    assert_equal 'camel_case', res
+    res = Test::CamelCase.new.class_to_snake_case 
+    assert_equal :camel_case, res
     res = AnotherCase.new.class_to_snake_case 
-    assert_equal 'another_case', res
+    assert_equal :another_case, res
   end
 
   def test_to_snake_case
     klass = Class.new.include RocketRubyBot::Realtime::Events::Utils
     obj = klass.new
+
     assert_equal 'users_name_changed', obj.to_snake_case('Users:NameChanged')
     assert_equal 'users', obj.to_snake_case('users')
   end
