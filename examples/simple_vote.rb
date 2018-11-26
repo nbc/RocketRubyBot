@@ -12,8 +12,7 @@ end
 
 RocketRubyBot::UserStore.configure do |user_store|
   user_store.room_name = 'general'
-  user_store.default_time = 10
-  user_store.no_vote = 'no vote on the run'
+  user_store.default_time = 300
 end
 
 class SimpleVoteBot < RocketRubyBot::Bot
@@ -47,8 +46,8 @@ class SimpleVoteBot < RocketRubyBot::Bot
       vote = SimpleVote.find_vote(message.room_id)
       next unless vote
 
-      # msg = SimpleVote.close(vote.user, message.room_id)
-      # client.say send_message room_id: message.room_id, msg: msg
+      msg = SimpleVote.close(vote.user, message.room_id)
+      client.say send_message room_id: message.room_id, msg: msg
     end
   end
 
@@ -65,7 +64,7 @@ class SimpleVoteBot < RocketRubyBot::Bot
 
   command('vote') do |client, message, _match|
     vote = SimpleVote.find_vote(message.room_id)
-    msg = vote.voice(message.user.username, message.msg)
+    msg = vote.vote_for(message.user.username, message.msg)
     client.say send_message room_id: message.room_id, msg: msg
   end
 end
