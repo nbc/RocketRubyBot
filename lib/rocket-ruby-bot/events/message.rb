@@ -2,28 +2,13 @@ module RocketRubyBot
   module Events
     # login class
     class Message < Base
-      attr_accessor :routes
-
-      def initialize(routes: RocketRubyBot::Commands.routes)
-        @routes = routes
-      end
-
-      # FIXME
       register :room_message
-      
-      # sample message :
-      # {"msg":"changed","collection":"stream-room-messages","id":"id",
-      #  "fields":{"eventName":"WNqBb5jkkFNeYswcp",
-      #            "args":[{"_id":"357Cde8axgiCYd3kY",
-      #                      "rid":"WNqBb5jkkFNeYswcp",
-      #                     "msg":"rbot text here",
-      #                     "ts":{"$date":1540756719398},
-      #                     "alias":"C Nicolas",
-      #                     "u":{"_id":"vNW5eZW5Ma823XNt3",
-      #                          "username":"nicolas.c",
-      #                          "name":"C Nicolas"},
-      #                     "mentions":[],"channels":[],"_updatedAt":{"$date":1540756719402}}]}}
+      attr_writer :routes
 
+      def routes
+        @routes ||= RocketRubyBot::Commands.routes || []
+      end
+      
       def call(client, data)
         message = data.room_event
         return if message_to_self? message
