@@ -144,7 +144,16 @@
 					     "username":"nicolas",
 					     "name":"C"},
 					"_updatedAt":{"$date":1542996973193},"mentions":[],
-					"channels":[]}]}}
+					"channels":[]}]}},
+
+    "users_name_changed": {"msg":"changed",
+			   "collection":"stream-notify-logged",
+			   "id":"id",
+			   "fields":{"eventName":"Users:NameChanged",
+				     "args":[{"_id":"yTdzp5CJYbN5zFQhR",
+					      "name":"Cod",
+					      "username":"cod"}]}}
+
 
 
 }

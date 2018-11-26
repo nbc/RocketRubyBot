@@ -4,13 +4,15 @@ module RocketRubyBot
       module Utils
         def class_to_snake_case
           name = self.class.name
-          name = name.split('::')[-1]
-          to_snake_case(name)
+          to_snake_case name.split('::')[-1]
         end
 
         def to_snake_case(name)
-          name.gsub!(/(.)([A-Z])/, '\1_\2')
-          name.downcase!
+          name.gsub(/([A-Z]+)([A-Z][a-z])/,'\1_\2').
+            gsub(/([a-z\d])([A-Z])/,'\1_\2').
+            tr("-", "_").
+            tr(':', '_').
+            downcase
         end
         
         def ts_to_datetime(struct)
@@ -20,7 +22,8 @@ module RocketRubyBot
         end
 
         def extract_type(name)
-          name.split('/')[-1].tr('-', '_').to_sym
+          name = name.split('/')[-1].tr('-', '_')
+          to_snake_case(name).to_sym
         end
       end
 
