@@ -10,10 +10,10 @@ module RocketRubyBot
           # @_base = params
           @rid = params.rid
           @_id = params._id
-          @ts = to_timestamp(params.ts)
+          @ts = ts_to_datetime(params.ts)
           @msg = params.msg
           @u = User.new params.u
-          @_updatedAt = to_timestamp(params._updatedAt)
+          @_updatedAt = ts_to_datetime(params._updatedAt)
           @groupable = params.groupable || false
         end
         alias_method :room_id, :rid
@@ -61,7 +61,7 @@ module RocketRubyBot
           super params
           @urls = params.urls
           @mentions = (params.mentions || []).map { |u| User.new u }
-          @editedAt = to_timestamp(params.editedAt)
+          @editedAt = ts_to_datetime(params.editedAt)
           @editedBy = params.editedBy || ''
           @alias = params.alias || ''
           @file = params.file if params.file

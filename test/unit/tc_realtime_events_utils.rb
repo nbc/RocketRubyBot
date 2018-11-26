@@ -22,12 +22,12 @@ class TestEventsUtils < MiniTest::Test
     assert_equal 'another_case', res
   end
 
-  def test_to_timestamp
+  def test_ts_to_datetime
     ts = 1550798316521
     date = Time.at(ts / 1000)
     a = OpenStruct.new '$date': ts
 
-    assert_equal date, AnotherCase.new.to_timestamp(a)
+    assert_equal date, AnotherCase.new.ts_to_datetime(a)
   end
 
   def test_extract_type

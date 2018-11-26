@@ -13,7 +13,7 @@ module RocketRubyBot
           name.downcase!
         end
         
-        def to_timestamp(struct)
+        def ts_to_datetime(struct)
           return unless struct
 
           Time.at struct.delete_field('$date') / 1000
