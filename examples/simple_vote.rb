@@ -33,8 +33,9 @@ class SimpleVoteBot < RocketRubyBot::Bot
 
   # we subscribe to group when we are added to
   on_event :subscriptions_changed do |client, data|
-    room_id = data.added_to_group?
-    client.say stream_room_messages(room_id: room_id) if room_id
+    room_id = data.added_to_group
+    next unless room_id
+    client.say stream_room_messages(room_id: room_id)
   end
   
   command 'vote create' do |client, message, _match|
