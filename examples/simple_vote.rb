@@ -37,7 +37,7 @@ class SimpleVoteBot < RocketRubyBot::Bot
     client.say stream_room_messages(room_id: room_id) if room_id
   end
   
-  command 'create vote' do |client, message, _match|
+  command 'vote create' do |client, message, _match|
     msg = SimpleVote.create_vote(message.user.username, message.room_id, message.msg)
     client.say send_message room_id: message.room_id, msg: msg
 
@@ -51,21 +51,21 @@ class SimpleVoteBot < RocketRubyBot::Bot
     end
   end
 
-  command('vote') do |client, message, _match|
-    vote = SimpleVote.find_vote(message.room_id)
-    msg = vote.voice(message.user.username, message.msg)
-    client.say send_message room_id: message.room_id, msg: msg
-  end
-
-  command('show vote') do |client, message, _match|
+  command('vote show') do |client, message, _match|
     vote = SimpleVote.find_vote(message.room_id)
     msg = vote.message
     client.say send_message room_id: message.room_id, msg: msg
   end
 
-  command('close vote') do |client, message, _match|
+  command('vote close') do |client, message, _match|
     msg = SimpleVote.close(message.user.username, message.room_id)
     client.say send_message(room_id: message.room_id, msg: msg)
+  end
+
+  command('vote') do |client, message, _match|
+    vote = SimpleVote.find_vote(message.room_id)
+    msg = vote.voice(message.user.username, message.msg)
+    client.say send_message room_id: message.room_id, msg: msg
   end
 end
 
