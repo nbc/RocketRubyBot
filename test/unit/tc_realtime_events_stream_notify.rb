@@ -36,7 +36,7 @@ class TestStreamNotify < MiniTest::Test
                 "fields":{"eventName":"a/subscriptions-changed",
                           "args":["inserted",{"rid":"room_id"}]}}
     stream = RocketRubyBot::Realtime::Events::EventFactory.builder inserted.to_json
-    assert_equal 'room_id', stream.added_to_group?
+    assert_equal 'room_id', stream.added_to_group
   end
   
   def test_not_added_to_group

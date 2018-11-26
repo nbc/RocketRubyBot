@@ -88,7 +88,7 @@ You can find the list of events [here](doc/events.md)
 
 ### setup
 
-`setup` is just syntactic sugar around `on_event :authenticated`. You can use it to handle subscription or say hello
+`setup` is just syntactic sugar around `on_event :authenticated`. You can use it to initialize your bot (subscribing to stream)
 
 ### command
 
@@ -143,7 +143,6 @@ user_store.room_id = res.result
 client.say stream_room_messages(room_id: user_store.room_id)
 ```
 
-
 when authenticated, ask the server for the room's id wait for the answer and send a `stream_room_messages` subscription for this room.
 
 In this case, a rest call to get the `room_id` is perhaps a simplier solution:
@@ -159,7 +158,7 @@ end
 
 All the methods of the [realtime API](https://rocket.chat/docs/developer-guides/realtime-api/) are available. The beginning of a documentation [here](doc/realtime_api.md). For more information, use [the code](lib/rocket-ruby-bot/realtime/api.rb) for the moment.
 
-They all return well-formed message you can send to RocketChat with `say` or `sync_say`.
+They all return well-formed messages you can send to RocketChat with `say` or `sync_say`.
 
 ```ruby
 client.say stream_notify_user user_id: "user_id", sub: "message"
