@@ -15,11 +15,6 @@ class EventsMessage < MiniTest::Test
     @event = RocketRubyBot::Events::Message.new routes: []
   end
 
-  def teardown
-    @class.routes = []
-    RocketRubyBot::Config.bot_names = nil
-  end
-
   def test_message_from_self
     @class.match(/text/) {}
     @event.routes = @class.routes
@@ -29,7 +24,7 @@ class EventsMessage < MiniTest::Test
     
     assert_nil ret
   end
-  
+
   def test_empty_routes
     @event.routes = []
     RocketRubyBot::Config.user_id = 'other_user_id'
@@ -85,6 +80,7 @@ class EventsMessage < MiniTest::Test
   def teardown
     @class.routes = []
     @class = nil
+    RocketRubyBot::Config.bot_names = nil
   end
 
 end

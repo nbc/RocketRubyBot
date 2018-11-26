@@ -25,7 +25,7 @@ module RocketRubyBot
       #                     "mentions":[],"channels":[],"_updatedAt":{"$date":1540756719402}}]}}
 
       def call(client, data)
-        message = data.fields.args.first
+        message = data.room_event
         return if message_to_self? message
 
         routes.find do |route|
@@ -44,7 +44,7 @@ module RocketRubyBot
       end
       
       def message_to_self?(message)
-        config.user_id == message.u['_id']
+        config.user_id == message.u._id
       end
 
       register :message
