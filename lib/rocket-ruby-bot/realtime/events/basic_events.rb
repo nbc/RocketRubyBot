@@ -31,6 +31,10 @@ module RocketRubyBot
           return true if result.respond_to?(:token)
         end
 
+        def error?
+          return true if respond_to?(:error)
+        end
+        
         def type
           return :authenticated if token?
 
