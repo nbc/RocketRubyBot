@@ -18,8 +18,10 @@ module RocketRubyBot
         RocketRubyBot.config
       end
 
-      def on_event(type, &block)
-        hooks[type] << block
+      def on_event(*types, &block)
+        types.each do |type|
+          hooks[type] << block
+        end
       end
 
       def setup(&_block)
