@@ -50,7 +50,12 @@
 	"collection": "stream-notify-user",
 	"id": "id",
 	"fields": {
-	    "eventName": "<user-id>/notification"
+	    "eventName": "<user-id>/notification",
+	    "args": [
+		{
+		    "text": "message"
+		}
+	    ]
 	}
     },
 
@@ -81,7 +86,8 @@
 	"fields": {
 	    "eventName": "<user-id>/rooms-changed",
 	    "args": [
-		"inserted"
+		"inserted",
+		{}
 	    ]
 	}
     },
@@ -90,7 +96,15 @@
 	"collection": "stream-notify-user",
 	"id": "id",
 	"fields": {
-	    "eventName": "<user-id>/otr"
+	    "eventName": "<user-id>/otr",
+	    "args": [
+		"handshake",
+		{
+		    "roomId": "<room-id>",
+		    "userId": "<requester-id>"
+		}
+            ]
+
 	}
     },
 

@@ -3,12 +3,12 @@ module RocketRubyBot
     module Events
       module Utils
         def class_to_snake_case
-          extract_type self.class.name
+          extract_type(self.class.name).to_sym
         end
 
         def extract_type(name)
           name = name.split(/::|\//)[-1]
-          to_snake_case(name).to_sym
+          to_snake_case(name)
         end
 
         def to_snake_case(name)

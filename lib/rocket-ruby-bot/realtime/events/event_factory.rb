@@ -19,6 +19,7 @@ module RocketRubyBot
 
         STREAM = { 'stream-room-messages' => StreamRoomMessages,
                    'stream-notify-logged' => StreamNotifyLogged,
+                   'stream-notify-all' => StreamNotifyAll,
                    'stream-notify-user' => StreamNotifyUser,
                    'stream-notify-room' => StreamNotifyRoom }.freeze
         

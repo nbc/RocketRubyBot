@@ -44,10 +44,10 @@ class TestEventsUtils < MiniTest::Test
     obj = klass.new
     
     res = obj.extract_type('simple')
-    assert_equal :simple, res
+    assert_equal 'simple', res
 
     res = obj.extract_type('complex/event-name')
-    assert_equal :event_name, res
+    assert_equal 'event_name', res
   end
   
   def test_user_actor
