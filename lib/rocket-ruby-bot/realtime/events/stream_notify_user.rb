@@ -1,7 +1,7 @@
 module RocketRubyBot
   module Realtime
     module Events
-      class StreamNotifyUser < OpenStruct
+      class StreamNotifyUser
         include Utils
 
         class StreamNotifyGeneric < OpenStruct
@@ -45,10 +45,8 @@ module RocketRubyBot
         def initialize(params)
           @msg = params.msg
           @collection = params.collection
-          @id = params.id
-          @fields = OpenStruct.new eventName: params.fields.eventName
+          @fields = OpenStruct.new eventName: params.fields.eventName, args: []
 
-          
           event_name = extract_type @fields.eventName
           if STREAM_NOTIFY_USER.key? event_name
             build_args(event_name, params)
@@ -58,14 +56,12 @@ module RocketRubyBot
         end
 
         def build_args(event_name, params)
-          @fields.args = []
           if params.fields.args.first.is_a? String
             @fields.args << params.fields.args.first
             @fields.args << STREAM_NOTIFY_USER[event_name].new(params.fields.args.last)
           else
             @fields.args << STREAM_NOTIFY_USER[event_name].new(params.fields.args.first)
           end
-
         end
         
         def added_to_group
