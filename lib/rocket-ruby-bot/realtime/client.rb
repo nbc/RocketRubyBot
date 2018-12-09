@@ -54,7 +54,7 @@ module RocketRubyBot
       def dispatch_event(data)
         return unless data.type
 
-        resume_fiber(data.result_id, data)
+        resume_fiber(data.result_id, data) if data.respond_to? :result_id
         run_hooks(data)
       end
 

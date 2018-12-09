@@ -108,10 +108,6 @@ module RocketRubyBot
         def type
           fields.args.first.type
         end
-
-        def result_id
-          id
-        end
       end
     end
   end

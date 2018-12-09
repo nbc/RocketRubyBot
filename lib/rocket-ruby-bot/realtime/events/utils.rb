@@ -7,15 +7,15 @@ module RocketRubyBot
         end
 
         def extract_type(name)
-          name = name.split(/::|\//)[-1]
+          name = name.split(%r{::|/})[-1]
           to_snake_case(name)
         end
 
         def to_snake_case(name)
-          name.gsub(/([A-Z]+)([A-Z][a-z])/,'\1_\2').
-            gsub(/([a-z\d])([A-Z])/,'\1_\2').
-            tr("-:", "_").
-            downcase
+          name.gsub(/([A-Z]+)([A-Z][a-z])/, '\1_\2')
+            .gsub(/([a-z\d])([A-Z])/, '\1_\2')
+            .tr('-:', '_')
+            .downcase
         end
         
         def ts_to_datetime(struct)
