@@ -25,7 +25,12 @@ module RocketRubyBot
         
         def self.stream_builder(event)
           if STREAM.include? event.collection
-            STREAM[event.collection].new event
+            stream = STREAM[event.collection]
+            if stream.respond_to? :new
+              STREAM[event.collection].new event
+            else
+              STREAM[event.collection].build event
+            end
           else
             RocketRubyBot::Realtime::Events::Unknown.new result
           end

@@ -14,7 +14,6 @@ module RocketRubyBot
           @msg = params.msg
           @u = User.new params.u
           @_updatedAt = ts_to_datetime(params._updatedAt)
-          @groupable = params.groupable || false
         end
         alias_method :room_id, :rid
         alias_method :event_id, :_id
@@ -82,31 +81,16 @@ module RocketRubyBot
           'room_changed_topic' => RoomTopicChanged }.freeze
 
 
-      class StreamRoomMessages
-        attr_reader :msg, :collection, :fields, :id
-
-        def initialize(params)
-          @msg = params.msg
-          @collection = params.collection
-          @id = params.id
-          @fields = OpenStruct.new eventName: params.fields.eventName
-
+      module StreamRoomMessages
+        def self.build(params)
           t = params.fields.args.first.t || :message
           if STREAM_ROOM_MESSAGES.key? t
-            @fields.args = params.fields.args.map { |m| STREAM_ROOM_MESSAGES[t].new m }
+            STREAM_ROOM_MESSAGES[t].new params.fields.args.first
           elsif t == :message
-            @fields.args = params.fields.args.map { |m| RoomMessage.new m }
+            RoomMessage.new params.fields.args.first
           else
-            logger.info [:unknown, params.fields.params.first]
+            RocketRubyBot::Realtime::Events::Unknown.new params
           end
-        end
-
-        def room_event
-          fields.args.first
-        end
-
-        def type
-          fields.args.first.type
         end
       end
     end

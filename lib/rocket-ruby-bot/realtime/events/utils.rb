@@ -2,6 +2,7 @@ module RocketRubyBot
   module Realtime
     module Events
       module Utils
+        extend self
         def class_to_snake_case
           extract_type(self.class.name).to_sym
         end

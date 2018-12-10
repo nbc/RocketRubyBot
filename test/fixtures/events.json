@@ -45,7 +45,7 @@
 	    ]
 	}
     },
-    "notification": {
+    "user_notification": {
 	"msg": "changed",
 	"collection": "stream-notify-user",
 	"id": "id",
@@ -53,13 +53,23 @@
 	    "eventName": "<user-id>/notification",
 	    "args": [
 		{
-		    "text": "message"
+		    "title": "@<sender-nickname>",
+		    "text": "<message-text>",
+		    "payload": {
+			"_id": "<notification-id?>",
+			"rid": "<room-id>",
+			"sender": {
+			    "_id": "<sender-user-id>",
+			    "username": "<sender-nickname>"
+			},
+			"type": "d"
+		    }
 		}
 	    ]
 	}
     },
 
-    "subscriptions_changed": {
+    "user_subscriptions_changed": {
 	"msg":"changed","collection":"stream-notify-user","id":"id",
 		 "fields":{"eventName":"YzdhBRGZvssu2Lm6x/subscriptions-changed",
 			   "args":["inserted",{"_id":"6wdWfNBRSnQGFHNhb","open":true,"alert":true,"unread":1,"userMentions":1,"groupMentions":0,
@@ -67,20 +77,20 @@
 					       "u":{"_id":"YzdhBRGZvssu2Lm6x","username":"mybot","name":"mybot"},"_updatedAt":{"$date":1541952876944}}]}
     },
 
-    "subscriptions_changed": {
+    "user_subscriptions_changed": {
 	"msg":"changed","collection":"stream-notify-user","id":"id",
 	"fields":{"eventName":"YzdhBRGZvssu2Lm6x/subscriptions-changed","args":["updated"]}
     },
 
 
-    "subscriptions_changed": {
+    "user_subscriptions_changed": {
 	"msg":"changed","collection":"stream-notify-user","id":"id",
 	"fields":{"eventName":"YzdhBRGZvssu2Lm6x/subscriptions-changed",
 		  "args":["removed",{"_id":"6wdWfNBRSnQGFHNhb","u":{"_id":"YzdhBRGZvssu2Lm6x","username":"mybot","name":"mybot"}}]}
     },
 
 
-    "rooms_changed": {
+    "user_rooms_changed": {
 	"msg": "changed",
 	"collection": "stream-notify-user",
 	"fields": {
@@ -91,23 +101,6 @@
 	    ]
 	}
     },
-    "otr": {
-	"msg": "changed",
-	"collection": "stream-notify-user",
-	"id": "id",
-	"fields": {
-	    "eventName": "<user-id>/otr",
-	    "args": [
-		"handshake",
-		{
-		    "roomId": "<room-id>",
-		    "userId": "<requester-id>"
-		}
-            ]
-
-	}
-    },
-
     "authenticated": {
 	"msg": "result",
 	"result": {

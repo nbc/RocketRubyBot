@@ -9,8 +9,7 @@ module RocketRubyBot
         @routes ||= RocketRubyBot::Commands.routes || []
       end
       
-      def call(client, data)
-        message = data.room_event
+      def call(client, message)
         return if message_to_self? message
 
         routes.find do |route|
