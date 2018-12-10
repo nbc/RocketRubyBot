@@ -2,12 +2,12 @@ require_relative '../test_helpers'
 
 require 'rocket-ruby-bot'
 
-class EventsConnected < MiniTest::Test
+class HooksConnected < MiniTest::Test
 
   def setup
     RocketRubyBot::Config.token = 'a token'
     RocketRubyBot::Config.logger = Logger.new StringIO.new
-    @event = RocketRubyBot::Events::Connected.new
+    @event = RocketRubyBot::Hooks::Connected.new
     @client = Class.new
   end
   

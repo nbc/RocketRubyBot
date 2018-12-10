@@ -15,7 +15,7 @@ module RocketRubyBot
 
     def hooks
       # FIXME: why dup ?
-      @hooks ||= RocketRubyBot::Events::Base.event_hooks.dup
+      @hooks ||= RocketRubyBot::Hooks::Base.event_hooks.dup
     end
 
     def self.instance

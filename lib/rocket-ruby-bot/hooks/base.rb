@@ -1,5 +1,5 @@
 module RocketRubyBot
-  module Events
+  module Hooks
     # every event should inherit from this class
     class Base
       include RocketRubyBot::Realtime::API
@@ -9,7 +9,7 @@ module RocketRubyBot
         attr_accessor :hooks
 
         def event_hooks
-          RocketRubyBot::Events::Base.hooks ||= Hash.new { |h, k| h[k] = [] }
+          RocketRubyBot::Hooks::Base.hooks ||= Hash.new { |h, k| h[k] = [] }
         end
         
         def register(hook)

@@ -2,7 +2,7 @@ require_relative '../test_helpers'
 
 require 'rocket-ruby-bot'
 
-class EventsMessage < MiniTest::Test
+class HooksMessage < MiniTest::Test
 
   def setup
     @class = Class.new
@@ -12,7 +12,7 @@ class EventsMessage < MiniTest::Test
                "fields": {"args": [{"msg": "THIS_BOT TEXT here",
                                     "u": {"_id": 'id'}}]}}.to_json
     @message = RocketRubyBot::Realtime::Events::EventFactory.builder message
-    @event = RocketRubyBot::Events::Message.new
+    @event = RocketRubyBot::Hooks::Message.new
   end
 
   def test_message_from_self

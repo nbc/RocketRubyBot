@@ -16,7 +16,7 @@ class TestServer < Minitest::Test
 
     assert_instance_of RocketRubyBot::Realtime::Client, server.client
     assert server.hooks.key? :ping
-    assert_instance_of RocketRubyBot::Events::Ping, server.hooks[:ping].first
+    assert_instance_of RocketRubyBot::Hooks::Ping, server.hooks[:ping].first
   end
 
   def test_with_mock_run

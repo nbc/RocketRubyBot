@@ -2,10 +2,10 @@ require_relative '../test_helpers'
 
 require 'rocket-ruby-bot'
 
-class EventsPing < MiniTest::Test
+class HooksPing < MiniTest::Test
 
   def test_ping
-    @event = RocketRubyBot::Events::Ping.new
+    @event = RocketRubyBot::Hooks::Ping.new
     client = Minitest::Mock.new
     client.expect :send_json, nil, [{ msg: 'pong' }]
     

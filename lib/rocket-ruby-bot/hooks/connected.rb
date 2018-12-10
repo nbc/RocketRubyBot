@@ -1,5 +1,5 @@
 module RocketRubyBot
-  module Events
+  module Hooks
     # login class
     class Connected < Base
       register :connected
