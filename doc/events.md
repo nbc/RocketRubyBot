@@ -63,11 +63,9 @@ https://rocket.chat/docs/developer-guides/realtime-api/subscriptions/stream-room
 
 All events arriving to your bot.
 
-* `:message`
-* `:otr`
-* `:notification`
-* `:rooms_changed`
-* `:subscriptions_changed`
+* `:user_notification` : direct message or message with @yourname or @all
+* `:user_rooms_changed` : new or updated message
+* `:user_subscriptions_changed` : added to a group or removed from a group
 
 See https://rocket.chat/docs/developer-guides/realtime-api/subscriptions/stream-notify-user/
 
@@ -86,8 +84,6 @@ https://rocket.chat/docs/developer-guides/realtime-api/subscriptions/stream-noti
 ### `stream-notify-room` stream
 * `:typing`
 * `:delete_message`
-
-
 
 # Sources
 
