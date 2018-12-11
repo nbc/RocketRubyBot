@@ -53,6 +53,14 @@ class TestCommands < Minitest::Test
     
     assert_equal /test/i, subclass.routes.first[:regexp]
   end
+
+  def test_api
+    assert_respond_to @class, :login
+  end
+
+  def test_stream
+    assert_respond_to @class, :stream_room_messages
+  end
   
   def teardown
     RocketRubyBot::Config.url = nil

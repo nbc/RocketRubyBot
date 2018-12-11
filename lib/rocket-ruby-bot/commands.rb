@@ -3,6 +3,7 @@
 module RocketRubyBot
   class Commands
     include RocketRubyBot::Realtime::API
+    include RocketRubyBot::Realtime::Stream
     include RocketRubyBot::Routes
 
     include RocketRubyBot::Utils::Loggable
