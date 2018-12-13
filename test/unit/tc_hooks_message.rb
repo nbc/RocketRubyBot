@@ -8,9 +8,10 @@ class HooksMessage < MiniTest::Test
     @class = Class.new
     @class.extend RocketRubyBot::Routes
 
-    message = {"msg": "changed", "collection": "stream-room-messages",
-               "fields": {"args": [{"msg": "THIS_BOT TEXT here",
-                                    "u": {"_id": 'id'}}]}}.to_json
+    message = JSON.parse({ "msg": "changed", "collection": "stream-room-messages",
+                               "fields": {"args": [{"msg": "THIS_BOT TEXT here",
+                                                    "u": {"_id": 'id'}}]}}.to_json,
+                         object_class: OpenStruct)
     @message = RocketRubyBot::Realtime::Events::EventFactory.builder message
     @event = RocketRubyBot::Hooks::Message.new
   end

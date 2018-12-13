@@ -10,7 +10,7 @@ class TestStreamNotifyuser < MiniTest::Test
                 "collection":"stream-notify-user",
                 "fields":{"eventName":"a/subscriptions-changed",
                           "args":["inserted",{"rid":"room_id"}]}}
-    stream = RocketRubyBot::Realtime::Events::EventFactory.builder inserted.to_json
+    stream = RocketRubyBot::Realtime::Events::EventFactory.builder to_openstruct(inserted)
     assert_equal 'room_id', stream.added_to_group
   end
   
@@ -18,7 +18,7 @@ class TestStreamNotifyuser < MiniTest::Test
     not_inserted = {"msg":"changed",
                     "collection":"stream-notify-user",
                     "fields":{"eventName":"a/subscriptions-changed", "args":['updated', { 't':'d' }] } }
-    stream = RocketRubyBot::Realtime::Events::EventFactory.builder not_inserted.to_json
+    stream = RocketRubyBot::Realtime::Events::EventFactory.builder to_openstruct(not_inserted)
     assert_nil stream.added_to_group
   end
 

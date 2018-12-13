@@ -12,3 +12,8 @@ require 'climate_control'
 Minitest::Reporters.use!
 
 require 'rocket-ruby-bot'
+
+def to_openstruct(hash)
+  JSON.parse(hash.to_json, object_class: OpenStruct)
+end
+  

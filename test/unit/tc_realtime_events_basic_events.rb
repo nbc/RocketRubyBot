@@ -46,21 +46,7 @@ class RealtimeEventsBasicEvents < MiniTest::Test
     assert_equal :added, obj.type
   end
   
-  def test_result_without_token
-    event = { 'msg': 'result', 'id': '2', 'result': 'GENERAL' }
-    obj = build_event(event)
-    assert_equal '2', obj.id
-    assert_equal :result, obj.type
-  end
-
-  def test_result_with_token
-    event = { 'msg': 'result',
-              'result': { 'token': 'GouVnO6BwVyv8VJ840LFjGW7Shd02Ir-CPwajbvm2wU' } }
-    obj = build_event(event)
-    assert_equal :authenticated, obj.type
-  end
-
   def build_event(event)
-    RocketRubyBot::Realtime::Events::EventFactory.builder(event.to_json)
+    RocketRubyBot::Realtime::Events::EventFactory.builder(to_openstruct(event))
   end
 end

@@ -5,16 +5,16 @@ module RocketRubyBot
       register :connected
 
       def call(client, _data)
-        client.say login(username: config.user,
-                         digest: config.digest,
-                         token: config.token) do |message|
-          if message.error
-            logger.fatal message.error.message
-            raise message.error.message
-          end
-          config.user_id = message.result['id']
-          config.token = message.result['token']
+        message = client.login(username: config.user,
+                               digest: config.digest,
+                               token: config.token)
+        pp message
+        if not message.token
+          logger.fatal message.error
+          raise message.error
         end
+        config.user_id = message.user_id
+        config.token = message.token
       end
     end
   end

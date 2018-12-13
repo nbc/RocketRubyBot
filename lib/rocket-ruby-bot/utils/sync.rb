@@ -3,7 +3,7 @@ module RocketRubyBot
     # module to "resync" messages with Fiber
     module Sync
       def self.fiber_store
-        @fiber_store ||= {}
+        @fiber_store ||= Hash.new
       end
 
       def event_fiber(&_block)
@@ -15,12 +15,13 @@ module RocketRubyBot
           message = Fiber.yield
           yield message
         end
-        Sync.fiber_store[id] = f
+        Sync.fiber_store[id] = OpenStruct.new fiber: f
         f.resume
       end
 
-      def sync_fiber(id, &_block)
-        Sync.fiber_store[id] = Fiber.current
+      def sync_fiber(id, method = false, &_block)
+        Sync.fiber_store[id] = OpenStruct.new fiber: Fiber.current,
+                                              parse_with: method
         yield
         Fiber.yield
       end
@@ -28,8 +29,12 @@ module RocketRubyBot
       def resume_fiber(id, data)
         return unless Sync.fiber_store.key? id
 
-        fiber = Sync.fiber_store.delete id
-        fiber.resume data
+        obj = Sync.fiber_store.delete id
+        obj.fiber.resume data
+      end
+
+      def self.parse_method(id)
+        return Sync.fiber_store[id].parse_with if Sync.fiber_store.key?(id)
       end
     end
   end

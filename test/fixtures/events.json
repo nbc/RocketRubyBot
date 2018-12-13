@@ -101,13 +101,6 @@
 	    ]
 	}
     },
-    "authenticated": {
-	"msg": "result",
-	"result": {
-	    "token": "S8cdVJJUfaDs26VDvOZEdW3DXK2mzyW_q5Q5L5ugy4I"
-	}
-    },
-
     "ping": {
 	"msg": "ping"
     },

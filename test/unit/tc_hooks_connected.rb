@@ -13,9 +13,8 @@ class HooksConnected < MiniTest::Test
   
   def test_connected
     # rubocop:disable Lint/NestedMethodDefinition
-    def @client.say(_data)
-      yield RocketRubyBot::Realtime::Events::EventFactory.builder({ msg: 'result',
-                                                                    result: { id: 'an id' }}.to_json)
+    def @client.login(_data)
+      OpenStruct.new(token: 'token', user_id: 'an id')
     end
     # rubocop:enable Lint/NestedMethodDefinition
     
@@ -25,9 +24,9 @@ class HooksConnected < MiniTest::Test
 
   def test_connection_error
     # rubocop:disable Lint/NestedMethodDefinition
-    def @client.say(_data)
-      yield RocketRubyBot::Realtime::Event.new(msg: 'result',
-                                               error: { message: 'a reason' })
+    def @client.login(_data)
+      yield RocketRubyBot::Realtime::Event.new(to_openstruct(msg: 'result',
+                                                             error: { message: 'a reason' }))
     end
     # rubocop:enable Lint/NestedMethodDefinition
     

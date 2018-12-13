@@ -52,6 +52,10 @@ class RealtimeClient < MiniTest::Test
 
     assert_mock mock
   end
+
+  def test_sync_say
+    skip 'not yet implemented'
+  end
   
   def test_say_with_block
     mock = Minitest::Mock.new
@@ -62,7 +66,7 @@ class RealtimeClient < MiniTest::Test
 
     assert_mock mock
     assert RocketRubyBot::Utils::Sync.fiber_store.key?('1')
-    assert_instance_of Fiber, RocketRubyBot::Utils::Sync.fiber_store['1']
+    assert_instance_of Fiber, RocketRubyBot::Utils::Sync.fiber_store['1'].fiber
   end
 
   def test_on_open
@@ -76,9 +80,10 @@ class RealtimeClient < MiniTest::Test
   end
 
   def test_dispatch_event
-    message = RocketRubyBot::Realtime::Events::EventFactory.builder({ "msg": "ping" }.to_json)
+    message = { "msg": "ping" }
+    response = RocketRubyBot::Realtime::Events::EventFactory.builder(to_openstruct(message))
     mock = Minitest::Mock.new
-    mock.expect :call, '', [@client, message ]
+    mock.expect :call, '', [@client, response ]
     @client.hooks = { ping: [mock] }
     
     @client.dispatch_event message
@@ -87,7 +92,7 @@ class RealtimeClient < MiniTest::Test
   end
 
   def test_on_message
-    message = RocketRubyBot::Realtime::Events::EventFactory.builder({ "msg": "ping" }.to_json)
+    message = RocketRubyBot::Realtime::Events::EventFactory.builder(to_openstruct({ "msg": "ping" }))
     event = OpenStruct.new :data => { "msg": "ping" }.to_json
     mock = Minitest::Mock.new
     mock.expect :call, '', [@client, message]

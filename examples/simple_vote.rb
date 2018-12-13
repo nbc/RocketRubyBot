@@ -20,10 +20,9 @@ class SimpleVoteBot < RocketRubyBot::Bot
     SimpleVote.bot_name = config.user
 
     # we subscribe to all group we are in
-    client.say get_subscriptions do |message|
-      message.result.update.each do |canal|
-        client.say stream_room_messages(room_id: canal.rid)
-      end
+    subscriptions = client.get_subscriptions
+    subscriptions.update.each do |canal|
+      client.say stream_room_messages(room_id: canal.rid)
     end
 
     # we subscribe to stream to known when we are added to group

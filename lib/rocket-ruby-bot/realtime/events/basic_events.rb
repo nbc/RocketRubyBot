@@ -4,7 +4,7 @@ module RocketRubyBot
   module Realtime
     module Events
       BASIC_EVENTS = %w[ping connected ready updated removed
-                        failed error nosub added result].freeze
+                        failed error nosub added].freeze
 
       # FIXME : awful hack to register Result
       @basic_events = {}
@@ -23,26 +23,6 @@ module RocketRubyBot
       class Ready
         def result_id
           subs.first
-        end
-      end
-
-      class Result
-        def token?
-          return true if result.respond_to?(:token)
-        end
-
-        def error?
-          return true if respond_to?(:error)
-        end
-        
-        def type
-          return :authenticated if token?
-
-          :result
-        end
-
-        def result_id
-          id
         end
       end
     end

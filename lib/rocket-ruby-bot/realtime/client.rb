@@ -35,6 +35,18 @@ module RocketRubyBot
 
         [uid, args]
       end
+
+      def method_missing(method, *params)
+        if API.respond_to? method
+          params = API.send method, *params
+          sync_say params, method
+        elsif Stream.respond_to? method
+          params = Stream.send method, *params
+          say params
+        else
+          raise NoMethodError, "undefined method `#{m}` for class #{self.class.name}"
+        end
+      end
       
       def say(args = {}, &block)
         uid, args = merge_arguments args
@@ -42,9 +54,9 @@ module RocketRubyBot
         send_json(args)
       end
 
-      def sync_say(args = {})
+      def sync_say(args, method = false)
         uid, args = merge_arguments args
-        sync_fiber(uid) { send_json(args) }
+        sync_fiber(uid, method) { send_json(args) }
       end
       
       def send_json(args)
@@ -52,10 +64,11 @@ module RocketRubyBot
       end
       
       def dispatch_event(data)
-        return unless data.type
+        id = data.fetch('id', nil)
+        event = RocketRubyBot::Realtime::Events::EventFactory.builder data
 
-        resume_fiber(data.result_id, data) if data.respond_to? :result_id
-        run_hooks(data)
+        resume_fiber(id, event.value) if id and event.respond_to? :value
+        run_hooks(event)
       end
 
       def run_hooks(data)
@@ -81,14 +94,13 @@ module RocketRubyBot
       end
 
       def on_open
-        logger.debug(":open")
+        logger.debug(':open')
         send_json(API.connect)
       end
 
       def on_message(event)
         logger.debug("<- #{event.data}")
-        data = RocketRubyBot::Realtime::Events::EventFactory.builder event.data
-        dispatch_event(data)
+        dispatch_event JSON.parse(event.data)
       end
 
       def on_close(event)

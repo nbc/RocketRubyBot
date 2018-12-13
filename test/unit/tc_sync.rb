@@ -16,7 +16,7 @@ class TestSync < Minitest::Test
     obj.block_fiber(id) { |v| v }
 
     assert RocketRubyBot::Utils::Sync.fiber_store.key?(id)
-    assert_instance_of Fiber, RocketRubyBot::Utils::Sync.fiber_store[id]
+    assert_instance_of Fiber, RocketRubyBot::Utils::Sync.fiber_store[id].fiber
 
     assert_equal value, obj.resume_fiber(id, value)
     assert RocketRubyBot::Utils::Sync.fiber_store.empty?
@@ -33,7 +33,7 @@ class TestSync < Minitest::Test
     end.resume
 
     assert RocketRubyBot::Utils::Sync.fiber_store.key?(id)
-    assert_instance_of Fiber, RocketRubyBot::Utils::Sync.fiber_store[id]
+    assert_instance_of Fiber, RocketRubyBot::Utils::Sync.fiber_store[id].fiber
     
     obj.resume_fiber(id, value)
     assert_equal value, result
