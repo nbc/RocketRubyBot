@@ -12,16 +12,30 @@ module RocketRubyBot
           if result.is_a? Hash
             result = JSON.parse(result.to_json, object_class: OpenStruct)
           end
-          
-          return result_builder(result) if result.msg.eql? 'result'
-          
-          # if BASIC_EVENTS.include? result.msg
-          if Events.basic_events.key? result.msg
-            return Events.basic_events[result.msg].new result
-          end
-          return stream_builder(result) if result.msg.eql? 'changed'
 
-          Unknown.new result
+          if result.msg.eql? 'result'
+            result_builder(result) 
+          elsif result.msg.eql? 'changed'
+            stream_builder(result) 
+          elsif Events.basic_events.key? result.msg
+            basic_event_builder(result)
+          else
+            Unknown.new result
+          end
+        end
+
+        def self.basic_event_builder(result)
+           Events.basic_events[result.msg].new result
+        end
+        
+        def self.result_builder(result)
+          method = RocketRubyBot::Utils::Sync.parse_method(result.id)
+          pp method
+          if ParseResult.methods.include? method
+            ParseResult.send method, result
+          else
+            Result.new id: result.id, value: result.result
+          end
         end
 
         STREAM = { 'stream-room-messages' => StreamRoomMessages,
@@ -30,16 +44,6 @@ module RocketRubyBot
                    'stream-notify-user' => StreamNotifyUser,
                    'stream-notify-room' => StreamNotifyRoom }.freeze
 
-        def self.result_builder(result)
-          method = RocketRubyBot::Utils::Sync.parse_method(result.id)
-
-          if ParseResult.methods.include? method
-            ParseResult.send method, result
-          else
-            Result.new id: result.id, value: result.result
-          end
-        end
-        
         def self.stream_builder(event)
           if STREAM.include? event.collection
             stream = STREAM[event.collection]

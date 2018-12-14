@@ -8,7 +8,6 @@ module RocketRubyBot
         message = client.login(username: config.user,
                                digest: config.digest,
                                token: config.token)
-        pp message
         if not message.token
           logger.fatal message.error
           raise message.error
