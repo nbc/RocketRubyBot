@@ -39,13 +39,17 @@ module RocketRubyBot
       def method_missing(method, *params)
         if API.respond_to? method
           params = API.send method, *params
-          sync_say params, method
+          return sync_say params, method
         elsif Stream.respond_to? method
           params = Stream.send method, *params
-          say params
-        else
-          raise NoMethodError, "undefined method `#{m}` for class #{self.class.name}"
+          return say params
         end
+
+        super
+      end
+
+      def respond_to_missing?(method, include_private = false)
+        API.respond_to?(method) || Stream.respond_to?(method) || super
       end
       
       def say(args = {}, &block)
@@ -73,7 +77,7 @@ module RocketRubyBot
 
       def run_hooks(data)
         return unless hooks.key? data.type
-        
+
         hooks[data.type].each do |hook|
           event_fiber { hook.call(self, data) }
         end
