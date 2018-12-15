@@ -68,10 +68,9 @@ module RocketRubyBot
       end
       
       def dispatch_event(data)
-        id = data.fetch('id', nil)
         event = RocketRubyBot::Realtime::Events::EventFactory.builder data
 
-        resume_fiber(id, event.value) if id and event.respond_to? :value
+        resume_fiber(event.id, event.value) if event.respond_to? :value
         run_hooks(event)
       end
 
