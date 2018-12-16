@@ -40,15 +40,20 @@ RocketRubyBot::UserStore.configure do |user_store|
 end
 
 class PongBot < RocketRubyBot::Bot
+  # subscribe to new messages in the general room
   setup do |client|
-    client.say get_room_id(room: user_store.room_name) do |message|
-      user_store.room_id = message.result
-      client.say stream_room_messages(room_id: user_store.room_id)
-    end
+    ret = client.get_room_id(room: user_store.room_name)
+    client.stream_room_messages(room_id: ret.room_id)
   end
 
-  command 'ping' do |client, message, match|
-    client.say send_message(room_id: message.rid, msg: "pong")
+  # reply pong to "mybot ping"
+  command 'ping' do |client, message, _match|
+    client.send_message(room_id: message.rid, msg: "pong")
+  end
+
+  # reply pong to "! ping"
+  match(/!\s*ping/) do |client, message, _match|
+    client.send_message(room_id: message.rid, msg: "pong")
   end
 end
 
@@ -97,7 +102,7 @@ You can find the list of events [here](doc/events.md)
 
 ```ruby
 command 'ping' do |client, message, match|
-  client.say send_message(room_id: message.rid, msg: "pong")
+  client.send_message(room_id: message.rid, msg: "pong")
 end
 ```
 
@@ -116,53 +121,12 @@ match /!duck\s+(?<text>\S.*)/ do |client, message, match|
 end
 ```
 
-
-### say
-
-`say` is used to send message to Rocket.Chat.
-
-If called without a block, it just send data :
-
-```ruby
-  client.say send_message(message_id: uuid, room_id: room_id, msg: "pong")
-```
-
-If you want to do something with the server response, you can call `client.say` with a block :
-
-```ruby
-client.say get_room_id(room: "room_name") do |message|
-  user_store.room_id = message.result
-  client.say stream_room_messages(room_id: user_store.room_id)
-end
-```
-
-or use `sync_say` that serialize answer :
-
-```ruby
-res = client.sync_say get_room_id(room: "room_name")
-user_store.room_id = res.result
-client.say stream_room_messages(room_id: user_store.room_id)
-```
-
-when authenticated, ask the server for the room's id wait for the answer and send a `stream_room_messages` subscription for this room.
-
-In this case, a rest call to get the `room_id` is perhaps a simplier solution:
-
-```ruby
-on_event :authenticated do |client, data|
-  group = web_client.groups.info(name: "room_name")
-  client.say stream_room_messages(room_id: group.id)
-end
-```
-
 ## RocketChat API
 
 All the methods of the [realtime API](https://rocket.chat/docs/developer-guides/realtime-api/) are available. The beginning of a documentation [here](doc/realtime_api.md). For more information, use [the code](lib/rocket-ruby-bot/realtime/api.rb) for the moment.
 
-They all return well-formed messages you can send to RocketChat with `say` or `sync_say`.
-
 ```ruby
-client.say stream_notify_user user_id: "user_id", sub: "message"
+client.stream_notify_user user_id: "user_id", sub: "message"
 ```
 
 ## config
@@ -173,9 +137,8 @@ In your bot, you can access configuration with the `config` command. It has thre
 * `config.user_id` : the user_id of your bot
 
 ```ruby
-client.say stream_notify_user user_id: config.user_id, sub: "message"
+client.stream_notify_user user_id: config.user_id, sub: "message"
 ```
-
 
 ## other useful methods 
 
