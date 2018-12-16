@@ -1,4 +1,4 @@
-require_relative '../test_helpers'
+require_relative '../../test_helpers'
 
 require 'json'
 require 'rocket-ruby-bot/rest/client'
