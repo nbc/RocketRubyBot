@@ -6,20 +6,20 @@
 
 ## Features
 
-A very crude and ill documented RocketChat ruby bot framework
+A very crude and ill documented RocketChat ruby bot framework.
 
 ## Disclaimer
 
 I code for fun, I'm not and will never be a good developer.
 
-## Simple bot
+## A simple bot
 
 #### Gemfile
 
 ```ruby
 source 'https://rubygems.org'
 
-gem 'rocket-ruby-bot', :git => 'https://github.com/nbc/rocket-ruby-bot.git'
+gem 'rocket-ruby-bot', :git => 'https://github.com/nbc/RocketRubyBot.git'
 ```
 
 #### pongbot.rb
@@ -68,6 +68,7 @@ curl -H "Content-type:application/json" \
       -d '{ "username": "<username>", "password": "<password>" }'
 ```
 
+	More examples [here](examples)
 
 ## Bot interaction
 
