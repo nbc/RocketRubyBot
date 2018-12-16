@@ -12,7 +12,7 @@ class HooksMessage < MiniTest::Test
                                "fields": {"args": [{"msg": "THIS_BOT TEXT here",
                                                     "u": {"_id": 'id'}}]}}.to_json,
                          object_class: OpenStruct)
-    @message = RocketRubyBot::Realtime::Events::EventFactory.builder message
+    @message = RocketRubyBot::Events::EventFactory.builder message
     @event = RocketRubyBot::Hooks::Message.new
   end
 

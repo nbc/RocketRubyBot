@@ -1,9 +1,9 @@
-require_relative '../test_helpers'
+require_relative '../../test_helpers'
 
 require 'rocket-ruby-bot'
 require 'ostruct'
 
-class RealtimeEventsBasicEvents < MiniTest::Test
+class TestBasicEvents < MiniTest::Test
   def test_ping
     event = { 'msg': 'ping' }
     obj = build_event(event)
@@ -47,6 +47,6 @@ class RealtimeEventsBasicEvents < MiniTest::Test
   end
   
   def build_event(event)
-    RocketRubyBot::Realtime::Events::EventFactory.builder(to_openstruct(event))
+    RocketRubyBot::Events::EventFactory.builder(to_openstruct(event))
   end
 end

@@ -81,7 +81,7 @@ class RealtimeClient < MiniTest::Test
 
   def test_dispatch_event
     message = { "msg": "ping" }
-    response = RocketRubyBot::Realtime::Events::EventFactory.builder(to_openstruct(message))
+    response = RocketRubyBot::Events::EventFactory.builder(to_openstruct(message))
     mock = Minitest::Mock.new
     mock.expect :call, '', [@client, response ]
     @client.hooks = { ping: [mock] }
@@ -92,7 +92,7 @@ class RealtimeClient < MiniTest::Test
   end
 
   def test_on_message
-    message = RocketRubyBot::Realtime::Events::EventFactory.builder(to_openstruct({ "msg": "ping" }))
+    message = RocketRubyBot::Events::EventFactory.builder(to_openstruct({ "msg": "ping" }))
     event = OpenStruct.new :data => { "msg": "ping" }.to_json
     mock = Minitest::Mock.new
     mock.expect :call, '', [@client, message]

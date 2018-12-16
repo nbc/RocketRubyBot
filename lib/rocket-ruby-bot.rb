@@ -3,7 +3,7 @@ require 'rocket-ruby-bot/utils'
 require 'rocket-ruby-bot/api'
 require 'rocket-ruby-bot/config'
 require 'rocket-ruby-bot/user_store'
-require 'rocket-ruby-bot/realtime/events'
+require 'rocket-ruby-bot/events'
 
 module RocketRubyBot
   class << self

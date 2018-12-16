@@ -1,8 +1,8 @@
-require_relative '../test_helpers'
+require_relative '../../test_helpers'
 
 require 'ostruct'
 require 'json'
-require 'rocket-ruby-bot/realtime/events'
+require 'rocket-ruby-bot/events'
 
 class TestStreamNotify < MiniTest::Test
 
@@ -11,17 +11,17 @@ class TestStreamNotify < MiniTest::Test
   end
   
   def test_stream_notify_logged
-    stream = RocketRubyBot::Realtime::Events::StreamNotifyLogged.new @obj
+    stream = RocketRubyBot::Events::StreamNotifyLogged.new @obj
     assert stream.type
   end
 
   def test_stream_notify_all
-    stream = RocketRubyBot::Realtime::Events::StreamNotifyAll.new @obj
+    stream = RocketRubyBot::Events::StreamNotifyAll.new @obj
     assert stream.type
   end
 
   def test_stream_notify_room
-    stream = RocketRubyBot::Realtime::Events::StreamNotifyRoom.new @obj
+    stream = RocketRubyBot::Events::StreamNotifyRoom.new @obj
     assert stream.type
   end
 end

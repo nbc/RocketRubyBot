@@ -1,17 +1,17 @@
-require_relative '../test_helpers'
+require_relative '../../test_helpers'
 
 require 'ostruct'
 require 'json'
-require 'rocket-ruby-bot/realtime/events'
+require 'rocket-ruby-bot/events'
 
 module Test
   class CamelCase
-    include RocketRubyBot::Realtime::Events::Utils
+    include RocketRubyBot::Events::Utils
   end
 end
 
 class AnotherCase
-  include RocketRubyBot::Realtime::Events::Utils
+  include RocketRubyBot::Events::Utils
 end
 
 class TestEventsUtils < MiniTest::Test
@@ -24,7 +24,7 @@ class TestEventsUtils < MiniTest::Test
   end
 
   def test_to_snake_case
-    klass = Class.new.include RocketRubyBot::Realtime::Events::Utils
+    klass = Class.new.include RocketRubyBot::Events::Utils
     obj = klass.new
 
     assert_equal 'users_name_changed', obj.to_snake_case('Users:NameChanged')
@@ -40,7 +40,7 @@ class TestEventsUtils < MiniTest::Test
   end
 
   def test_extract_type
-    klass = Class.new.include RocketRubyBot::Realtime::Events::Utils
+    klass = Class.new.include RocketRubyBot::Events::Utils
     obj = klass.new
     
     res = obj.extract_type('simple')
@@ -53,7 +53,7 @@ class TestEventsUtils < MiniTest::Test
   def test_user_actor
     klass = Class.new do
       attr_accessor :u, :msg
-      include RocketRubyBot::Realtime::Events::UserActor
+      include RocketRubyBot::Events::UserActor
     end
     obj = klass.new
     obj.u, obj.msg = 'u', 'msg'
