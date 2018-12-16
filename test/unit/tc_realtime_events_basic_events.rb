@@ -21,7 +21,7 @@ class RealtimeEventsBasicEvents < MiniTest::Test
     event = { 'msg': 'ready', 'subs': ['3'] }
     obj = build_event(event)
     assert_equal :ready, obj.type
-    assert_equal '3', obj.result_id
+    assert_equal '3', obj.id
   end
 
   def test_updated

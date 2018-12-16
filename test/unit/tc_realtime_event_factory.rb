@@ -19,15 +19,13 @@ class TestEvents < MiniTest::Test
   end
 
   def test_result_id_for_subscription
-    skip "no longer like that"
     event = RocketRubyBot::Realtime::Events::EventFactory.builder(to_openstruct({ msg: 'ready', subs: ['4'] }))
-    assert_equal '4', event.result_id
+    assert_equal '4', event.id
   end
 
   def test_result_id_for_other_commands
-    skip "no longer like that"
     event = RocketRubyBot::Realtime::Events::EventFactory.builder(to_openstruct({ msg: 'result', id: '2', result: 'GENERAL' }))
-    assert_equal '2', event.result_id
+    assert_equal '2', event.id
   end
 
   def test_log_unknown_event

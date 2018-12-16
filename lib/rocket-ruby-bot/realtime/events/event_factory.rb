@@ -30,7 +30,6 @@ module RocketRubyBot
         
         def self.result_builder(result)
           method = RocketRubyBot::Utils::Sync.parse_method(result.id)
-          pp method
           if ParseResult.methods.include? method
             ParseResult.send method, result
           else

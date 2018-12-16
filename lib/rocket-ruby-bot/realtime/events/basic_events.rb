@@ -21,7 +21,7 @@ module RocketRubyBot
       end
 
       class Ready
-        def result_id
+        def id
           subs.first
         end
       end
