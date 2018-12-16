@@ -2,7 +2,9 @@ module RocketRubyBot
   module Hooks
     # every event should inherit from this class
     class Base
-      include RocketRubyBot::Realtime::API
+      include RocketRubyBot::API::Methods
+      include RocketRubyBot::API::Miscs
+      include RocketRubyBot::API::Streams
       include RocketRubyBot::Utils::Loggable
 
       class << self

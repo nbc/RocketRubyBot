@@ -1,11 +1,10 @@
-require_relative '../test_helpers'
+require_relative '../../test_helpers'
 
 require 'json'
-require 'rocket-ruby-bot/realtime/api'
+require 'rocket-ruby-bot/api'
 
 class TestRealtimeApi < Minitest::Test
-  include RocketRubyBot::Realtime::API
-  extend RocketRubyBot::Realtime::API
+  include RocketRubyBot::API::Methods
   
   def test_login_with_digest
     assert_equal login(username: 'name', digest: 'digest'),
@@ -187,10 +186,6 @@ class TestRealtimeApi < Minitest::Test
                  { msg: 'method',
                    method: 'loadHistory',
                    params: ['id', nil, 50, { '$date': 0 }] }
-  end
-
-  def test_pong
-    assert_equal send_pong, { msg: 'pong' }
   end
 
   def test_get_room_id

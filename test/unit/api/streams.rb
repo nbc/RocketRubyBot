@@ -1,11 +1,10 @@
-require_relative '../test_helpers'
+require_relative '../../test_helpers'
 
 require 'json'
-require 'rocket-ruby-bot/realtime/api'
+require 'rocket-ruby-bot/api/streams'
 
 class TestRealtimeStream < Minitest::Test
-  include RocketRubyBot::Realtime::Stream
-  extend RocketRubyBot::Realtime::Stream
+  include RocketRubyBot::API::Streams
   
   def test_stream_notify_all
     assert_equal stream_notify_all(sub: 'roles-change'),

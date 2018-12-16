@@ -1,10 +1,9 @@
 require 'rocket-ruby-bot/version'
 require 'rocket-ruby-bot/utils'
-require 'rocket-ruby-bot/realtime/api'
-require 'rocket-ruby-bot/realtime/stream'
-require 'rocket-ruby-bot/realtime/events'
+require 'rocket-ruby-bot/api'
 require 'rocket-ruby-bot/config'
 require 'rocket-ruby-bot/user_store'
+require 'rocket-ruby-bot/realtime/events'
 
 module RocketRubyBot
   class << self

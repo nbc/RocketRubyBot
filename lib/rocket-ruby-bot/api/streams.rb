@@ -1,8 +1,8 @@
 module RocketRubyBot
-  module Realtime
+  module API
     # implements methods calls from
     # https://rocket.chat/docs/developer-guides/realtime-api/method-calls/
-    module Stream
+    module Streams
 
       def included(base)
         base.extend self

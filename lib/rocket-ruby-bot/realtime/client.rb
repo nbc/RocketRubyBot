@@ -37,11 +37,11 @@ module RocketRubyBot
       end
 
       def method_missing(method, *params)
-        if API.respond_to? method
-          params = API.send method, *params
+        if API::Methods.respond_to? method
+          params = API::Methods.send method, *params
           return sync_say params, method
-        elsif Stream.respond_to? method
-          params = Stream.send method, *params
+        elsif API::Streams.respond_to? method
+          params = API::Streams.send method, *params
           return say params
         end
 
@@ -49,7 +49,7 @@ module RocketRubyBot
       end
 
       def respond_to_missing?(method, include_private = false)
-        API.respond_to?(method) || Stream.respond_to?(method) || super
+        API::Methods.respond_to?(method) || API::Streams.respond_to?(method) || super
       end
       
       def say(args = {}, &block)
@@ -98,7 +98,7 @@ module RocketRubyBot
 
       def on_open
         logger.debug(':open')
-        send_json(API.connect)
+        send_json(API::Miscs.connect)
       end
 
       def on_message(event)
