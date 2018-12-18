@@ -29,7 +29,6 @@ module RocketRubyBot
       def value; nil end
       def result?; true end
     end
-    
   end
 end
 

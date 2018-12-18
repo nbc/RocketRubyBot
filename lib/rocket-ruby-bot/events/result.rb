@@ -4,8 +4,7 @@ module RocketRubyBot
       attr_reader :id, :value
       
       def initialize(id:, value:)
-        @id = id
-        @value = value
+        @id, @value = id, value
       end
 
       def token?
