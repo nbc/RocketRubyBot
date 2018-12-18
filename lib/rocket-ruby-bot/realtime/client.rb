@@ -37,12 +37,11 @@ module RocketRubyBot
       end
 
       def method_missing(method, *params)
-        if API::Methods.respond_to? method
-          params = API::Methods.send method, *params
+        [API::Methods, API::Streams].each do |klass|
+          next unless klass.respond_to? method
+
+          params = klass.send method, *params
           return sync_say params, method
-        elsif API::Streams.respond_to? method
-          params = API::Streams.send method, *params
-          return sync_say params
         end
 
         super
