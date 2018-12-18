@@ -20,10 +20,16 @@ module RocketRubyBot
     end
 
     class Ready
-      def id
-        subs.first
-      end
+      def id; subs.first end
+      alias_method :value, :id
+      def result?; true end
     end
+
+    class Nosub
+      def value; nil end
+      def result?; true end
+    end
+    
   end
 end
 

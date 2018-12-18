@@ -11,7 +11,9 @@ module RocketRubyBot
       def token?
         return true if value and value.respond_to?(:token)
       end
-      
+
+      def result?; true end
+
       def type
         return :authenticated if token?
 

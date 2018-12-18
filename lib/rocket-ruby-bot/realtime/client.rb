@@ -42,7 +42,7 @@ module RocketRubyBot
           return sync_say params, method
         elsif API::Streams.respond_to? method
           params = API::Streams.send method, *params
-          return say params
+          return sync_say params
         end
 
         super
@@ -69,8 +69,7 @@ module RocketRubyBot
       
       def dispatch_event(data)
         event = RocketRubyBot::Events::EventFactory.builder data
-
-        resume_fiber(event.id, event.value) if event.respond_to? :value
+        resume_fiber(event.id, event.value) if event.result?
         run_hooks(event)
       end
 
