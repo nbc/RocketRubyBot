@@ -37,9 +37,8 @@ module RocketRubyBot
       end
 
       def method_missing(method, *params)
-        [API::Methods, API::Streams].each do |klass|
-          next unless klass.respond_to? method
-
+        klass = API.class_for method
+        if klass
           params = klass.send method, *params
           return sync_say params, method
         end
@@ -48,7 +47,7 @@ module RocketRubyBot
       end
 
       def respond_to_missing?(method, include_private = false)
-        API::Methods.respond_to?(method) || API::Streams.respond_to?(method) || super
+        API.class_for(method) ? true : super
       end
       
       def say(args = {}, &block)
