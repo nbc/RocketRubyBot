@@ -47,7 +47,7 @@ module RocketRubyBot
       end
 
       def respond_to_missing?(method, include_private = false)
-        API.class_for(method) ? true : super
+        API.class_for(method) and true or super
       end
       
       def say(args = {}, &block)
