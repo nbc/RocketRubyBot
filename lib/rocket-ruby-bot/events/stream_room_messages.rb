@@ -1,12 +1,10 @@
 module RocketRubyBot
   module Events
-    class User < ::OpenStruct; end
-
     class RoomEvent
       include Utils
+
       attr_reader :rid, :_id, :ts, :msg, :u, :_updatedAt, :groupable
       def initialize(params)
-        # @_base = params
         @rid = params.rid
         @_id = params._id
         @ts = ts_to_datetime(params.ts)
@@ -18,10 +16,6 @@ module RocketRubyBot
       alias_method :event_id, :_id
       alias_method :timestamp, :ts
       alias_method :user, :u
-
-      def type
-        @type ||= class_to_snake_case
-      end
     end
 
     RoomJoin = Class.new(RoomEvent)
@@ -36,7 +30,7 @@ module RocketRubyBot
       include UserActor
       attr_reader :role
       def initialize(params)
-        super params
+        super
         @role = params.role
       end
     end
@@ -88,7 +82,7 @@ module RocketRubyBot
         elsif t == :message
           RoomMessage.new params.fields.args.first
         else
-          RocketRubyBot::Realtime::Events::Unknown.new params
+          Unknown.new params
         end
       end
     end

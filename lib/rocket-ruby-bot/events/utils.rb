@@ -1,7 +1,15 @@
 module RocketRubyBot
   module Events
+
+    class User < ::OpenStruct; end
+    
     module Utils
+      def type
+        @type ||= class_to_snake_case
+      end
+
       extend self
+      
       def class_to_snake_case
         extract_type(self.class.name).to_sym
       end
@@ -33,5 +41,10 @@ module RocketRubyBot
         end
       end
     end
+
+    class Message
+    end
+
+    
   end
 end

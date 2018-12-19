@@ -1,13 +1,8 @@
 module RocketRubyBot
   module Events
-    class StreamNotifyGeneric
+    class UserNotification
       include Utils
-      def type
-        @type ||= class_to_snake_case
-      end
-    end
-    
-    class UserNotification < StreamNotifyGeneric
+      
       def initialize(params)
         params = params.first
 
@@ -19,7 +14,9 @@ module RocketRubyBot
       end
     end
 
-    class UserRoomsChanged < StreamNotifyGeneric
+    class UserRoomsChanged
+      include Utils
+      
       def initialize(params)
         @keyword = params.first
         @id = params.last._id
@@ -34,7 +31,9 @@ module RocketRubyBot
       #   fields.args.last.lastMessage._updatedAt = ts_to_datetime fields.args.last.lastMessage._updatedAt
     end
 
-    class UserSubscriptionsChanged < StreamNotifyGeneric
+    class UserSubscriptionsChanged
+      include Utils
+      
       def initialize(params)
         @keyword = params.first
         @id = params.last._id
