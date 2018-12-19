@@ -1,8 +1,5 @@
 module RocketRubyBot
   module Events
-
-    class User < ::OpenStruct; end
-    
     module Utils
       def type
         @type ||= class_to_snake_case

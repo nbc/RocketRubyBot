@@ -1,5 +1,9 @@
 module RocketRubyBot
   module Events
+    class User < ::OpenStruct; end
+    
+
+
     class RoomEvent
       include Utils
 
