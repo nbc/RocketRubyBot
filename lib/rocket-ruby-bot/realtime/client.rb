@@ -37,17 +37,14 @@ module RocketRubyBot
       end
 
       def method_missing(method, *params)
-        klass = API.class_for method
-        if klass
-          params = klass.send method, *params
-          return sync_say params, method
-        end
+        params = API.params_for method, *params
+        return super unless params
 
-        super
+        sync_say params, method
       end
 
       def respond_to_missing?(method, include_private = false)
-        API.class_for(method) and true or super
+        API.has_method?(method) or super
       end
       
       def say(args = {}, &block)

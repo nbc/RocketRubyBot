@@ -5,7 +5,9 @@ module RocketRubyBot
         if params.respond_to? :result
           result = params.result
           Result.new id: params.id,
-                     value: OpenStruct.new(token: result.token, user_id: result.id, expires: result.tokenExpires)
+                     value: OpenStruct.new(token: result.token,
+                                           user_id: result.id,
+                                           expires: result.tokenExpires)
         elsif params.respond_to? :error
           Result.new id: params.id,
                      value: OpenStruct.new(error: params.error.message)
@@ -13,7 +15,8 @@ module RocketRubyBot
       end
 
       def self.get_room_id(params)
-        Result.new id: params.id, value: OpenStruct.new(room_id: params.result)
+        Result.new id: params.id,
+                   value: OpenStruct.new(room_id: params.result)
       end
 
       def self.get_user_roles(params)
