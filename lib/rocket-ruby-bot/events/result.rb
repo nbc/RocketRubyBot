@@ -1,17 +1,21 @@
 module RocketRubyBot
   module Events
+    # class for result of methods and stream commands
     class Result
       attr_reader :id, :value
       
       def initialize(id:, value:)
-        @id, @value = id, value
+        @id = id
+        @value = value
+      end
+
+      def result?
+        true
       end
 
       def token?
-        return true if value and value.respond_to?(:token)
+        value.respond_to?(:token) and true
       end
-
-      def result?; true end
 
       def type
         return :authenticated if token?
