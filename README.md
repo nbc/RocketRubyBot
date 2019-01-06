@@ -1,6 +1,6 @@
 # Rocket-Ruby-Bot
 
-[![Build Status](https://travis-ci.org/nbc/RocketRubyBot.svg?branch=master)](https://travis-ci.org/nbc/RocketRubyBot)
+[![Build Status](https://travis-ci.org/nbc/rocket-ruby-bot.svg?branch=master)](https://travis-ci.org/nbc/rocket-ruby-bot)
 [![Maintainability](https://api.codeclimate.com/v1/badges/9e4737be0f78d44ad414/maintainability)](https://codeclimate.com/github/nbc/RocketRubyBot/maintainability)
 [![Test Coverage](https://api.codeclimate.com/v1/badges/9e4737be0f78d44ad414/test_coverage)](https://codeclimate.com/github/nbc/RocketRubyBot/test_coverage)
 
@@ -19,7 +19,7 @@ I code for fun, I'm not and will never be a good developer.
 ```ruby
 source 'https://rubygems.org'
 
-gem 'rocket-ruby-bot', :git => 'https://github.com/nbc/RocketRubyBot.git'
+gem 'rocket-ruby-bot', :git => 'https://github.com/nbc/rocket-ruby-bot.git'
 ```
 
 #### pongbot.rb
@@ -77,28 +77,13 @@ curl -H "Content-type:application/json" \
 
 ## Bot interaction
 
-### on_event
-
-The most low level command is `on_event :event_type`. With it you can access all types of event
-
-```ruby
-on_event :authenticated do |client, data|
-	# ...
-end
-```
-
-`client` is used to speak with the server
-`data` is the data return by the event.
-
-You can find the list of events [here](doc/events.md)
-
 ### setup
 
-`setup` is just syntactic sugar around `on_event :authenticated`. You can use it to initialize your bot (subscribing to stream)
+`setup` is called just after authentication. You can use it to initialize your bot (subscribing to stream...).
 
 ### command
 
-`command` allow you to wait for commands on channel/room.
+`command` allow you to wait for commands on channel/room on `:room_message` events.
 
 ```ruby
 command 'ping' do |client, message, match|
@@ -113,7 +98,7 @@ end
 
 ### match
 
-`match` allow lower level interaction.
+`match` allow lower level interaction on `:room_message` message type of events.
 
 ```ruby
 match /!duck\s+(?<text>\S.*)/ do |client, message, match|
@@ -121,9 +106,26 @@ match /!duck\s+(?<text>\S.*)/ do |client, message, match|
 end
 ```
 
+### on_event
+
+The lowest level command is `on_event :event_type`. With it you can access all types of events.
+
+```ruby
+on_event :authenticated do |client, data|
+	# ...
+end
+```
+
+`client` is used to speak with the server
+`data` is the data return by the event.
+
+You can find the list of events [here](doc/events.md)
+
+For your information, `command` and `match` are based on `:room_message` event and `setup` is just syntactic sugar around `on_event :authenticated`.
+
 ## RocketChat API
 
-All the methods of the [realtime API](https://rocket.chat/docs/developer-guides/realtime-api/) are available. The beginning of a documentation [here](doc/realtime_api.md). For more information, use [the code](lib/rocket-ruby-bot/realtime/api.rb) for the moment.
+All the methods of the [realtime API](https://rocket.chat/docs/developer-guides/realtime-api/) are available. The beginning of a documentation [here](doc/realtime_api.md). For more information, read [the code](lib/rocket-ruby-bot/realtime/api.rb) for the moment.
 
 ```ruby
 client.stream_notify_user user_id: "user_id", sub: "message"
@@ -142,7 +144,7 @@ client.stream_notify_user user_id: config.user_id, sub: "message"
 
 ## other useful methods 
 
-You have access to 2 useful methods in your bot:
+You have access to two useful methods in your bot:
 
 ### `web_client`
 
